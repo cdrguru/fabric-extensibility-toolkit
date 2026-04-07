@@ -8,23 +8,22 @@ import {
   ItemDefinitionResponse,
   UpdateItemDefinitionRequest,
   PaginatedResponse,
-  AsyncOperationIndicator
+  AsyncOperationIndicator,
 } from "./FabricPlatformTypes";
 import { LongRunningOperationsClient } from "./LongRunningOperationsClient";
 
 /**
  * API wrapper for Fabric Platform Item operations
  * Provides methods for managing items (reports, datasets, notebooks, etc.)
- * 
+ *
  * Based on the official Fabric REST API:
  * https://learn.microsoft.com/en-us/rest/api/fabric/core/items
- * 
+ *
  * Uses method-based scope selection:
  * - GET operations use read-only scopes
  * - POST/PUT/PATCH/DELETE operations use read-write scopes
  */
 export class ItemClient extends FabricPlatformClient {
-  
   constructor(workloadClient: WorkloadClientAPI) {
     // Use scope pairs for method-based scope selection
     // GET operations will use ITEM_READ scopes, other operations will use ITEM scopes
@@ -43,7 +42,7 @@ export class ItemClient extends FabricPlatformClient {
    */
   async listItems(
     workspaceId: string,
-    continuationToken?: string
+    continuationToken?: string,
   ): Promise<PaginatedResponse<Item>> {
     let endpoint = `/workspaces/${workspaceId}/items`;
     if (continuationToken) {
@@ -67,7 +66,10 @@ export class ItemClient extends FabricPlatformClient {
    * @param request CreateItemRequest
    * @returns Promise<Item>
    */
-  async createItem(workspaceId: string, request: CreateItemRequest): Promise<Item> {
+  async createItem(
+    workspaceId: string,
+    request: CreateItemRequest,
+  ): Promise<Item> {
     return this.post<Item>(`/workspaces/${workspaceId}/items`, request);
   }
 
@@ -88,8 +90,15 @@ export class ItemClient extends FabricPlatformClient {
    * @param request UpdateItemRequest
    * @returns Promise<Item>
    */
-  async updateItem(workspaceId: string, itemId: string, request: UpdateItemRequest): Promise<Item> {
-    return this.patch<Item>(`/workspaces/${workspaceId}/items/${itemId}`, request);
+  async updateItem(
+    workspaceId: string,
+    itemId: string,
+    request: UpdateItemRequest,
+  ): Promise<Item> {
+    return this.patch<Item>(
+      `/workspaces/${workspaceId}/items/${itemId}`,
+      request,
+    );
   }
 
   /**
@@ -117,7 +126,7 @@ export class ItemClient extends FabricPlatformClient {
   async getItemDefinition(
     workspaceId: string,
     itemId: string,
-    format?: string
+    format?: string,
   ): Promise<AsyncOperationIndicator> {
     let endpoint = `/workspaces/${workspaceId}/items/${itemId}/getDefinition`;
     if (format) {
@@ -143,8 +152,12 @@ export class ItemClient extends FabricPlatformClient {
   ): Promise<ItemDefinitionResponse> {
     const response = await this.getItemDefinition(workspaceId, itemId, format);
     // Poll until completion
-    const operationsClient = new LongRunningOperationsClient(this.workloadClient);
-    return await operationsClient.waitForSuccessAndGetResult<ItemDefinitionResponse>(response);
+    const operationsClient = new LongRunningOperationsClient(
+      this.workloadClient,
+    );
+    return await operationsClient.waitForSuccessAndGetResult<ItemDefinitionResponse>(
+      response,
+    );
   }
 
   /**
@@ -158,9 +171,12 @@ export class ItemClient extends FabricPlatformClient {
   async updateItemDefinition(
     workspaceId: string,
     itemId: string,
-    request: UpdateItemDefinitionRequest
+    request: UpdateItemDefinitionRequest,
   ): Promise<AsyncOperationIndicator> {
-    return this.post<AsyncOperationIndicator>(`/workspaces/${workspaceId}/items/${itemId}/updateDefinition`, request);
+    return this.post<AsyncOperationIndicator>(
+      `/workspaces/${workspaceId}/items/${itemId}/updateDefinition`,
+      request,
+    );
   }
 
   /**
@@ -176,14 +192,19 @@ export class ItemClient extends FabricPlatformClient {
   async updateItemDefinitionWithPolling(
     workspaceId: string,
     itemId: string,
-    request: UpdateItemDefinitionRequest
+    request: UpdateItemDefinitionRequest,
   ): Promise<void> {
-    const response = await this.updateItemDefinition(workspaceId, itemId, request);
-    
-    // Poll until completion
-    const operationsClient = new LongRunningOperationsClient(this.workloadClient);    
-    return await operationsClient.waitForSuccessAndGetResult(response);
+    const response = await this.updateItemDefinition(
+      workspaceId,
+      itemId,
+      request,
+    );
 
+    // Poll until completion
+    const operationsClient = new LongRunningOperationsClient(
+      this.workloadClient,
+    );
+    return await operationsClient.waitForSuccessAndGetResult(response);
   }
 
   // ============================
@@ -200,7 +221,7 @@ export class ItemClient extends FabricPlatformClient {
   async listItemConnections(
     workspaceId: string,
     itemId: string,
-    continuationToken?: string
+    continuationToken?: string,
   ): Promise<any> {
     let endpoint = `/workspaces/${workspaceId}/items/${itemId}/connections`;
     if (continuationToken) {
@@ -221,7 +242,7 @@ export class ItemClient extends FabricPlatformClient {
    */
   async getItemsByType(workspaceId: string, itemType: string): Promise<Item[]> {
     const allItems = await this.getAllItems(workspaceId);
-    return allItems.filter(item => item.type === itemType);
+    return allItems.filter((item) => item.type === itemType);
   }
 
   /**
@@ -230,9 +251,12 @@ export class ItemClient extends FabricPlatformClient {
    * @param folderId The folder ID
    * @returns Promise<Item[]>
    */
-  async getItemsInFolder(workspaceId: string, folderId: string): Promise<Item[]> {
+  async getItemsInFolder(
+    workspaceId: string,
+    folderId: string,
+  ): Promise<Item[]> {
     const allItems = await this.getAllItems(workspaceId);
-    return allItems.filter(item => item.folderId === folderId);
+    return allItems.filter((item) => item.folderId === folderId);
   }
 
   /**
@@ -245,13 +269,15 @@ export class ItemClient extends FabricPlatformClient {
   async searchItemsByName(
     workspaceId: string,
     searchTerm: string,
-    caseSensitive: boolean = false
+    caseSensitive: boolean = false,
   ): Promise<Item[]> {
     const allItems = await this.getAllItems(workspaceId);
     const searchPattern = caseSensitive ? searchTerm : searchTerm.toLowerCase();
-    
-    return allItems.filter(item => {
-      const itemName = caseSensitive ? item.displayName : item.displayName.toLowerCase();
+
+    return allItems.filter((item) => {
+      const itemName = caseSensitive
+        ? item.displayName
+        : item.displayName.toLowerCase();
       return itemName.includes(searchPattern);
     });
   }
@@ -262,9 +288,12 @@ export class ItemClient extends FabricPlatformClient {
    * @param requests Array of CreateItemRequest
    * @returns Promise<Item[]>
    */
-  async createItemsBatch(workspaceId: string, requests: CreateItemRequest[]): Promise<Item[]> {
+  async createItemsBatch(
+    workspaceId: string,
+    requests: CreateItemRequest[],
+  ): Promise<Item[]> {
     const createdItems: Item[] = [];
-    
+
     for (const request of requests) {
       try {
         const item = await this.createItem(workspaceId, request);
@@ -274,7 +303,7 @@ export class ItemClient extends FabricPlatformClient {
         // Continue with other items even if one fails
       }
     }
-    
+
     return createdItems;
   }
 }

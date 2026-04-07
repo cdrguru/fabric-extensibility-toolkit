@@ -12,7 +12,7 @@ The `WizardControl` component provides a step-by-step interface for guiding user
 ✅ **Responsive Design** - Adapts to different screen sizes  
 ✅ **Accessibility Compliant** - Semantic HTML structure and keyboard support  
 ✅ **Fabric Design System** - Uses official design tokens and spacing  
-✅ **TypeScript Support** - Full type definitions and IntelliSense  
+✅ **TypeScript Support** - Full type definitions and IntelliSense
 
 ## 🏗️ Architecture
 
@@ -46,7 +46,7 @@ The `WizardControl` component provides a step-by-step interface for guiding user
 ### Step States
 
 - **Completed**: Green circle with checkmark, clickable
-- **Current**: Green circle with number, clickable  
+- **Current**: Green circle with number, clickable
 - **Upcoming**: Gray circle with number, not clickable
 
 ## 🚀 Quick Start
@@ -54,17 +54,17 @@ The `WizardControl` component provides a step-by-step interface for guiding user
 ### Enhanced Usage with View Registration
 
 ```tsx
-import { WizardControl } from '../../components/Wizard';
+import { WizardControl } from "../../components/Wizard";
 
 // Step components
 function SetupStep({ context, onNext }: WizardStepProps) {
   return (
     <div>
       <h2>Setup Information</h2>
-      <TextField 
+      <TextField
         label="Name"
-        value={context.name || ''}
-        onChange={(_, data) => context.name = data.value}
+        value={context.name || ""}
+        onChange={(_, data) => (context.name = data.value)}
       />
     </div>
   );
@@ -74,10 +74,10 @@ function ConfigStep({ context }: WizardStepProps) {
   return (
     <div>
       <h2>Configuration</h2>
-      <Checkbox 
+      <Checkbox
         label="Enable notifications"
         checked={context.notifications || false}
-        onChange={(_, data) => context.notifications = data.checked}
+        onChange={(_, data) => (context.notifications = data.checked)}
       />
     </div>
   );
@@ -86,30 +86,30 @@ function ConfigStep({ context }: WizardStepProps) {
 // Steps with view registration
 const steps = [
   {
-    id: 'setup',
-    title: 'Setup',
-    description: 'Basic information',
+    id: "setup",
+    title: "Setup",
+    description: "Basic information",
     component: SetupStep,
-    validate: async (context) => !!context.name
+    validate: async (context) => !!context.name,
   },
   {
-    id: 'config',
-    title: 'Configure', 
-    description: 'Settings and preferences',
-    component: ConfigStep
+    id: "config",
+    title: "Configure",
+    description: "Settings and preferences",
+    component: ConfigStep,
   },
   {
-    id: 'review',
-    title: 'Review',
-    description: 'Confirm your choices',
+    id: "review",
+    title: "Review",
+    description: "Confirm your choices",
     component: ({ context }) => (
       <div>
         <h2>Review</h2>
         <p>Name: {context.name}</p>
-        <p>Notifications: {context.notifications ? 'Enabled' : 'Disabled'}</p>
+        <p>Notifications: {context.notifications ? "Enabled" : "Disabled"}</p>
       </div>
-    )
-  }
+    ),
+  },
 ];
 
 function MyWizard() {
@@ -123,10 +123,10 @@ function MyWizard() {
         return !!context.name;
       }}
       onComplete={(context) => {
-        console.log('Wizard completed with:', context);
+        console.log("Wizard completed with:", context);
       }}
       onCancel={() => {
-        console.log('Wizard cancelled');
+        console.log("Wizard cancelled");
       }}
     />
   );
@@ -136,29 +136,29 @@ function MyWizard() {
 ### Basic Usage (Legacy Pattern)
 
 ```tsx
-import { WizardControl } from '../../components/Wizard';
+import { WizardControl } from "../../components/Wizard";
 
 const steps = [
   {
-    id: 'step1',
-    title: 'Get Started',
-    description: 'Set up your basic information',
+    id: "step1",
+    title: "Get Started",
+    description: "Set up your basic information",
   },
   {
-    id: 'step2', 
-    title: 'Configure',
-    description: 'Configure your settings',
+    id: "step2",
+    title: "Configure",
+    description: "Configure your settings",
   },
   {
-    id: 'step3',
-    title: 'Review',
-    description: 'Review and confirm',
-  }
+    id: "step3",
+    title: "Review",
+    description: "Review and confirm",
+  },
 ];
 
 function MyWizard() {
-  const [currentStep, setCurrentStep] = useState('step1');
-  
+  const [currentStep, setCurrentStep] = useState("step1");
+
   return (
     <WizardControl
       steps={steps}
@@ -183,7 +183,13 @@ function MyWizard() {
   currentStepId={currentStep}
   onStepChange={setCurrentStep}
   footer={
-    <div style={{ padding: '16px', display: 'flex', justifyContent: 'space-between' }}>
+    <div
+      style={{
+        padding: "16px",
+        display: "flex",
+        justifyContent: "space-between",
+      }}
+    >
       <Button appearance="secondary" onClick={handlePrevious}>
         Previous
       </Button>
@@ -200,62 +206,62 @@ function MyWizard() {
 ### Complete Example with Step Management
 
 ```tsx
-import React, { useState } from 'react';
-import { WizardControl, WizardStep } from '../../components/Wizard';
-import { Button } from '@fluentui/react-components';
+import React, { useState } from "react";
+import { WizardControl, WizardStep } from "../../components/Wizard";
+import { Button } from "@fluentui/react-components";
 
 function CompleteWizardExample() {
-  const [currentStepId, setCurrentStepId] = useState('basics');
-  
+  const [currentStepId, setCurrentStepId] = useState("basics");
+
   const steps: WizardStep[] = [
     {
-      id: 'basics',
-      title: 'Basic Information',
-      description: 'Enter your name and email'
+      id: "basics",
+      title: "Basic Information",
+      description: "Enter your name and email",
     },
     {
-      id: 'preferences',
-      title: 'Preferences', 
-      description: 'Set your preferences'
+      id: "preferences",
+      title: "Preferences",
+      description: "Set your preferences",
     },
     {
-      id: 'review',
-      title: 'Review & Submit',
-      description: 'Review your information'
-    }
+      id: "review",
+      title: "Review & Submit",
+      description: "Review your information",
+    },
   ];
-  
-  const currentIndex = steps.findIndex(s => s.id === currentStepId);
-  
+
+  const currentIndex = steps.findIndex((s) => s.id === currentStepId);
+
   const handleNext = () => {
     if (currentIndex < steps.length - 1) {
       setCurrentStepId(steps[currentIndex + 1].id);
     }
   };
-  
+
   const handlePrevious = () => {
     if (currentIndex > 0) {
       setCurrentStepId(steps[currentIndex - 1].id);
     }
   };
-  
+
   const renderStepContent = () => {
     switch (currentStepId) {
-      case 'basics':
+      case "basics":
         return (
           <div>
             <h2>Basic Information</h2>
             {/* Your form fields */}
           </div>
         );
-      case 'preferences':
+      case "preferences":
         return (
           <div>
             <h2>Preferences</h2>
             {/* Your preference settings */}
           </div>
         );
-      case 'review':
+      case "review":
         return (
           <div>
             <h2>Review & Submit</h2>
@@ -266,35 +272,39 @@ function CompleteWizardExample() {
         return null;
     }
   };
-  
+
   return (
     <WizardControl
       steps={steps}
       currentStepId={currentStepId}
       onStepChange={setCurrentStepId}
       footer={
-        <div style={{ 
-          padding: '16px 20px', 
-          display: 'flex', 
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}>
-          <Button 
-            appearance="secondary" 
+        <div
+          style={{
+            padding: "16px 20px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Button
+            appearance="secondary"
             onClick={handlePrevious}
             disabled={currentIndex === 0}
           >
             Previous
           </Button>
-          
-          <span>{currentIndex + 1} of {steps.length}</span>
-          
-          <Button 
-            appearance="primary" 
+
+          <span>
+            {currentIndex + 1} of {steps.length}
+          </span>
+
+          <Button
+            appearance="primary"
             onClick={handleNext}
             disabled={currentIndex === steps.length - 1}
           >
-            {currentIndex === steps.length - 1 ? 'Submit' : 'Next'}
+            {currentIndex === steps.length - 1 ? "Submit" : "Next"}
           </Button>
         </div>
       }
@@ -309,57 +319,57 @@ function CompleteWizardExample() {
 
 ### WizardControl Props
 
-| **Prop** | **Type** | **Required** | **Default** | **Description** |
-|----------|----------|--------------|-------------|-----------------|
-| `steps` | `WizardStep[]` | ✅ | - | Array of step configurations with view registration |
-| `initialStepId` | `string` | ❌ | `steps[0].id` | ID of the initially active step (defaults to first step) |
-| `onStepChange` | `(stepId: string, stepIndex: number) => void` | ❌ | `undefined` | Callback fired when step changes |
-| `onComplete` | `(context: Record<string, any>) => void` | ❌ | `undefined` | Callback fired when wizard is completed |
-| `onCancel` | `() => void` | ❌ | `undefined` | Callback fired when wizard is cancelled |
-| `canFinish` | `(stepId: string, context: Record<string, any>) => boolean` | ❌ | `() => true` | Function to determine if wizard can be finished |
-| `initialContext` | `Record<string, any>` | ❌ | `{}` | Initial wizard context data |
-| `showNavigation` | `boolean` | ❌ | `true` | Whether to show built-in navigation footer |
-| `className` | `string` | ❌ | `""` | Additional CSS classes |
-| `allowStepNavigation` | `boolean` | ❌ | `true` | Whether to allow clicking on previous steps |
-| `navigationLabels` | `NavigationLabels` | ❌ | `{}` | Custom labels for navigation buttons |
+| **Prop**              | **Type**                                                    | **Required** | **Default**   | **Description**                                          |
+| --------------------- | ----------------------------------------------------------- | ------------ | ------------- | -------------------------------------------------------- |
+| `steps`               | `WizardStep[]`                                              | ✅           | -             | Array of step configurations with view registration      |
+| `initialStepId`       | `string`                                                    | ❌           | `steps[0].id` | ID of the initially active step (defaults to first step) |
+| `onStepChange`        | `(stepId: string, stepIndex: number) => void`               | ❌           | `undefined`   | Callback fired when step changes                         |
+| `onComplete`          | `(context: Record<string, any>) => void`                    | ❌           | `undefined`   | Callback fired when wizard is completed                  |
+| `onCancel`            | `() => void`                                                | ❌           | `undefined`   | Callback fired when wizard is cancelled                  |
+| `canFinish`           | `(stepId: string, context: Record<string, any>) => boolean` | ❌           | `() => true`  | Function to determine if wizard can be finished          |
+| `initialContext`      | `Record<string, any>`                                       | ❌           | `{}`          | Initial wizard context data                              |
+| `showNavigation`      | `boolean`                                                   | ❌           | `true`        | Whether to show built-in navigation footer               |
+| `className`           | `string`                                                    | ❌           | `""`          | Additional CSS classes                                   |
+| `allowStepNavigation` | `boolean`                                                   | ❌           | `true`        | Whether to allow clicking on previous steps              |
+| `navigationLabels`    | `NavigationLabels`                                          | ❌           | `{}`          | Custom labels for navigation buttons                     |
 
 ### WizardStep Interface
 
-| **Property** | **Type** | **Required** | **Description** |
-|--------------|----------|--------------|-----------------|
-| `id` | `string` | ✅ | Unique identifier for the step |
-| `title` | `string` | ✅ | Display title for the step |
-| `description` | `string` | ❌ | Optional description text |
-| `component` | `React.ComponentType<WizardStepProps>` | ✅ | React component to render for this step |
-| `validate` | `(context: Record<string, any>) => boolean \| Promise<boolean>` | ❌ | Function to validate step before proceeding |
-| `onEnter` | `(context: Record<string, any>) => void \| Promise<void>` | ❌ | Callback when entering this step |
-| `onExit` | `(context: Record<string, any>) => void \| Promise<void>` | ❌ | Callback when leaving this step |
+| **Property**  | **Type**                                                        | **Required** | **Description**                             |
+| ------------- | --------------------------------------------------------------- | ------------ | ------------------------------------------- |
+| `id`          | `string`                                                        | ✅           | Unique identifier for the step              |
+| `title`       | `string`                                                        | ✅           | Display title for the step                  |
+| `description` | `string`                                                        | ❌           | Optional description text                   |
+| `component`   | `React.ComponentType<WizardStepProps>`                          | ✅           | React component to render for this step     |
+| `validate`    | `(context: Record<string, any>) => boolean \| Promise<boolean>` | ❌           | Function to validate step before proceeding |
+| `onEnter`     | `(context: Record<string, any>) => void \| Promise<void>`       | ❌           | Callback when entering this step            |
+| `onExit`      | `(context: Record<string, any>) => void \| Promise<void>`       | ❌           | Callback when leaving this step             |
 
 ### WizardStepProps Interface
 
-| **Property** | **Type** | **Description** |
-|--------------|----------|-----------------|
-| `stepId` | `string` | Current step identifier |
-| `stepIndex` | `number` | Current step index (0-based) |
-| `context` | `Record<string, any>` | Shared wizard context data |
-| `onNext` | `() => Promise<void>` | Function to advance to next step |
-| `onPrevious` | `() => void` | Function to go to previous step |
-| `onGoToStep` | `(stepId: string) => void` | Function to jump to specific step |
-| `isFirstStep` | `boolean` | Whether this is the first step |
-| `isLastStep` | `boolean` | Whether this is the last step |
+| **Property**  | **Type**                   | **Description**                   |
+| ------------- | -------------------------- | --------------------------------- |
+| `stepId`      | `string`                   | Current step identifier           |
+| `stepIndex`   | `number`                   | Current step index (0-based)      |
+| `context`     | `Record<string, any>`      | Shared wizard context data        |
+| `onNext`      | `() => Promise<void>`      | Function to advance to next step  |
+| `onPrevious`  | `() => void`               | Function to go to previous step   |
+| `onGoToStep`  | `(stepId: string) => void` | Function to jump to specific step |
+| `isFirstStep` | `boolean`                  | Whether this is the first step    |
+| `isLastStep`  | `boolean`                  | Whether this is the last step     |
 
 ### WizardNavigationProps Interface
 
-| **Property** | **Type** | **Description** |
-|--------------|----------|-----------------|
-| `canFinish` | `boolean` | Whether wizard can be completed |
-| `onPrevious` | `() => void` | Function to go to previous step |
-| `onNext` | `() => Promise<void>` | Function to go to next step |
-| `onComplete` | `() => void` | Function to complete wizard |
-| `onCancel` | `() => void \| undefined` | Function to cancel wizard |
-| `labels` | `NavigationLabels` | Button labels |
-| `currentStepIndex` | `number` | Current step index (derived) |
-| `totalSteps` | `number` | Total number of steps (derived) |
+| **Property**       | **Type**                  | **Description**                 |
+| ------------------ | ------------------------- | ------------------------------- |
+| `canFinish`        | `boolean`                 | Whether wizard can be completed |
+| `onPrevious`       | `() => void`              | Function to go to previous step |
+| `onNext`           | `() => Promise<void>`     | Function to go to next step     |
+| `onComplete`       | `() => void`              | Function to complete wizard     |
+| `onCancel`         | `() => void \| undefined` | Function to cancel wizard       |
+| `labels`           | `NavigationLabels`        | Button labels                   |
+| `currentStepIndex` | `number`                  | Current step index (derived)    |
+| `totalSteps`       | `number`                  | Total number of steps (derived) |
 
 ## 🎨 Styling
 
@@ -376,7 +386,7 @@ The Wizard uses BEM naming convention with the `wizard-control` prefix:
 .wizard-control__step--disabled     // Disabled step state
 .wizard-control__step-circle        // Step indicator circle
 .wizard-control__step-circle--completed  // Completed step circle
-.wizard-control__step-circle--current    // Current step circle  
+.wizard-control__step-circle--current    // Current step circle
 .wizard-control__step-circle--upcoming   // Upcoming step circle
 .wizard-control__step-checkmark     // Checkmark for completed steps
 .wizard-control__step-number        // Step number text
@@ -396,29 +406,27 @@ The Wizard uses BEM naming convention with the `wizard-control` prefix:
 
 ```scss
 // Colors
---colorPaletteGreenForeground1: #018574  // Completed/current steps
---colorNeutralBackground2: #FAFAFA       // Steps panel background
---colorNeutralBackground1: white         // Content panel background
---colorNeutralStroke2: #E1DFDD          // Borders and upcoming steps
---colorNeutralForeground1: #323130      // Primary text
---colorNeutralForeground3: #616161      // Secondary text
-
-// Spacing
---spacingVerticalL: 20px    // Panel padding
---spacingVerticalM: 12px    // Mobile padding
---spacingHorizontalS: 12px  // Step gap
---spacingHorizontalXS: 8px  // Mobile step gap
-
-// Typography
---fontWeightSemibold        // Current step emphasis
---fontWeightMedium          // Normal step weight
+--colorPaletteGreenForeground1: #018574 // Completed/current steps
+  --colorNeutralBackground2: #fafafa // Steps panel background
+  --colorNeutralBackground1: white // Content panel background
+  --colorNeutralStroke2: #e1dfdd // Borders and upcoming steps
+  --colorNeutralForeground1: #323130 // Primary text
+  --colorNeutralForeground3: #616161 // Secondary text
+  // Spacing
+  --spacingVerticalL: 20px // Panel padding
+  --spacingVerticalM: 12px // Mobile padding
+  --spacingHorizontalS: 12px // Step gap
+  --spacingHorizontalXS: 8px // Mobile step gap
+  // Typography
+  --fontWeightSemibold // Current step emphasis
+  --fontWeightMedium; // Normal step weight
 ```
 
 ### Custom Styling
 
 ```tsx
 // Add custom CSS class
-<WizardControl 
+<WizardControl
   className="my-custom-wizard"
   steps={steps}
   currentStepId={currentStep}
@@ -434,7 +442,7 @@ The Wizard uses BEM naming convention with the `wizard-control` prefix:
     width: 200px; // Wider steps panel
     background-color: #f0f0f0;
   }
-  
+
   .wizard-control__step-circle--current {
     background-color: #0078d4; // Custom brand color
   }
@@ -452,7 +460,7 @@ The Wizard uses BEM naming convention with the `wizard-control` prefix:
 ✅ **Provide navigation components** - Include Previous/Next buttons in footer  
 ✅ **Show progress indication** - Let users know how many steps remain  
 ✅ **Test responsive behavior** - Ensure wizard works on mobile devices  
-✅ **Save user progress** - Persist step data to prevent loss on navigation  
+✅ **Save user progress** - Persist step data to prevent loss on navigation
 
 ### ❌ Don'ts
 
@@ -461,7 +469,7 @@ The Wizard uses BEM naming convention with the `wizard-control` prefix:
 ❌ **Don't hide navigation options** - Always provide way to go back  
 ❌ **Don't overwhelm users** - Break complex forms into logical steps  
 ❌ **Don't ignore mobile experience** - Test on small screens  
-❌ **Don't force linear progression** - Allow returning to previous steps when possible  
+❌ **Don't force linear progression** - Allow returning to previous steps when possible
 
 ## 🎯 Usage Patterns
 
@@ -469,10 +477,18 @@ The Wizard uses BEM naming convention with the `wizard-control` prefix:
 
 ```tsx
 const onboardingSteps = [
-  { id: 'welcome', title: 'Welcome', description: 'Get started with the platform' },
-  { id: 'profile', title: 'Profile Setup', description: 'Create your profile' },
-  { id: 'preferences', title: 'Preferences', description: 'Set your preferences' },
-  { id: 'complete', title: 'Complete', description: 'You\'re all set!' }
+  {
+    id: "welcome",
+    title: "Welcome",
+    description: "Get started with the platform",
+  },
+  { id: "profile", title: "Profile Setup", description: "Create your profile" },
+  {
+    id: "preferences",
+    title: "Preferences",
+    description: "Set your preferences",
+  },
+  { id: "complete", title: "Complete", description: "You're all set!" },
 ];
 ```
 
@@ -480,10 +496,18 @@ const onboardingSteps = [
 
 ```tsx
 const importSteps = [
-  { id: 'upload', title: 'Upload File', description: 'Select your data file' },
-  { id: 'mapping', title: 'Map Fields', description: 'Map file columns to fields' },
-  { id: 'validate', title: 'Validate', description: 'Review data validation results' },
-  { id: 'import', title: 'Import', description: 'Complete the import process' }
+  { id: "upload", title: "Upload File", description: "Select your data file" },
+  {
+    id: "mapping",
+    title: "Map Fields",
+    description: "Map file columns to fields",
+  },
+  {
+    id: "validate",
+    title: "Validate",
+    description: "Review data validation results",
+  },
+  { id: "import", title: "Import", description: "Complete the import process" },
 ];
 ```
 
@@ -491,10 +515,14 @@ const importSteps = [
 
 ```tsx
 const settingsSteps = [
-  { id: 'general', title: 'General', description: 'Basic settings' },
-  { id: 'security', title: 'Security', description: 'Security preferences' },
-  { id: 'notifications', title: 'Notifications', description: 'Notification settings' },
-  { id: 'review', title: 'Review', description: 'Review and save changes' }
+  { id: "general", title: "General", description: "Basic settings" },
+  { id: "security", title: "Security", description: "Security preferences" },
+  {
+    id: "notifications",
+    title: "Notifications",
+    description: "Notification settings",
+  },
+  { id: "review", title: "Review", description: "Review and save changes" },
 ];
 ```
 
@@ -503,7 +531,7 @@ const settingsSteps = [
 ### Built-in Accessibility Features
 
 - **Semantic HTML structure** with proper heading hierarchy
-- **Keyboard navigation support** for step selection  
+- **Keyboard navigation support** for step selection
 - **ARIA attributes** for screen reader compatibility
 - **Focus management** with visible focus indicators
 - **Color contrast compliance** meeting WCAG 2.1 standards
@@ -513,9 +541,9 @@ const settingsSteps = [
 ```tsx
 // Add ARIA labels for better screen reader experience
 <WizardControl
-  steps={steps.map(step => ({
+  steps={steps.map((step) => ({
     ...step,
-    title: `${step.title} - Step ${steps.indexOf(step) + 1} of ${steps.length}`
+    title: `${step.title} - Step ${steps.indexOf(step) + 1} of ${steps.length}`,
   }))}
   currentStepId={currentStep}
   onStepChange={setCurrentStep}
@@ -529,11 +557,13 @@ const settingsSteps = [
 ## 📱 Responsive Behavior
 
 ### Desktop (≥ 769px)
+
 - **Steps panel**: 180px width with full descriptions
 - **Content panel**: Flexible width with 20px padding
 - **Step gaps**: 12px spacing between elements
 
-### Mobile (≤ 768px)  
+### Mobile (≤ 768px)
+
 - **Steps panel**: 140px width (reduced)
 - **Content panel**: 12px padding (reduced)
 - **Step gaps**: 8px spacing (tighter)
@@ -542,7 +572,7 @@ const settingsSteps = [
 ## 🔗 Related Components
 
 - **[Button](https://react.fluentui.dev/?path=/docs/components-button--default)** - For navigation controls in footer
-- **[Text](https://react.fluentui.dev/?path=/docs/components-text--default)** - For step titles and descriptions  
+- **[Text](https://react.fluentui.dev/?path=/docs/components-text--default)** - For step titles and descriptions
 - **[Card](https://react.fluentui.dev/?path=/docs/components-card--default)** - For step content containers
 - **[Form](https://react.fluentui.dev/?path=/docs/concepts-forms--default)** - For step content forms
 
@@ -551,4 +581,3 @@ const settingsSteps = [
 **Component**: `WizardControl`  
 **Location**: `Workload/app/components/Wizard/Wizard.tsx`  
 **Version**: 1.0.0 - Initial release with CSS-based styling and responsive design
-

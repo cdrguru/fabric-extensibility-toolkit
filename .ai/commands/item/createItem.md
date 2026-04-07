@@ -13,8 +13,9 @@ applyTo: "/Workload/app/items/[ItemName]Item/"
 Before writing ANY code, create a comprehensive todo list with `manage_todo_list`:
 
 **REQUIRED TODO ITEMS - ALL MUST BE COMPLETED:**
+
 1. Read both instruction files completely
-2. 🔍 **DISCOVER EXISTING COMPONENTS** - Search for Base* components before coding
+2. 🔍 **DISCOVER EXISTING COMPONENTS** - Search for Base\* components before coding
 3. Create [ItemName]ItemDefinition.ts with proper interface for storing the state of the item
 4. Create [ItemName]ItemEditor.tsx using ItemEditor
 5. Create [ItemName]ItemEmptyView.tsx with proper patterns
@@ -36,11 +37,12 @@ Before writing ANY code, create a comprehensive todo list with `manage_todo_list
 ```bash
 # Use semantic_search to find existing patterns:
 - "ItemEditorView left right split layout"
-- "ItemEditorDetailView left center" 
+- "ItemEditorDetailView left center"
 - "Base* components [your use case]"
 ```
 
 **Available Components (USE THESE - DON'T REINVENT):**
+
 - **ItemEditorView**: Left/center layouts (explorer + content)
 - **ItemEditorDetailView**: Detail views with actions
 - **ItemEditorEmptyView**: Empty states with tasks
@@ -49,7 +51,7 @@ Before writing ANY code, create a comprehensive todo list with `manage_todo_list
 
 **ALWAYS use ItemEditorDetailView for these scenarios:**
 
-1. **Detail/Drill-down Pages (L2 Pages)**: 
+1. **Detail/Drill-down Pages (L2 Pages)**:
    - Record details, configuration pages, property panels
    - Any page you navigate TO from a main view
    - Pages that need a "back" button
@@ -65,6 +67,7 @@ Before writing ANY code, create a comprehensive todo list with `manage_todo_list
    - Content that requires dedicated actions
 
 **⚠️ DON'T create custom detail layouts** - ItemEditorDetailView provides:
+
 - ✅ Automatic back navigation (mark view as `isDetailView: true`)
 - ✅ Context-specific actions in ribbon
 - ✅ Optional left panel for properties/navigation
@@ -72,6 +75,7 @@ Before writing ANY code, create a comprehensive todo list with `manage_todo_list
 - ✅ Built-in accessibility and responsive behavior
 
 **Example Usage Pattern:**
+
 ```tsx
 // In your views registration
 {
@@ -133,7 +137,7 @@ Before writing ANY code, create a comprehensive todo list with `manage_todo_list
 // CORRECT Pattern - Use ItemEditor + Standard Ribbon
 export function [ItemName]ItemEditor(props: PageProps) {
   // ... state and logic ...
-  
+
   return (
     <ItemEditor
       ribbon={
@@ -183,7 +187,7 @@ export function [ItemName]ItemEditor(props: PageProps) {
 ✅ **Maintenance**: Centralized updates benefit all items  
 ✅ **Scroll Behavior**: Proper fixed ribbon + scrollable content  
 ✅ **Responsive**: Mobile-friendly layouts and touch targets  
-✅ **Testing**: Standard patterns = standard test coverage  
+✅ **Testing**: Standard patterns = standard test coverage
 
 ### 🚨 CRITICAL: Styling Requirements
 
@@ -202,6 +206,7 @@ export function [ItemName]ItemEditor(props: PageProps) {
    - Use prefixed class names: `.hello-world-*`, `.data-analyzer-*` for clear item identification
 
 3. **Styling Pattern** (HelloWorld Example):
+
    ```scss
    // [ItemName]Item.scss - All item-specific styles
    .hello-world-view {
@@ -209,7 +214,7 @@ export function [ItemName]ItemEditor(props: PageProps) {
      padding: var(--spacingVerticalL, 12px);
      /* Add other item-specific styles like colors, layout, or branding */
    }
-   
+
    .hello-world-section-title {
      color: var(--colorBrandForeground1);
      font-weight: var(--fontWeightSemibold);
@@ -217,6 +222,7 @@ export function [ItemName]ItemEditor(props: PageProps) {
    ```
 
 4. **Component Usage**:
+
    ```tsx
    // Use item-specific classes for your content
    <div className="hello-world-view">
@@ -226,9 +232,9 @@ export function [ItemName]ItemEditor(props: PageProps) {
    </div>
    ```
 
-4. **Verification Checklist** (Will be checked):
+5. **Verification Checklist** (Will be checked):
    - ✅ ItemEditor used (no custom editor layout)
-   - ✅ Ribbon + RibbonToolbar used (no custom ribbon layout)  
+   - ✅ Ribbon + RibbonToolbar used (no custom ribbon layout)
    - ✅ Styles in separate `[ItemName]Item.scss` file in item directory
    - ✅ **NO MODIFICATIONS** to any files in `components/` directory
    - ✅ Item-specific class naming pattern used (`.item-name-*`)
@@ -236,6 +242,7 @@ export function [ItemName]ItemEditor(props: PageProps) {
    - ✅ Import pattern: `import "./[ItemName]Item.scss";` (no global imports)
 
 **❌ STYLE VIOLATIONS** (Will fail verification):
+
 ```scss
 // ❌ WRONG: Modifying control files
 // components/ItemEditor/ItemEditor.scss
@@ -266,7 +273,8 @@ export function [ItemName]ItemEditor(props: PageProps) {
 
 This guide provides step-by-step instructions for AI tools to create a new item in the Microsoft Fabric Extensibility Toolkit. Creating a new item requires implementation files, manifest configuration, routing setup, and environment variable updates.
 
-**🚨 REMEMBER**: 
+**🚨 REMEMBER**:
+
 - Always use ItemEditor and standard Ribbon components!
 - **CRITICAL**: Must update Product.json to register item in create dialogs
 - **OneLakeStorageClient**: Always use `createItemWrapper()` for item-scoped OneLake operations
@@ -275,6 +283,7 @@ This guide provides step-by-step instructions for AI tools to create a new item 
 ### Step 1: Create Item Implementation Structure
 
 1. **Create item directory**:
+
    ```
    Workload/app/items/[ItemName]Item/
    ```
@@ -304,6 +313,7 @@ export interface [ItemName]ItemDefinition {
 ```
 
 **Key Points**:
+
 - Define the interface that represents your item's state
 - This data will be persisted in Fabric's storage
 - Keep it serializable (JSON-compatible types only)
@@ -544,7 +554,7 @@ export function [ItemName]ItemEditor(props: PageProps) {
    - Call `setCurrentView(EDITOR_VIEW_TYPES.VIEWNAME)` to switch views
    - DO NOT use manual if/else statements in children
 
-5. **Automatic Loading Handling**:
+6. **Automatic Loading Handling**:
    - ItemEditor automatically handles loading states internally
    - DO NOT manually check `isLoading` before rendering ItemEditor
    - DO NOT import or use `ItemEditorLoadingView` - it's handled internally
@@ -723,7 +733,7 @@ export const [ItemName]ItemDefaultView: React.FC<[ItemName]ItemDefaultViewProps>
             {t('[ItemName]ItemDefaultView_Title', `${item?.displayName} Editor`)}
           </Text>
         </Stack.Item>
-        
+
         <Stack.Item>
           <Card>
             <CardHeader
@@ -749,8 +759,8 @@ export const [ItemName]ItemDefaultView: React.FC<[ItemName]ItemDefaultViewProps>
               </Stack.Item>
               {isEdited && (
                 <Stack.Item>
-                  <Button 
-                    appearance="primary" 
+                  <Button
+                    appearance="primary"
                     onClick={handleSaveChanges}
                   >
                     {t('[ItemName]ItemDefaultView_Save_Button', 'Save Changes')}
@@ -760,7 +770,7 @@ export const [ItemName]ItemDefaultView: React.FC<[ItemName]ItemDefaultViewProps>
             </Stack>
           </Card>
         </Stack.Item>
-        
+
         <Stack.Item>
           <Text size={400} style={{ color: 'var(--colorNeutralForeground3)' }}>
             {t('[ItemName]ItemDefaultView_Help_Text', 'This is your main editing interface. Customize this view based on your item\'s functionality.')}
@@ -793,13 +803,13 @@ export const [ItemName]ItemDefaultView: React.FC<[ItemName]ItemDefaultViewProps>
 const oneLakeClient = new OneLakeStorageClient(props.workloadClient);
 const itemWrapper = oneLakeClient.createItemWrapper({
   id: props.item.id,
-  workspaceId: props.item.workspaceId
+  workspaceId: props.item.workspaceId,
 });
 
 // Now use wrapper methods with relative paths
-await itemWrapper.writeFileAsBase64('Files/myfile.txt', base64Content);
-const content = await itemWrapper.readFileAsText('Files/myfile.txt');
-const fullPath = itemWrapper.getPath('Files/myfile.txt'); // For storage in definitions
+await itemWrapper.writeFileAsBase64("Files/myfile.txt", base64Content);
+const content = await itemWrapper.readFileAsText("Files/myfile.txt");
+const fullPath = itemWrapper.getPath("Files/myfile.txt"); // For storage in definitions
 ```
 
 #### ❌ **WRONG Pattern** - Direct client with manual paths:
@@ -815,7 +825,7 @@ await oneLakeClient.writeFileAsBase64(filePath, base64Content);
 
 - **Automatic Path Prefixing**: Handles workspace/item ID correctly
 - **Type Safety**: Ensures correct item context
-- **Cleaner API**: Relative paths instead of full OneLake paths  
+- **Cleaner API**: Relative paths instead of full OneLake paths
 - **Error Prevention**: Can't accidentally use wrong workspace/item IDs
 - **Consistency**: All operations use the same item context
 
@@ -848,7 +858,7 @@ import { OneLakeView } from '../../../components/OneLakeView';
       // Handle file selection
     },
     onTableSelected: async (tableName: string, oneLakeLink: string) => {
-      // Handle table selection  
+      // Handle table selection
     },
     onItemChanged: async (item) => {
       // Handle item change (e.g., user selects different item from DataHub)
@@ -887,7 +897,7 @@ import { OneLakeViewComponent } from '../../../samples/views/SampleOneLakeView';
 
 - **Use Control Not Sample**: Import from `components/OneLakeView`, not samples
 - **initialItem Required**: Control needs current item to load and display content
-- **All Properties Needed**: Must include `id`, `workspaceId`, and `displayName`  
+- **All Properties Needed**: Must include `id`, `workspaceId`, and `displayName`
 - **Empty State Handling**: Control shows add button when no initialItem provided
 - **Refresh Support**: Use `refreshTrigger` to force re-fetch when needed
 - **Clean API**: config and callbacks are clearly separated
@@ -902,9 +912,9 @@ import React from "react";
 import { PageProps } from '../../App';
 import { CurrentView, EDITOR_VIEW_TYPES } from "./[ItemName]ItemDefinition";
 import { useTranslation } from "react-i18next";
-import { 
-  Ribbon, 
-  RibbonToolbar, 
+import {
+  Ribbon,
+  RibbonToolbar,
   RibbonAction,
   createSaveAction,
   createSettingsAction,
@@ -925,16 +935,16 @@ export interface [ItemName]ItemRibbonProps extends PageProps {
 
 /**
  * [ItemName]ItemRibbon - Implements the standard ribbon pattern
- * 
+ *
  * This demonstrates the MANDATORY pattern for creating consistent ribbons
  * across all item editors in the Fabric Extensibility Toolkit.
- * 
+ *
  * 🚨 REQUIRED COMPONENTS:
  * - Ribbon: Provides consistent ribbon structure and layout
  * - RibbonToolbar: Renders actions with automatic Tooltip + ToolbarButton pattern
  * - createRibbonTabs: Ensures Home tab is always present
  * - Standard action factories: createSaveAction, createSettingsAction
- * 
+ *
  * Key Features:
  * - Automatic accessibility (Tooltip + ToolbarButton pattern)
  * - Consistent styling across all item editors
@@ -943,10 +953,10 @@ export interface [ItemName]ItemRibbonProps extends PageProps {
  */
 export function [ItemName]ItemRibbon(props: [ItemName]ItemRibbonProps) {
   const { t } = useTranslation();
-  
+
   // Create a translation helper function for action factories
   const translate = (key: string, fallback?: string) => t(key, fallback);
-  
+
   // 🚨 REQUIRED: Define ribbon tabs using createRibbonTabs
   // Home tab is mandatory, additional tabs can be added as second parameter
   const tabs = createRibbonTabs(
@@ -957,7 +967,7 @@ export function [ItemName]ItemRibbon(props: [ItemName]ItemRibbonProps) {
     //   createFormatTab(t("Format"))
     // ]
   );
-  
+
   // Define ribbon actions - mix of standard and custom actions
   const actions: RibbonAction[] = [
     // 🚨 STANDARD ACTION: Save button (mandatory for most items)
@@ -967,14 +977,14 @@ export function [ItemName]ItemRibbon(props: [ItemName]ItemRibbonProps) {
       !props.isSaveButtonEnabled,  // disabled when save not needed
       translate
     ),
-    
+
     // ✅ OPTIONAL ACTION: Settings button (if your item needs settings)
     // Use createSettingsAction factory for consistent behavior when needed
     createSettingsAction(
       props.openSettingsCallback,
       translate
     ),
-    
+
     // ✅ CUSTOM ACTION EXAMPLE: View navigation
     // Define custom actions inline for item-specific functionality
     {
@@ -986,7 +996,7 @@ export function [ItemName]ItemRibbon(props: [ItemName]ItemRibbonProps) {
       hidden: props.currentView !== EDITOR_VIEW_TYPES.EMPTY  // Only show in EMPTY view
     }
   ];
-  
+
   // 🚨 REQUIRED: Use Ribbon + RibbonToolbar pattern
   return (
     <Ribbon tabs={tabs}>
@@ -1105,7 +1115,11 @@ return (
 
 // Example: Item-specific hero section
 .[item-name]-hero-section {
-  background: linear-gradient(135deg, var(--colorBrandBackground), var(--colorBrandBackground2));
+  background: linear-gradient(
+    135deg,
+    var(--colorBrandBackground),
+    var(--colorBrandBackground2)
+  );
   padding: var(--spacingVerticalXXL) var(--spacingHorizontalXL);
   border-radius: var(--borderRadiusLarge);
   color: var(--colorNeutralForegroundOnBrand);
@@ -1118,7 +1132,7 @@ return (
 
 ```tsx
 // In [ItemName]ItemEditor.tsx, [ItemName]ItemDefaultView.tsx, [ItemName]ItemRibbon.tsx, etc.
-import "./[ItemName]Item.scss";       // Item-specific styles (REQUIRED)
+import "./[ItemName]Item.scss"; // Item-specific styles (REQUIRED)
 ```
 
 **Usage Pattern**:
@@ -1133,6 +1147,7 @@ import "./[ItemName]Item.scss";       // Item-specific styles (REQUIRED)
 ```
 
 **✅ DO** (Will pass verification):
+
 - Create separate `[ItemName]Item.scss` file with all item-specific styles
 - Use item-prefixed class names (`.hello-world-*`, `.data-analyzer-*`, etc.)
 - Use Fabric design tokens (`var(--color*, --spacing*, --fontSize*)`)
@@ -1140,6 +1155,7 @@ import "./[ItemName]Item.scss";       // Item-specific styles (REQUIRED)
 - Import only `[ItemName]Item.scss` in item components
 
 **❌ DON'T** (Will fail verification):
+
 - Modify control files in `Workload/app/components/` directory (ItemEditor, Ribbon, OneLakeView, etc.)
 - Duplicate control layout/structure styles in item SCSS
 - Use inline styles instead of SCSS file
@@ -1235,6 +1251,7 @@ import { [ItemName]ItemEditor } from "./items/[ItemName]Item/[ItemName]ItemEdito
 ```
 
 **Route Pattern**:
+
 - Path must match the `editor.path` in the JSON manifest
 - Include `:itemObjectId` parameter for item identification
 - Route name should follow the pattern: `/[ItemName]Item-editor`
@@ -1244,6 +1261,7 @@ import { [ItemName]ItemEditor } from "./items/[ItemName]Item/[ItemName]ItemEdito
 #### 8.1: Add Item Icon
 
 Create an icon file: `Workload/Manifest/assets/images/[ItemName]Item-icon.png`
+
 - **Size**: 24x24 pixels recommended
 - **Format**: PNG with transparency
 - **Style**: Follow Fabric design guidelines
@@ -1253,6 +1271,7 @@ Create an icon file: `Workload/Manifest/assets/images/[ItemName]Item-icon.png`
 Create an empty state illustration: `Workload/app/assets/items/[ItemName]Item/EditorEmpty.svg`
 
 **Folder Structure**:
+
 ```
 Workload/app/assets/items/
 └── [ItemName]Item/
@@ -1260,6 +1279,7 @@ Workload/app/assets/items/
 ```
 
 **Requirements**:
+
 - **Format**: SVG (vector format for scalability)
 - **Size**: Optimized for display in empty state components
 - **Style**: Follow Fabric design system guidelines
@@ -1301,6 +1321,7 @@ Update `Workload/app/assets/locales/en-US/translation.json`:
 ```
 
 **Key Differences**:
+
 - **Manifest translations** (`Workload/Manifest/assets/locales/`) - ONLY for keys referenced in .json manifest files
 - **App translations** (`Workload/app/assets/locales/`) - ONLY for React components using `useTranslation()` hook
 - **Never mix these up** - Each location serves a specific build-time purpose
@@ -1325,26 +1346,26 @@ The `createExperience.cards` array controls what items appear in Fabric's "Creat
     "cards": [
       {
         "title": "HelloWorldItem_DisplayName",
-        "description": "HelloWorldItem_Description", 
+        "description": "HelloWorldItem_Description",
         "itemType": "HelloWorld"
         // ... existing HelloWorld configuration
       },
       {
-        "title": "[ItemName]Item_DisplayName",           // ← ADD THIS BLOCK
-        "description": "[ItemName]Item_Description",     // ← Use localization key
+        "title": "[ItemName]Item_DisplayName", // ← ADD THIS BLOCK
+        "description": "[ItemName]Item_Description", // ← Use localization key
         "icon": {
           "name": "assets/images/[ItemName]Item-icon.png"
         },
         "icon_small": {
-          "name": "assets/images/[ItemName]Item-icon.png"  
+          "name": "assets/images/[ItemName]Item-icon.png"
         },
         "availableIn": [
           "home",
           "create-hub",
-          "workspace-plus-new", 
+          "workspace-plus-new",
           "workspace-plus-new-teams"
         ],
-        "itemType": "[ItemName]",                        // ← CRITICAL: Must match JSON manifest "name" field
+        "itemType": "[ItemName]", // ← CRITICAL: Must match JSON manifest "name" field
         "createItemDialogConfig": {
           "onCreationFailure": { "action": "item.onCreationFailure" },
           "onCreationSuccess": { "action": "item.onCreationSuccess" }
@@ -1363,8 +1384,8 @@ The `recommendedItemTypes` array controls which items appear on the workload hom
 {
   "homePage": {
     "recommendedItemTypes": [
-      "HelloWorld",        // ← Existing item
-      "[ItemName]"         // ← ADD THIS - Must match itemType in createExperience
+      "HelloWorld", // ← Existing item
+      "[ItemName]" // ← ADD THIS - Must match itemType in createExperience
     ]
   }
 }
@@ -1380,6 +1401,7 @@ The `recommendedItemTypes` array controls which items appear on the workload hom
 - **Both Arrays Required**: Items need to be in BOTH `createExperience.cards` AND `recommendedItemTypes`
 
 **❌ Common Mistakes - DO NOT DO THIS**:
+
 ```json
 // WRONG: Missing createExperience.cards entry
 {
@@ -1388,7 +1410,7 @@ The `recommendedItemTypes` array controls which items appear on the workload hom
   }
 }
 
-// WRONG: Hardcoded strings instead of localization keys  
+// WRONG: Hardcoded strings instead of localization keys
 {
   "title": "My Custom Item",              // ← Should be "[ItemName]Item_DisplayName"
   "description": "Does custom things"     // ← Should be "[ItemName]Item_Description"
@@ -1406,27 +1428,29 @@ The `recommendedItemTypes` array controls which items appear on the workload hom
 ```
 
 **✅ Correct Pattern - ALWAYS DO THIS**:
+
 ```json
 {
   "createExperience": {
     "cards": [
       {
-        "title": "[ItemName]Item_DisplayName",      // ← Localization key
+        "title": "[ItemName]Item_DisplayName", // ← Localization key
         "description": "[ItemName]Item_Description", // ← Localization key
-        "itemType": "[ItemName]",                   // ← Matches manifest "name"
+        "itemType": "[ItemName]" // ← Matches manifest "name"
         // ... complete card configuration
       }
     ]
   },
   "homePage": {
-    "recommendedItemTypes": ["[ItemName]"]         // ← Matches itemType above
+    "recommendedItemTypes": ["[ItemName]"] // ← Matches itemType above
   }
 }
 ```
 
 **Validation Checklist**:
+
 - [ ] Item added to `createExperience.cards` array
-- [ ] Item added to `recommendedItemTypes` array  
+- [ ] Item added to `recommendedItemTypes` array
 - [ ] `itemType` matches JSON manifest `name` field exactly
 - [ ] All text uses localization keys (no hardcoded strings)
 - [ ] Icon files exist in assets directory
@@ -1437,15 +1461,17 @@ The `recommendedItemTypes` array controls which items appear on the workload hom
 **IMPORTANT**: After creating a new item, you MUST update the `ITEM_NAMES` variable in ALL environment files, or your item will not be included in the build:
 
 1. **Update Workload/.env.dev**:
+
    ```bash
    # Before
    ITEM_NAMES=HelloWorld
-   
+
    # After - add your new item
    ITEM_NAMES=HelloWorld,[ItemName]
    ```
 
 2. **Update Workload/.env.test**:
+
    ```bash
    ITEM_NAMES=HelloWorld,[ItemName]
    ```
@@ -1456,6 +1482,7 @@ The `recommendedItemTypes` array controls which items appear on the workload hom
    ```
 
 **Why This Matters**:
+
 - The ITEM_NAMES variable controls which items are included when building the manifest package
 - Missing items from this list will NOT appear in the workload
 - Each environment can have different sets of items enabled
@@ -1464,12 +1491,14 @@ The `recommendedItemTypes` array controls which items appear on the workload hom
 ### Step 10: Testing and Validation
 
 1. **Build the project**:
+
    ```powershell
    cd Workload
    npm run build:test
    ```
 
 2. **Start development server**:
+
    ```powershell
    npm run start
    ```
@@ -1483,6 +1512,7 @@ The `recommendedItemTypes` array controls which items appear on the workload hom
 ### Step 11: Build and Deploy
 
 1. **Build manifest package**:
+
    ```powershell
    .\scripts\Build\BuildManifestPackage.ps1
    ```
@@ -1497,6 +1527,7 @@ The `recommendedItemTypes` array controls which items appear on the workload hom
 **For AI Tools**: Instead of creating empty files, copy and modify the existing HelloWorld item:
 
 ### 1. Copy HelloWorld Item Structure
+
 ```bash
 # Copy the entire HelloWorld item implementation
 cp -r Workload/app/items/[ItemName]Item
@@ -1506,6 +1537,7 @@ cp -r Workload/Manifest/items/[ItemName]Item
 ```
 
 ### 2. Find and Replace Pattern
+
 ```bash
 # Replace all instances in the copied files:
 HelloWorld → [ItemName]
@@ -1518,6 +1550,7 @@ HelloWorldItemRibbon → [ItemName]ItemRibbon
 ```
 
 ### 3. Update File Names
+
 ```bash
 # Rename all files to match the new item name
 mv [ItemName]Item/HelloWorldItemDefinition.ts [ItemName]Item/[ItemName]ItemDefinition.ts
@@ -1539,28 +1572,33 @@ This approach ensures you get a **complete, functional item** rather than empty 
 When creating a new item, ensure all these components are created:
 
 **Implementation Files** (in `Workload/app/items/[ItemName]Item/`):
+
 - [ ] `[ItemName]ItemDefinition.ts` - Data model interface
-- [ ] `[ItemName]ItemEditor.tsx` - Main editor component  
+- [ ] `[ItemName]ItemEditor.tsx` - Main editor component
 - [ ] `[ItemName]ItemEmptyView.tsx` - Empty state component
 - [ ] `[ItemName]ItemDefaultView.tsx` - Default/main content view
 - [ ] `[ItemName]ItemRibbon.tsx` - Ribbon/toolbar component
 
 **Manifest Files** (in `Workload/Manifest/items/[ItemName]Item/`):
+
 - [ ] `[ItemName]Item.xml` - XML manifest template with placeholders like `{{WORKLOAD_NAME}}`
 - [ ] `[ItemName]Item.json` - JSON manifest with editor path and metadata
 
 **product Configuration File** (in `Workload/Manifest/Product.json`):
+
 - [ ] 🚨 **CRITICAL**: Add item to `createExperience.cards` array (item won't appear in create dialogs without this)
-- [ ] 🚨 **CRITICAL**: Add item to `recommendedItemTypes` array (item won't appear on home page without this)  
+- [ ] 🚨 **CRITICAL**: Add item to `recommendedItemTypes` array (item won't appear on home page without this)
 - [ ] Verify `itemType` field matches JSON manifest `name` field exactly
 - [ ] Use localization keys for title/description, not hardcoded strings
 
 **Asset Files**:
+
 - [ ] `Workload/Manifest/assets/images/[ItemName]Item-icon.png` - Item icon
 - [ ] `Workload/app/assets/items/[ItemName]Item/EditorEmpty.svg` - Empty state illustration
 - [ ] Localization entries in `Workload/Manifest/assets/locales/*/translations.json`
 
 **Code Integration**:
+
 - [ ] Route added to `Workload/app/App.tsx`
 - [ ] Import statement for editor component
 - [ ] Route path matches manifest `editor.path`
@@ -1576,6 +1614,7 @@ When creating a new item, ensure all these components are created:
 ### Troubleshooting
 
 **Common Issues**:
+
 - **🚨 MOST COMMON**: Item doesn't appear in create dialogs → Check `createExperience.cards` in Product.json
 - **Item not on home page**: Missing from `recommendedItemTypes` array in Product.json
 - **Route not found**: Ensure route path matches manifest `editor.path`
@@ -1592,10 +1631,11 @@ When creating a new item, ensure all these components are created:
 **MANDATORY: Before claiming ANY item creation is complete, verify EVERY item below:**
 
 ### 📁 All Files Exist and Are Syntactically Correct
+
 ```bash
 # Verify these files exist:
 ls Workload/app/items/[ItemName]Item/[ItemName]ItemDefinition.ts
-ls Workload/app/items/[ItemName]Item/[ItemName]ItemEditor.tsx  
+ls Workload/app/items/[ItemName]Item/[ItemName]ItemEditor.tsx
 ls Workload/app/items/[ItemName]Item/[ItemName]ItemEmptyView.tsx
 ls Workload/app/items/[ItemName]Item/[ItemName]ItemDefaultView.tsx
 ls Workload/app/items/[ItemName]Item/[ItemName]ItemRibbon.tsx
@@ -1606,6 +1646,7 @@ ls Workload/Manifest/assets/images/[ItemName]Item-icon.png
 ```
 
 ### 🚨 CRITICAL: Product.json Updated (MOST MISSED STEP)
+
 ```bash
 # Verify both these entries exist in Product.json:
 grep -n "[ItemName]" Workload/Manifest/Product.json
@@ -1615,6 +1656,7 @@ grep -n "[ItemName]" Workload/Manifest/Product.json
 ```
 
 ### ✅ Translations in Correct Locations
+
 ```bash
 # Manifest translations (for .json files):
 grep "[ItemName]Item_DisplayName" Workload/Manifest/assets/locales/en-US/translations.json
@@ -1624,8 +1666,9 @@ grep "[ItemName]Item" Workload/app/assets/locales/en-US/translation.json
 ```
 
 ### 🏗️ Architecture Compliance
-- **Component Discovery**: Used semantic_search to find existing Base* components before coding
-- **ItemEditor used**: Check editor uses `<ItemEditor>` not custom layout  
+
+- **Component Discovery**: Used semantic_search to find existing Base\* components before coding
+- **ItemEditor used**: Check editor uses `<ItemEditor>` not custom layout
 - **Ribbon used**: Check ribbon uses `Ribbon` + `RibbonToolbar`
 - **Existing Base Components**: Used ItemEditorView, ItemEditorDetailView etc. instead of reinventing
 - **OneLakeStorageClient Wrapper**: Used `createItemWrapper()` for all OneLake operations, no manual path construction
@@ -1634,9 +1677,8 @@ grep "[ItemName]Item" Workload/app/assets/locales/en-US/translation.json
 - **SCSS overrides only**: Check .scss file doesn't duplicate layout styles
 
 ### 🔄 App Integration
+
 - **Route added**: Check `App.tsx` has route for `/[ItemName]Item-editor/:itemObjectId`
 - **Imports correct**: All import paths are valid and components exist
 
 **IF ANY VERIFICATION FAILS, THE ITEM IS INCOMPLETE. FIX IT BEFORE PROCEEDING.**
-
-

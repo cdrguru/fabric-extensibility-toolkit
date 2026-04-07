@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Stack } from "@fluentui/react";
+import { Button } from "@fluentui/react-components";
 import {
-  Button,
-} from "@fluentui/react-components";
-import { ChevronDoubleLeft20Regular, ChevronDoubleRight20Regular } from "@fluentui/react-icons";
+  ChevronDoubleLeft20Regular,
+  ChevronDoubleRight20Regular,
+} from "@fluentui/react-icons";
 import "./SampleOneLakeItemExplorer.scss";
 import { PageProps } from "../../../App";
 import { Item } from "../../../clients/FabricPlatformTypes";
 import { ItemReference } from "../../../controller/ItemCRUDController";
-import { 
-  OneLakeView
-} from "../../../components/OneLakeView";
+import { OneLakeView } from "../../../components/OneLakeView";
 
-// Re-export the types from the control for backwards compatibility  
+// Re-export the types from the control for backwards compatibility
 export interface OneLakeItemExplorerItem extends ItemReference {
   displayName: string;
 }
@@ -20,7 +19,7 @@ export interface OneLakeItemExplorerItem extends ItemReference {
 export interface OneLakeItemExplorerComponentProps extends PageProps {
   onFileSelected(fileName: string, oneLakeLink: string): Promise<void>;
   onTableSelected(tableName: string, oneLakeLink: string): Promise<void>;
-  onItemChanged(item: Item): Promise<void>,
+  onItemChanged(item: Item): Promise<void>;
   config: {
     mode?: "view" | "edit";
     // Configuration options for the component
@@ -33,24 +32,29 @@ export interface OneLakeItemExplorerComponentProps extends PageProps {
 
 /**
  * OneLakeItemExplorerComponent - Sample implementation with header and collapse functionality
- * 
+ *
  * This component demonstrates how to use the OneLakeItemExplorer control with additional UI features:
  * - Collapsible header with title and toggle button
  * - Empty state with item selection
  * - Wrapper styling and layout
- * 
+ *
  * The core tree functionality is provided by the OneLakeItemExplorer control.
  */
-export function OneLakeItemExplorerComponent(props: OneLakeItemExplorerComponentProps) {
-  const [selectedItem, setSelectedItem] = useState<OneLakeItemExplorerItem>(null);
+export function OneLakeItemExplorerComponent(
+  props: OneLakeItemExplorerComponentProps,
+) {
+  const [selectedItem, setSelectedItem] =
+    useState<OneLakeItemExplorerItem>(null);
   const [isExplorerVisible, setIsExplorerVisible] = useState<boolean>(true);
 
   // Initialize selectedItem from props.config.initialItem
   useEffect(() => {
-    if (props.config.initialItem && 
-        props.config.initialItem.id && 
-        props.config.initialItem.workspaceId) {
-        setSelectedItem(props.config.initialItem);
+    if (
+      props.config.initialItem &&
+      props.config.initialItem.id &&
+      props.config.initialItem.workspaceId
+    ) {
+      setSelectedItem(props.config.initialItem);
     }
   }, [props.config.initialItem]);
 
@@ -58,7 +62,7 @@ export function OneLakeItemExplorerComponent(props: OneLakeItemExplorerComponent
     setIsExplorerVisible(!isExplorerVisible);
   }
 
-  function updateExplorerItem(item: Item){
+  function updateExplorerItem(item: Item) {
     // Validate the item has required properties
     if (item && item.id && item.workspaceId) {
       setSelectedItem(item);
@@ -67,7 +71,10 @@ export function OneLakeItemExplorerComponent(props: OneLakeItemExplorerComponent
         props.onItemChanged(item);
       }
     } else {
-      console.error("SampleOneLakeItemExplorer: Cannot update explorer with invalid item:", item);
+      console.error(
+        "SampleOneLakeItemExplorer: Cannot update explorer with invalid item:",
+        item,
+      );
     }
   }
 
@@ -78,7 +85,10 @@ export function OneLakeItemExplorerComponent(props: OneLakeItemExplorerComponent
     }
   };
 
-  const handleTableSelected = async (tableName: string, oneLakeLink: string) => {
+  const handleTableSelected = async (
+    tableName: string,
+    oneLakeLink: string,
+  ) => {
     if (props.onTableSelected) {
       await props.onTableSelected(tableName, oneLakeLink);
     }
@@ -90,19 +100,33 @@ export function OneLakeItemExplorerComponent(props: OneLakeItemExplorerComponent
 
   return (
     <>
-      <Stack className={`explorer ${isExplorerVisible ? "" : "hidden-explorer"}`} style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+      <Stack
+        className={`explorer ${isExplorerVisible ? "" : "hidden-explorer"}`}
+        style={{ height: "100%", display: "flex", flexDirection: "column" }}
+      >
         <div className={`top ${isExplorerVisible ? "" : "vertical-text"}`}>
           {!isExplorerVisible && (
-            <Button onClick={toggleExplorer} appearance="subtle" icon={<ChevronDoubleRight20Regular />}></Button>
+            <Button
+              onClick={toggleExplorer}
+              appearance="subtle"
+              icon={<ChevronDoubleRight20Regular />}
+            ></Button>
           )}
           <h1>OneLake Item Explorer</h1>
           {isExplorerVisible && (
-            <Button onClick={toggleExplorer} appearance="subtle" icon={<ChevronDoubleLeft20Regular />}></Button>
+            <Button
+              onClick={toggleExplorer}
+              appearance="subtle"
+              icon={<ChevronDoubleLeft20Regular />}
+            ></Button>
           )}
         </div>
-        
+
         {isExplorerVisible && (
-          <div className="selector-body" style={{ flex: 1, overflow: "hidden" }}>
+          <div
+            className="selector-body"
+            style={{ flex: 1, overflow: "hidden" }}
+          >
             <OneLakeView
               workloadClient={props.workloadClient}
               config={{
@@ -110,12 +134,12 @@ export function OneLakeItemExplorerComponent(props: OneLakeItemExplorerComponent
                 initialItem: selectedItem,
                 allowedItemTypes: props.config.allowedItemTypes,
                 allowItemSelection: props.config.allowItemSelection,
-                refreshTrigger: props.config.refreshTrigger
+                refreshTrigger: props.config.refreshTrigger,
               }}
               callbacks={{
                 onFileSelected: handleFileSelected,
                 onTableSelected: handleTableSelected,
-                onItemChanged: handleItemChanged
+                onItemChanged: handleItemChanged,
               }}
             />
           </div>

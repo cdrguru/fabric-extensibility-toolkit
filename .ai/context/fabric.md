@@ -233,6 +233,7 @@ Microsoft Fabric consists of several integrated workloads, each serving specific
 - Extend platform capabilities with domain-specific functionality
 
 #### Capabilities
+
 - **Custom UI Integration**: React-based frontend integration
 - **Backend Service Integration**: RESTful API integration
 - **Fabric API Access**: Full access to platform APIs
@@ -242,12 +243,14 @@ Microsoft Fabric consists of several integrated workloads, each serving specific
 ### Application Lifecycle Management (ALM)
 
 #### Git Integration
+
 - **Source Control**: Native Git integration for all artifacts
 - **Branching Strategy**: Support for feature branches and merging
 - **Collaboration**: Multi-developer workflows
 - **Version History**: Complete audit trail of changes
 
 #### Deployment Pipelines
+
 - **CI/CD Support**: Automated deployment across environments
 - **Environment Promotion**: Dev → Test → Production workflows
 - **Rollback Capabilities**: Safe deployment with rollback options
@@ -256,12 +259,14 @@ Microsoft Fabric consists of several integrated workloads, each serving specific
 ## Data Governance & Security
 
 ### Information Protection
+
 - **Sensitivity Labels**: Microsoft Purview integration
 - **Data Classification**: Automatic and manual classification
 - **Access Policies**: Fine-grained access control
 - **Audit Logging**: Comprehensive activity logging
 
 ### Compliance & Regulatory
+
 - **Industry Standards**: SOC, ISO, GDPR compliance
 - **Data Residency**: Control over data location
 - **Encryption**: End-to-end encryption at rest and in transit
@@ -270,12 +275,14 @@ Microsoft Fabric consists of several integrated workloads, each serving specific
 ## AI Integration (Copilot)
 
 ### Platform-Wide AI
+
 - **Natural Language Queries**: Query data using natural language
 - **Code Generation**: AI-assisted code and query generation
 - **Data Insights**: Automated insight discovery
 - **Content Creation**: AI-powered report and dashboard creation
 
 ### Workload-Specific AI
+
 - **Data Factory**: AI-assisted pipeline creation
 - **Power BI**: Natural language report generation
 - **Data Science**: AutoML and model recommendations
@@ -284,11 +291,13 @@ Microsoft Fabric consists of several integrated workloads, each serving specific
 ## Licensing & Capacity
 
 ### Licensing Models
+
 - **Fabric Capacity**: Pay-as-you-go or reserved capacity
 - **Power BI Premium**: Per-user and per-capacity options
 - **Developer Trial**: Free trial for development and testing
 
 ### Capacity Management
+
 - **Elastic Scaling**: Automatic scaling based on demand
 - **Workload Isolation**: Separate compute resources for different workloads
 - **Performance Monitoring**: Built-in capacity utilization monitoring
@@ -297,12 +306,14 @@ Microsoft Fabric consists of several integrated workloads, each serving specific
 ## Integration Ecosystem
 
 ### Microsoft Ecosystem
+
 - **Microsoft 365**: SharePoint, Teams, Excel integration
 - **Azure**: Native connectivity to all Azure services
 - **Power Platform**: Power Apps, Power Automate integration
 - **Dynamics 365**: Business application integration
 
 ### Third-Party Ecosystem
+
 - **Data Connectors**: 200+ pre-built connectors
 - **Partner Solutions**: ISV workloads and extensions
 - **Open Standards**: Support for open formats and protocols
@@ -362,9 +373,4 @@ Microsoft Fabric consists of several integrated workloads, each serving specific
 3. **Shortcuts**: Use OneLake shortcuts to avoid data duplication
 4. **Governance**: Implement proper data classification and access controls
 
-
-
 This document provides AI tools with the essential context needed to understand Microsoft Fabric's comprehensive analytics platform, its various workloads, development capabilities, and integration patterns. Use this information to make informed decisions when working with Fabric-related tasks and development scenarios.
-
-
-

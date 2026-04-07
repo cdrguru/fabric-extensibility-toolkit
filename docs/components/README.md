@@ -15,6 +15,7 @@ Components are organized in a layered architecture:
 ### Core Components (Required)
 
 #### [ItemEditor Component](./ItemEditor.md)
+
 **Purpose**: Foundational component system for building item editors  
 **Status**: **MANDATORY** for all item editors  
 **Features**: View registration, ribbon integration, consistent layouts (multi-panel, empty state, detail views)  
@@ -23,6 +24,7 @@ Components are organized in a layered architecture:
 ### Workflow Components (Optional)
 
 #### [Wizard Component](./Wizard.md)
+
 **Purpose**: Step-by-step guided workflow control  
 **Use Cases**: Complex multi-step processes, setup wizards, configuration workflows  
 **Features**: Automatic navigation, validation, context sharing between steps
@@ -30,6 +32,7 @@ Components are organized in a layered architecture:
 ### Data Components (Optional)
 
 #### [OneLakeView Component](./OneLakeView.md)
+
 **Purpose**: OneLake item browsing and selection  
 **Use Cases**: File/folder exploration, data source selection, OneLake integration  
 **Features**: Tree navigation, file/table selection, item management
@@ -37,14 +40,17 @@ Components are organized in a layered architecture:
 ## 🎯 Component Selection Guide
 
 ### For Item Editors
+
 - **Always use**: [ItemEditor](./ItemEditor.md) as the foundation
 - **Add as needed**: Other components based on functionality requirements
 
 ### For Complex Workflows
+
 - **Multi-step processes**: [Wizard](./Wizard.md) for guided experiences
 - **OneLake integration**: [OneLakeView](./OneLakeView.md) for data exploration
 
 ### For Custom Requirements
+
 - **Build on foundation**: Extend ItemEditor for custom layouts
 - **Follow patterns**: Reference existing component implementations
 - **Maintain compliance**: Use Fabric Design System guidelines
@@ -52,22 +58,25 @@ Components are organized in a layered architecture:
 ## 🚀 Quick Start
 
 ### Basic Item Editor
+
 ```typescript
-import { ItemEditor } from '../../components/ItemEditor';
+import { ItemEditor } from "../../components/ItemEditor";
 
 // Minimal setup - see ItemEditor docs for full examples
 ```
 
 ### Adding OneLake Integration
+
 ```typescript
-import { OneLakeView } from '../../components/OneLakeView';
+import { OneLakeView } from "../../components/OneLakeView";
 
 // OneLake browsing - see OneLakeView docs for configuration
 ```
 
 ### Multi-Step Workflows
+
 ```typescript
-import { WizardControl } from '../../components/Wizard';
+import { WizardControl } from "../../components/Wizard";
 
 // Step-by-step processes - see Wizard docs for step configuration
 ```
@@ -81,10 +90,12 @@ import { WizardControl } from '../../components/Wizard';
 ## 🔧 Implementation Guidelines
 
 ### Code Location
+
 - **Import from**: `Workload/app/components/[ComponentName]`
 - **Documentation**: `docs/components/[ComponentName].md` or `docs/components/[ComponentName]/`
 
 ### Best Practices
+
 - **Use components, don't copy**: Import from components directory, never copy sample code
 - **Follow patterns**: Reference documentation examples for proper usage
 - **Maintain consistency**: Use provided components for standard functionality
@@ -93,6 +104,7 @@ import { WizardControl } from '../../components/Wizard';
 ## 🎨 Design Compliance
 
 All components follow Microsoft Fabric Design System guidelines:
+
 - **Consistent theming** with Fabric design tokens
 - **Accessible** with proper ARIA labels and keyboard navigation
 - **Responsive** design for various screen sizes

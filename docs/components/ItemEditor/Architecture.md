@@ -531,13 +531,13 @@ E2E Tests
 
 ```tsx
 // Container
-screen.getByTestId('base-item-editor')
+screen.getByTestId("base-item-editor");
 
 // Ribbon area
-screen.getByTestId('base-item-editor-ribbon')
+screen.getByTestId("base-item-editor-ribbon");
 
 // Content area
-screen.getByTestId('base-item-editor-content')
+screen.getByTestId("base-item-editor-content");
 ```
 
 ## File Dependencies
@@ -595,4 +595,3 @@ box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.14)
 **Architecture Version**: 1.0.0  
 **Last Updated**: 2025-10-06  
 **Status**: Production Ready
-

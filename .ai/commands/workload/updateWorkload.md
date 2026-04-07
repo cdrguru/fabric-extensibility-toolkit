@@ -7,11 +7,13 @@ This guide provides instructions for updating Microsoft Fabric workload configur
 ## 🏗️ **New Configuration Architecture**
 
 ### Environment-Based Configuration
+
 - **Environment Files**: `Workload/.env.dev`, `.env.test`, `.env.prod` - Primary configuration source
 - **Templates**: `Workload/Manifest/` - Version-controlled templates with placeholders
 - **Generated Files**: `build/Manifest/` and `build/DevGateway/` - Auto-generated from templates and .env files
 
 ### Key Benefits
+
 - **Simplicity**: Standard .env format familiar to all developers
 - **Environment Management**: Separate committed files for each deployment target
 - **Template Processing**: Placeholders like `{{WORKLOAD_NAME}}` replaced during generation
@@ -24,6 +26,7 @@ This guide provides instructions for updating Microsoft Fabric workload configur
 Update the appropriate .env file in the `Workload/` directory:
 
 **For Development** (`Workload/.env.dev`):
+
 ```bash
 WORKLOAD_VERSION=1.0.0
 WORKLOAD_NAME=Org.YourWorkloadName
@@ -34,6 +37,7 @@ LOG_LEVEL=debug
 ```
 
 **For Staging** (`Workload/.env.test`):
+
 ```bash
 WORKLOAD_VERSION=1.0.0
 WORKLOAD_NAME=YourOrganization.YourWorkloadName
@@ -44,7 +48,8 @@ LOG_LEVEL=info
 ```
 
 **For Production** (`Workload/.env.prod`):
-```bash
+
+````bash
 WORKLOAD_VERSION=1.0.0
 WORKLOAD_NAME=YourOrganization.YourWorkloadName
 ITEM_NAMES=HelloWorld,CustomItem
@@ -77,7 +82,7 @@ This guide provides instructions for updating Microsoft Fabric workload configur
 
 **Automated Generation**: If you ran `SetupWorkload.ps1`, environment files were automatically generated:
 - **`.env.dev`** - Development configuration with localhost URLs and debug logging
-- **`.env.test`** - Staging configuration with staging URLs and info logging  
+- **`.env.test`** - Staging configuration with staging URLs and info logging
 - **`.env.prod`** - Production configuration with production URLs and warn logging
 
 **Template Source**: Files are generated from `config/templates/Workload/.env` with placeholders replaced.
@@ -95,7 +100,7 @@ ITEM_NAMES=HelloWorld,CustomItem
 FRONTEND_APPID=12345678-1234-1234-1234-123456789abc
 FRONTEND_URL=http://localhost:60006/
 LOG_LEVEL=debug
-```
+````
 
 **Staging Configuration** (`Workload/.env.test`):
 
@@ -121,14 +126,14 @@ LOG_LEVEL=warn
 
 ### 1.2: Configuration Variables
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `WORKLOAD_VERSION` | Version of your workload | `1.0.0` |
-| `WORKLOAD_NAME` | Unique workload identifier | `MyCompany.MyWorkload` |
-| `ITEM_NAMES` | Comma-separated list of item names | `HelloWorld,CustomItem` |
-| `FRONTEND_APPID` | Azure AD App ID for authentication | `12345678-1234-1234-1234-123456789abc` |
-| `FRONTEND_URL` | Base URL for workload frontend | `http://localhost:60006/` |
-| `LOG_LEVEL` | Logging level | `debug`, `info`, `warn`, `error` |
+| Variable           | Description                        | Example                                |
+| ------------------ | ---------------------------------- | -------------------------------------- |
+| `WORKLOAD_VERSION` | Version of your workload           | `1.0.0`                                |
+| `WORKLOAD_NAME`    | Unique workload identifier         | `MyCompany.MyWorkload`                 |
+| `ITEM_NAMES`       | Comma-separated list of item names | `HelloWorld,CustomItem`                |
+| `FRONTEND_APPID`   | Azure AD App ID for authentication | `12345678-1234-1234-1234-123456789abc` |
+| `FRONTEND_URL`     | Base URL for workload frontend     | `http://localhost:60006/`              |
+| `LOG_LEVEL`        | Logging level                      | `debug`, `info`, `warn`, `error`       |
 
 ## Step 2: Apply Configuration Changes
 
@@ -197,7 +202,7 @@ FRONTEND_URL=http://localhost:60006/
 # Staging
 FRONTEND_URL=https://staging-workload.azurestaticapps.net/
 
-# Production  
+# Production
 FRONTEND_URL=https://prod-workload.azurestaticapps.net/
 ```
 
@@ -227,7 +232,7 @@ Check that all required variables are set:
 # Validate development environment
 Get-Content Workload\.env.dev | Where-Object { $_ -match "^[A-Z_]+=.+" }
 
-# Validate production environment  
+# Validate production environment
 Get-Content Workload\.env.prod | Where-Object { $_ -match "^[A-Z_]+=.+" }
 ```
 
@@ -295,7 +300,8 @@ Copy-Item Workload\.env.prod Workload\.env
 5. **Test locally** - Copy appropriate .env file to test different environments
 
 This simplified approach provides maximum flexibility with minimal complexity, making workload configuration management straightforward for all team members.
-``` 
+
+```
     "description": "Updated workload description",
     "version": "1.0.1",
     "organization": "YourOrganization",
@@ -313,7 +319,7 @@ This simplified approach provides maximum flexibility with minimal complexity, m
       "logLevel": "debug"
     },
     "production": {
-      "workspaceGuid": "your-prod-workspace-guid", 
+      "workspaceGuid": "your-prod-workspace-guid",
       "debug": false,
       "logLevel": "error"
     }
@@ -364,7 +370,7 @@ For comprehensive updates:
 ### 3.1: Run Configuration Validation
 
 ```powershell
-# Check configuration consistency  
+# Check configuration consistency
 .\scripts\Setup\ValidateConfiguration.ps1
 
 # Automatically fix inconsistencies
@@ -399,7 +405,7 @@ Add items to the shared configuration:
     },
     {
       "name": "NewCustomItem",
-      "displayName": "New Custom Item", 
+      "displayName": "New Custom Item",
       "description": "Newly added item",
       "iconPath": "assets/images/NewCustomItem.svg"
     }
@@ -427,7 +433,7 @@ Update environment-specific settings:
     },
     "staging": {
       "workspaceGuid": "staging-workspace-guid",
-      "debug": false, 
+      "debug": false,
       "logLevel": "info"
     },
     "production": {
@@ -445,7 +451,7 @@ Generate for specific environment:
 # Generate staging configuration
 .\scripts\Setup\GenerateConfiguration.ps1 -Environment staging
 
-# Generate production configuration  
+# Generate production configuration
 .\scripts\Setup\GenerateConfiguration.ps1 -Environment production
 ```
 
@@ -500,18 +506,21 @@ Test each environment configuration:
 ### Quick Commands for Common Updates
 
 #### Update Workload Name
+
 ```powershell
 # Single command to update workload name everywhere
 .\scripts\Setup\UpdateWorkloadName.ps1 -WorkloadName "NewOrg.NewWorkload" -UpdateEnvironmentFiles -Force
 ```
 
 #### Validate All Configuration
+
 ```powershell
 # Check and fix all configuration issues
 .\scripts\Setup\ValidateConfiguration.ps1 -FixInconsistencies
 ```
 
 #### Switch Environments
+
 ```powershell
 # Switch to production configuration
 .\scripts\Setup\GenerateConfiguration.ps1 -Environment production
@@ -521,6 +530,7 @@ Test each environment configuration:
 ```
 
 #### Complete Configuration Regeneration
+
 ```powershell
 # Force regenerate everything
 .\scripts\Setup\GenerateConfiguration.ps1 -Force
@@ -536,31 +546,39 @@ Workload/.env.* (ENVIRONMENT CONFIGURATION)
 Workload/Manifest/ (TEMPLATES WITH TOKENS)
        ↓
 build/Manifest/ (GENERATED - NOT COMMITTED)
-build/DevGateway/ (GENERATED - NOT COMMITTED)  
+build/DevGateway/ (GENERATED - NOT COMMITTED)
 ```
 
 ### Troubleshooting
 
 #### Issue: Configuration Inconsistency
+
 **Solution**: Run validation and fix
+
 ```powershell
 .\scripts\Setup\ValidateConfiguration.ps1 -FixInconsistencies
 ```
 
 #### Issue: Missing Configuration Files
+
 **Solution**: Regenerate all files
+
 ```powershell
 .\scripts\Setup\GenerateConfiguration.ps1 -Force
 ```
 
 #### Issue: Wrong Environment Active
+
 **Solution**: Switch to correct environment
+
 ```powershell
 .\scripts\Setup\GenerateConfiguration.ps1 -Environment development
 ```
 
 #### Issue: Template Updates Not Applied
+
 **Solution**: Force regeneration
+
 ```powershell
 .\scripts\Setup\GenerateConfiguration.ps1 -Force
 ```
@@ -577,12 +595,15 @@ When updating a workload name, the following files must be updated consistently:
 ### 1. Manifest Configuration Files (`build/Manifest/`)
 
 #### `WorkloadManifest.xml`
+
 ```xml
 <Workload WorkloadName="[Organization].[WorkloadId]" HostingType="FERemote">
 ```
 
 #### Item Manifest Files (`*Item.xml`)
+
 **All item XML files must be updated:**
+
 - `HelloWorldItem.xml`
 - `[ItemName].xml`
 - Any custom item XML files
@@ -596,16 +617,19 @@ When updating a workload name, the following files must be updated consistently:
 ### 2. Environment Configuration Files (`Workload/`)
 
 #### `.env.dev`
+
 ```bash
 WORKLOAD_NAME=[Organization].[WorkloadId]
 ```
 
 #### `.env.prod`
+
 ```bash
 WORKLOAD_NAME=[Organization].[WorkloadId]
 ```
 
 #### `.env.test`
+
 ```bash
 WORKLOAD_NAME=[Organization].[WorkloadId]
 ```
@@ -615,11 +639,13 @@ WORKLOAD_NAME=[Organization].[WorkloadId]
 Templates use placeholder tokens that get replaced during setup:
 
 #### `WorkloadManifest.xml`
+
 ```xml
 <Workload WorkloadName="{{WORKLOAD_NAME}}" HostingType="FERemote">
 ```
 
 #### Item Template Files
+
 ```xml
 <Item TypeName="{{WORKLOAD_NAME}}.[ItemName]" Category="Data">
   <Workload WorkloadName="{{WORKLOAD_NAME}}" />
@@ -631,11 +657,13 @@ Templates use placeholder tokens that get replaced during setup:
 ### Method 1: Using Setup Scripts (Recommended)
 
 1. **Prepare Parameters**:
+
    ```powershell
    $WorkloadName = "YourOrg.YourWorkloadId"
    ```
 
 2. **Run Setup Script**:
+
    ```powershell
    .\scripts\Setup\Setup.ps1 -WorkloadName $WorkloadName -Force $true
    ```
@@ -645,10 +673,13 @@ Templates use placeholder tokens that get replaced during setup:
 ### Method 2: Manual Update Process
 
 #### Step 1: Update Template Files
+
 Update all template files in `Workload/Manifest/` to ensure future setup runs use correct values.
 
 #### Step 2: Update Manifest Files
+
 1. **Update `build/Manifest/WorkloadManifest.xml`**:
+
    ```xml
    <Workload WorkloadName="NewOrg.NewWorkloadId" HostingType="FERemote">
    ```
@@ -663,14 +694,17 @@ Update all template files in `Workload/Manifest/` to ensure future setup runs us
    ```
 
 #### Step 3: Update Environment Files
+
 Update all three environment files in `Workload/`:
 
 1. **`.env.dev`**:
+
    ```bash
    WORKLOAD_NAME=NewOrg.NewWorkloadId
    ```
 
 2. **`.env.prod`**:
+
    ```bash
    WORKLOAD_NAME=NewOrg.NewWorkloadId
    ```
@@ -681,12 +715,15 @@ Update all three environment files in `Workload/`:
    ```
 
 #### Step 4: Rebuild and Test
+
 1. **Build manifest package**:
+
    ```powershell
    .\scripts\Build\BuildManifestPackage.ps1
    ```
 
 2. **Build application**:
+
    ```powershell
    cd Workload
    npm run build:test
@@ -702,17 +739,20 @@ Update all three environment files in `Workload/`:
 After updating the workload name, verify these items:
 
 ### Configuration Consistency
+
 - [ ] `WorkloadManifest.xml` contains the new workload name
 - [ ] All `*Item.xml` files use the new workload name in both `TypeName` and `WorkloadName`
 - [ ] All three `.env` files contain the updated `WORKLOAD_NAME`
 - [ ] Template files use `{{WORKLOAD_NAME}}` placeholders correctly
 
 ### Build Validation
+
 - [ ] Manifest package builds successfully
 - [ ] Frontend application builds without errors
 - [ ] No references to old workload name in generated files
 
 ### Runtime Validation
+
 - [ ] Workload appears with correct name in Fabric
 - [ ] Items can be created and edited successfully
 - [ ] No console errors related to workload identification
@@ -720,30 +760,38 @@ After updating the workload name, verify these items:
 ## Common Issues and Troubleshooting
 
 ### Issue: Workload Not Recognized
+
 **Symptoms**: Workload doesn't appear in Fabric or shows as unregistered
 **Solutions**:
+
 - Verify `WorkloadManifest.xml` has correct `WorkloadName`
 - Ensure environment variables are updated
 - Rebuild manifest package
 - Restart dev gateway
 
 ### Issue: Items Not Loading
+
 **Symptoms**: Items show errors or don't load in editor
 **Solutions**:
+
 - Check that all `*Item.xml` files have matching `WorkloadName`
 - Verify `TypeName` follows correct pattern: `[Organization].[WorkloadId].[ItemName]`
 - Ensure frontend routes match item configurations
 
 ### Issue: Template Replacement Failures
+
 **Symptoms**: Setup script fails or generates files with placeholder tokens
 **Solutions**:
+
 - Verify template files contain correct `{{WORKLOAD_NAME}}` tokens
 - Check that `SetupWorkload.ps1` replacement dictionary includes all required tokens
 - Run setup script with `-Force $true` to overwrite existing files
 
 ### Issue: Environment Mismatch
+
 **Symptoms**: Different behavior between development and production
 **Solutions**:
+
 - Ensure all three `.env` files have the same `WORKLOAD_NAME` value
 - Verify the workload name matches between manifest and environment files
 - Check that the correct environment file is being used for each build
@@ -751,18 +799,21 @@ After updating the workload name, verify these items:
 ## Best Practices
 
 ### Development Workflow
+
 1. **Always use "Org" organization** for development and testing
 2. **Test thoroughly** before changing to production organization name
 3. **Use setup scripts** rather than manual updates when possible
 4. **Version control** all configuration changes
 
 ### Production Deployment
+
 1. **Register organization name** with Microsoft before production deployment
 2. **Update organization name** only when ready for production
 3. **Test in staging environment** with production organization name
 4. **Document organization name** requirements for future developers
 
 ### Naming Conventions
+
 1. **Organization names** should be meaningful and registered
 2. **WorkloadId** should be descriptive and unique within organization
 3. **Avoid special characters** in workload names (use letters, numbers, periods only)
@@ -771,24 +822,26 @@ After updating the workload name, verify these items:
 ## Integration with CI/CD
 
 ### Environment Variables
+
 Configure build pipelines to use environment-specific workload names:
 
 ```yaml
 variables:
   - name: WORKLOAD_NAME_DEV
     value: "Org.MyWorkload"
-  - name: WORKLOAD_NAME_PROD  
+  - name: WORKLOAD_NAME_PROD
     value: "ContosoInc.MyWorkload"
 ```
 
 ### Automated Deployment
+
 Use setup scripts in deployment pipelines:
 
 ```yaml
 - task: PowerShell@2
   inputs:
-    filePath: 'scripts/Setup/Setup.ps1'
-    arguments: '-WorkloadName $(WORKLOAD_NAME) -Force $true'
+    filePath: "scripts/Setup/Setup.ps1"
+    arguments: "-WorkloadName $(WORKLOAD_NAME) -Force $true"
 ```
 
 This comprehensive approach ensures that workload name updates are applied consistently across all required files and configurations, maintaining the integrity of the Fabric workload throughout the development and deployment lifecycle.

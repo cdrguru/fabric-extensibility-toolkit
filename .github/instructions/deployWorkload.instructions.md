@@ -9,7 +9,9 @@ This file provides GitHub Copilot-specific enhancements for deploying workloads 
 ## 🤖 GitHub Copilot Enhanced Features
 
 ### Smart Deployment Validation
+
 GitHub Copilot automatically validates:
+
 - Production readiness checklist
 - Environment configuration consistency
 - Security compliance requirements
@@ -18,6 +20,7 @@ GitHub Copilot automatically validates:
 ### Intelligent Configuration Management
 
 #### Auto-Environment Detection
+
 ```powershell
 # Copilot detects context and suggests appropriate commands:
 fabric deploy staging    # → Configures for staging environment
@@ -26,6 +29,7 @@ fabric deploy validate   # → Pre-deployment validation only
 ```
 
 ### Real-time Security Scanning
+
 - **Secret Detection**: Warns about exposed secrets or keys
 - **CORS Validation**: Checks Content Security Policy headers
 - **Certificate Status**: Validates SSL/TLS configuration
@@ -34,29 +38,34 @@ fabric deploy validate   # → Pre-deployment validation only
 ### Context-Aware Build Process
 
 #### Smart Parameter Injection
+
 GitHub Copilot suggests build parameters based on:
+
 - Current branch (dev/staging/main)
 - Environment variables detected
 - Previous successful deployment patterns
 - Azure resource configuration
 
 #### Deployment Pipeline Intelligence
+
 ```yaml
 # Copilot generates optimized CI/CD patterns:
 fabric.deploy.azure      # → Full Azure Static Web App deployment
-fabric.deploy.manifest   # → Fabric manifest-only deployment  
+fabric.deploy.manifest   # → Fabric manifest-only deployment
 fabric.deploy.complete   # → End-to-end deployment with validation
 ```
 
 ### Advanced Troubleshooting
 
 #### Auto-Diagnostics for Deployment Issues
+
 - **Build Failures**: Analyzes error logs and suggests fixes
 - **Authentication Issues**: Validates Entra App configuration
 - **CORS Problems**: Suggests proper header configuration
 - **Manifest Errors**: Validates XML/JSON syntax and references
 
 #### Smart Rollback Procedures
+
 - Suggests rollback strategies when deployments fail
 - Provides environment restoration commands
 - Validates rollback safety before execution
@@ -64,18 +73,22 @@ fabric.deploy.complete   # → End-to-end deployment with validation
 ## 🚀 Copilot Quick Actions
 
 ### One-Command Deployment
+
 ```powershell
 # Type comment to trigger intelligent deployment:
 # fabric deploy to production with full validation
 ```
 
 ### Smart Environment Switching
+
 - `fabric.env.staging` → Switches all configs to staging
 - `fabric.env.production` → Production environment setup
 - `fabric.env.validate` → Cross-environment validation
 
 ### Auto-Completion Patterns
+
 GitHub Copilot recognizes and expands:
+
 - Azure CLI commands with proper authentication
 - PowerShell scripts with parameter validation
 - Environment variable management
@@ -84,11 +97,14 @@ GitHub Copilot recognizes and expands:
 ---
 
 **Reference**: For complete step-by-step instructions, always consult `.ai/commands/workload/deployWorkload.md` first, then apply these Copilot-specific enhancements.
+
 # Development: Org.MyWorkload
-# Production:  ContosoInc.MyWorkload
+
+# Production: ContosoInc.MyWorkload
 
 $ProductionWorkloadName = "YourOrganization.YourWorkloadName"
-```
+
+````
 
 **Files requiring updates:**
 - `build/Manifest/WorkloadManifest.xml`
@@ -105,9 +121,10 @@ az ad app create --display-name "Your Workload Production App" --sign-in-audienc
 
 # Note the Application ID for use in build process
 $ProductionAADAppId = "your-production-app-id-here"
-```
+````
 
 **Required Entra App Configuration:**
+
 - **Redirect URIs**: Add your Azure Static Web App URL
 - **API Permissions**: Fabric API permissions
 - **Authentication**: Single-page application type
@@ -168,6 +185,7 @@ release/
 ```
 
 **Key Files:**
+
 - **ManifestPackage.nupkg**: Contains workload definition and item configurations
 - **app/**: Complete frontend application ready for web hosting
 - **web.config**: Configured for proper routing and security headers
@@ -236,24 +254,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
-          
+          node-version: "18"
+
       - name: Install dependencies
         run: |
           cd Workload
           npm install
-          
+
       - name: Build release
         run: |
           pwsh ./scripts/Build/BuildRelease.ps1 `
             -WorkloadName "${{ secrets.WORKLOAD_NAME }}" `
             -FrontendAppId "${{ secrets.FRONTEND_APPID }}" `
             -WorkloadVersion "1.0.0"
-            
+
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:
@@ -332,11 +350,13 @@ Rebuild the manifest package:
 ### 4.1: Fabric Admin Portal Deployment
 
 #### Access Fabric Admin Portal
+
 1. Navigate to [Fabric Admin Portal](https://admin.fabric.microsoft.com)
 2. Sign in with Fabric administrator credentials
 3. Navigate to **Workload Management** section
 
 #### Upload Manifest Package
+
 1. **Upload Package**:
    - Click "Upload Workload Package"
    - Select `release/ManifestPackage.[version].nupkg`
@@ -394,6 +414,7 @@ After deployment, verify the workload is properly registered:
 ### 5.1: Configure Monitoring
 
 #### Azure Static Web Apps Monitoring
+
 ```powershell
 # Enable Application Insights
 az staticwebapp appsettings set `
@@ -403,6 +424,7 @@ az staticwebapp appsettings set `
 ```
 
 #### Fabric Workload Monitoring
+
 - Monitor workload usage through Fabric Admin Portal
 - Set up alerts for workload errors or performance issues
 - Track user adoption and usage patterns
@@ -410,11 +432,13 @@ az staticwebapp appsettings set `
 ### 5.2: Update Process
 
 #### Frontend Updates
+
 1. Build new release with updated version
 2. Deploy to Azure Static Web Apps
 3. Test in production environment
 
 #### Manifest Updates
+
 1. Update manifest files with new version
 2. Build new manifest package
 3. Upload through Fabric Admin Portal
@@ -425,6 +449,7 @@ az staticwebapp appsettings set `
 ### Quick Deployment Checklist for AI Tools
 
 #### Pre-Deployment Verification
+
 - [ ] Development workload tested and validated
 - [ ] Production workload name registered and configured
 - [ ] Production Entra application created and configured
@@ -432,12 +457,14 @@ az staticwebapp appsettings set `
 - [ ] All environment variables updated for production
 
 #### Build Process
+
 - [ ] Run `BuildRelease.ps1` with production parameters
 - [ ] Verify release artifacts in `release/` directory
 - [ ] Check manifest package contains correct workload name
 - [ ] Validate frontend build completed without errors
 
 #### Azure Static Web App Deployment
+
 - [ ] Create Azure Static Web App resource
 - [ ] Deploy frontend application files
 - [ ] Configure routing and security headers
@@ -445,6 +472,7 @@ az staticwebapp appsettings set `
 - [ ] Test application accessibility
 
 #### Fabric Manifest Deployment
+
 - [ ] Access Fabric Admin Portal
 - [ ] Upload manifest package
 - [ ] Configure workload settings and permissions
@@ -452,6 +480,7 @@ az staticwebapp appsettings set `
 - [ ] Test workload functionality in Fabric workspace
 
 #### Post-Deployment Validation
+
 - [ ] Frontend application loads correctly
 - [ ] Workload appears in Fabric experience switcher
 - [ ] Item creation and editing functions properly
@@ -461,6 +490,7 @@ az staticwebapp appsettings set `
 ### Production Environment Commands
 
 #### Build for Production
+
 ```powershell
 # Complete production build
 .\scripts\Build\BuildRelease.ps1 `
@@ -470,6 +500,7 @@ az staticwebapp appsettings set `
 ```
 
 #### Deploy to Azure Static Web Apps
+
 ```powershell
 # Create and deploy in one command
 az staticwebapp create `
@@ -480,6 +511,7 @@ az staticwebapp create `
 ```
 
 #### Update Production Deployment
+
 ```powershell
 # Redeploy after changes
 az staticwebapp environment set `
@@ -491,37 +523,47 @@ az staticwebapp environment set `
 ### Troubleshooting Production Deployment
 
 #### Issue: Build Fails with Missing Dependencies
+
 **Symptoms**: BuildRelease.ps1 fails with npm errors
 **Solutions**:
+
 - Ensure `npm install` completed successfully in Workload directory
 - Check Node.js version compatibility
 - Clear npm cache: `npm cache clean --force`
 
 #### Issue: Static Web App Shows 404 Errors
+
 **Symptoms**: Application routes return 404 errors
 **Solutions**:
+
 - Verify `staticwebapp.config.json` routing configuration
 - Check `web.config` rewrite rules are properly configured
 - Ensure all required files are in the deployment package
 
 #### Issue: Workload Not Appearing in Fabric
+
 **Symptoms**: Workload not visible in Fabric workspace
 **Solutions**:
+
 - Verify manifest package uploaded successfully
 - Check workload name matches between manifest and configuration
 - Confirm workspace has permissions to access the workload
 - Validate Entra application configuration
 
 #### Issue: Authentication Failures
+
 **Symptoms**: Users can't authenticate with the workload
 **Solutions**:
+
 - Verify production Entra application redirect URIs include Static Web App URL
 - Check API permissions are granted and admin consented
 - Confirm workload manifest references correct AAD application ID
 
 #### Issue: CORS or CSP Errors
+
 **Symptoms**: Browser security errors prevent workload loading
 **Solutions**:
+
 - Update Content Security Policy headers in `web.config`
 - Add proper CORS configuration for Fabric domains
 - Verify `staticwebapp.config.json` global headers
@@ -529,12 +571,14 @@ az staticwebapp environment set `
 ### CI/CD Integration Best Practices
 
 #### GitHub Actions Workflow
+
 - Use environment-specific secrets for production values
 - Implement approval gates for production deployments
 - Include automated testing before deployment
 - Set up notification channels for deployment status
 
 #### Azure DevOps Pipeline
+
 - Configure service connections for Azure and Fabric
 - Use variable groups for environment configuration
 - Implement infrastructure as code for Azure resources

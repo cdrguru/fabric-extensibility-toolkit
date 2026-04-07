@@ -82,7 +82,8 @@
     flex: 1; // Take all remaining space
     overflow-y: auto; // Allow vertical scrolling
     overflow-x: hidden; // Prevent horizontal scroll
-    padding: 0px var(--spacingHorizontalS, 8px) var(--spacingVerticalS, 8px) var(--spacingHorizontalS, 8px);
+    padding: 0px var(--spacingHorizontalS, 8px) var(--spacingVerticalS, 8px)
+      var(--spacingHorizontalS, 8px);
     background: var(--colorNeutralBackground3);
 
     // Custom scrollbar styling - Fabric UX guideline
@@ -97,7 +98,7 @@
     &::-webkit-scrollbar-thumb {
       background: var(--colorNeutralStroke1, #d1d1d1);
       border-radius: var(--borderRadiusXLarge);
-      
+
       &:hover {
         background: var(--colorNeutralStroke1Hover, #b3b3b3);
       }
@@ -120,7 +121,8 @@
 @media (max-width: 768px) {
   .item-editor-container {
     &__ribbon {
-      padding: var(--spacingVerticalXS, 4px) var(--spacingHorizontalXS, 4px) 0 var(--spacingHorizontalXS, 4px);
+      padding: var(--spacingVerticalXS, 4px) var(--spacingHorizontalXS, 4px) 0
+        var(--spacingHorizontalXS, 4px);
     }
 
     &__notification {
@@ -150,62 +152,68 @@
 
 // Ribbon header layout with tabs/back button on left and action buttons on right
 .ribbon-container .ribbon-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 0;
-    min-height: 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 0;
+  min-height: 36px;
 }
 
 .ribbon-container .ribbon-header__left {
-    display: flex;
-    align-items: center;
-    flex: 1; // Take available space
-    min-width: 0; // Allow shrinking
-    min-height: 36px;
+  display: flex;
+  align-items: center;
+  flex: 1; // Take available space
+  min-width: 0; // Allow shrinking
+  min-height: 36px;
 }
 
 .ribbon-container .ribbon-header__right {
-    display: flex;
-    align-items: center;
-    flex-shrink: 0; // Don't shrink the right buttons
-    margin-left: var(--spacingHorizontalM, 12px);
-    height: 28px; // Match reduced tab height
+  display: flex;
+  align-items: center;
+  flex-shrink: 0; // Don't shrink the right buttons
+  margin-left: var(--spacingHorizontalM, 12px);
+  height: 28px; // Match reduced tab height
 }
 
 // Right side action buttons styling
 .ribbon-container .ribbon-header__right .toolbarContainer {
-    margin: 0 !important; // Remove default margins
-    padding: 2px 4px !important; // Compact padding for header
-    background: transparent !important; // No background in header
-    box-shadow: none !important; // No shadow in header
-    border: 1px solid var(--colorNeutralStroke2, #e1e1e1) !important; // Subtle border
-    border-radius: var(--borderRadiusXLarge) !important;
-    height: 28px !important; // Match reduced tab height
-    max-height: 28px !important;
-    min-height: 28px !important;
+  margin: 0 !important; // Remove default margins
+  padding: 2px 4px !important; // Compact padding for header
+  background: transparent !important; // No background in header
+  box-shadow: none !important; // No shadow in header
+  border: 1px solid var(--colorNeutralStroke2, #e1e1e1) !important; // Subtle border
+  border-radius: var(--borderRadiusXLarge) !important;
+  height: 28px !important; // Match reduced tab height
+  max-height: 28px !important;
+  min-height: 28px !important;
 }
 
-.ribbon-container .ribbon-header__right .toolbarContainer > div[role="toolbar"] {
-    height: 24px !important; // Slightly smaller for compact header look
-    min-height: 24px !important;
-    max-height: 24px !important;
+.ribbon-container
+  .ribbon-header__right
+  .toolbarContainer
+  > div[role="toolbar"] {
+  height: 24px !important; // Slightly smaller for compact header look
+  min-height: 24px !important;
+  max-height: 24px !important;
 }
 
 .ribbon-container .toolbarContainer {
-    // Fabric UX guideline: Use appropriate height for touch targets (minimum 32px)
-    height: auto; // Allow flexible height for content
-    border-radius: var(--borderRadiusXLarge); // Use Fabric design tokens
-    background: var(--colorNeutralBackground1, #ffffff);
-    box-shadow: var(--shadow4, 0 0 2px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.14));
-    margin-bottom: 8px; // Space below toolbar
-    padding: 4px 8px; // Add padding for content spacing
-    display: flex;
-    align-items: center;
-    gap: 4px; // Spacing between toolbar items
-    min-height: 32px;
-
+  // Fabric UX guideline: Use appropriate height for touch targets (minimum 32px)
+  height: auto; // Allow flexible height for content
+  border-radius: var(--borderRadiusXLarge); // Use Fabric design tokens
+  background: var(--colorNeutralBackground1, #ffffff);
+  box-shadow: var(
+    --shadow4,
+    0 0 2px rgba(0, 0, 0, 0.12),
+    0 2px 4px rgba(0, 0, 0, 0.14)
+  );
+  margin-bottom: 8px; // Space below toolbar
+  padding: 4px 8px; // Add padding for content spacing
+  display: flex;
+  align-items: center;
+  gap: 4px; // Spacing between toolbar items
+  min-height: 32px;
 }
 
 .ribbon-container .toolbarContainer > div[role="toolbar"] {
@@ -218,203 +226,205 @@
 }
 
 .ribbon-container button[role="tab"] {
-    // Fabric UX guideline: Tabs should have adequate padding for accessibility
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  // Fabric UX guideline: Tabs should have adequate padding for accessibility
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 // Fix for TabList spacing issues in ribbon with proper class structure
 .ribbon-container .ribbon-tablist-container {
-    display: flex !important;
-    width: auto !important;
-    min-height: 36px;
+  display: flex !important;
+  width: auto !important;
+  min-height: 36px;
 }
 
 .ribbon-container .ribbon-tablist {
-    display: flex !important;
-    gap: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border-bottom: 0px solid var(--colorNeutralStroke2, #e1e1e1);
-    margin-bottom: 0 !important;
-    justify-content: flex-start !important;
-    align-items: center !important;
-    width: auto !important;
+  display: flex !important;
+  gap: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-bottom: 0px solid var(--colorNeutralStroke2, #e1e1e1);
+  margin-bottom: 0 !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  width: auto !important;
 }
 
 .ribbon-container .ribbon-tab-item {
-    display: flex !important;
-    flex: 0 0 auto !important;
-    margin: 0 !important;
-    margin-right: 0 !important;
-    position: relative !important;
-    min-height: 32px;
-    padding-bottom: 4px !important;
+  display: flex !important;
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+  margin-right: 0 !important;
+  position: relative !important;
+  min-height: 32px;
+  padding-bottom: 4px !important;
 }
 
 .ribbon-container .ribbon-tab-wrapper {
-    text-align: center !important;
-    position: relative !important;
-    display: flex !important;
-    flex-direction: column !important;
+  text-align: center !important;
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 .ribbon-container .ribbon-tab-button {
-    flex: 0 0 auto !important;
-    margin: 0 !important;
-    margin-left: 12px !important;
-    margin-right: 12px !important;
-    border-radius: var(--borderRadiusXLarge) var(--borderRadiusXLarge) 0 0 !important;
-    position: relative !important;
-    min-width: auto !important;
-    max-width: none !important;
-    width: auto !important;
-    padding: 0 !important;
-    height: 100% !important; // Use full height like reference
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    background: transparent !important;
-    border: none !important;
-    cursor: pointer !important;
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+  margin-left: 12px !important;
+  margin-right: 12px !important;
+  border-radius: var(--borderRadiusXLarge) var(--borderRadiusXLarge) 0 0 !important;
+  position: relative !important;
+  min-width: auto !important;
+  max-width: none !important;
+  width: auto !important;
+  padding: 0 !important;
+  height: 100% !important; // Use full height like reference
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
 }
 
 .ribbon-container .ribbon-tab-content {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 8px 16px !important;
-    margin-left: 4px !important;
-    margin-right: 4px !important;
-    font-family: var(--fontFamilyBase) !important;
-    font-size: var(--fontSizeBase300) !important;
-    font-weight: var(--fontWeightRegular) !important;
-    line-height: var(--lineHeightBase300) !important;
-    color: var(--colorNeutralForeground2) !important;
-    transition: all 0.1s ease !important;
-    height: 100% !important; // Use full height like reference
-    white-space: nowrap !important;
-    user-select: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 8px 16px !important;
+  margin-left: 4px !important;
+  margin-right: 4px !important;
+  font-family: var(--fontFamilyBase) !important;
+  font-size: var(--fontSizeBase300) !important;
+  font-weight: var(--fontWeightRegular) !important;
+  line-height: var(--lineHeightBase300) !important;
+  color: var(--colorNeutralForeground2) !important;
+  transition: all 0.1s ease !important;
+  height: 100% !important; // Use full height like reference
+  white-space: nowrap !important;
+  user-select: none !important;
 }
 
 .ribbon-container .ribbon-tab-label {
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    margin-left: 4px !important;
-    margin-right: 4px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  margin-left: 4px !important;
+  margin-right: 4px !important;
 }
 
 // Hover state for tabs
 .ribbon-container .ribbon-tab-button:hover .ribbon-tab-content {
-    background-color: var(--colorNeutralBackground1Hover) !important;
-    color: var(--colorNeutralForeground1) !important;
-    border-radius: var(--borderRadiusXLarge) var(--borderRadiusXLarge) 0 0 !important;
+  background-color: var(--colorNeutralBackground1Hover) !important;
+  color: var(--colorNeutralForeground1) !important;
+  border-radius: var(--borderRadiusXLarge) var(--borderRadiusXLarge) 0 0 !important;
 }
 
 // Selected state for tabs
 .ribbon-container .ribbon-tab-button[aria-selected="true"] .ribbon-tab-content {
-    color: var(--colorNeutralForeground1) !important;
-    font-weight: var(--fontWeightSemibold) !important;
-    border-radius: var(--borderRadiusXLarge) var(--borderRadiusXLarge) 0 0 !important;
-    position: relative !important;
+  color: var(--colorNeutralForeground1) !important;
+  font-weight: var(--fontWeightSemibold) !important;
+  border-radius: var(--borderRadiusXLarge) var(--borderRadiusXLarge) 0 0 !important;
+  position: relative !important;
 }
 
 // Selection indicator - positioned to span full tab width
 .ribbon-container .ribbon-tab-button[aria-selected="true"]::after {
-    content: '' !important;
-    position: absolute !important;
-    bottom: 0 !important;
-    left: 2px !important;
-    right: 2px !important;
-    height: 2px !important;
-    background: var(--colorCompoundBrandStroke, #0078d4) !important;
-    border-radius: 1px 1px 0 0 !important;
+  content: "" !important;
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 2px !important;
+  right: 2px !important;
+  height: 2px !important;
+  background: var(--colorCompoundBrandStroke, #0078d4) !important;
+  border-radius: 1px 1px 0 0 !important;
 }
 
 // Focus state for accessibility
 .ribbon-container .ribbon-tab-button:focus-visible {
-    outline: 2px solid var(--colorCompoundBrandStroke, #0078d4) !important;
-    outline-offset: 2px !important;
-    border-radius: var(--borderRadiusXLarge) !important;
+  outline: 2px solid var(--colorCompoundBrandStroke, #0078d4) !important;
+  outline-offset: 2px !important;
+  border-radius: var(--borderRadiusXLarge) !important;
 }
 
 // Disabled state
 .ribbon-container .ribbon-tab-button[aria-disabled="true"] .ribbon-tab-content {
-    color: var(--colorNeutralForegroundDisabled) !important;
-    cursor: not-allowed !important;
+  color: var(--colorNeutralForegroundDisabled) !important;
+  cursor: not-allowed !important;
 }
 
 // CRITICAL FIX: Hide the Fluent UI reserved space that causes layout shifts
 .ribbon-container .fui-Tab__content--reserved-space {
-    display: none !important;
-    visibility: hidden !important;
-    width: 0 !important;
-    height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    position: absolute !important;
-    left: -9999px !important;
-    opacity: 0 !important;
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: absolute !important;
+  left: -9999px !important;
+  opacity: 0 !important;
 }
 
 // Hide any existing Fluent UI selection indicators that use positioning
 // BUT preserve our custom selection indicator
-.ribbon-container [role="tablist"] button[role="tab"]:not([aria-selected="true"])::after,
+.ribbon-container
+  [role="tablist"]
+  button[role="tab"]:not([aria-selected="true"])::after,
 .ribbon-container [role="tablist"] button[role="tab"]::before,
 .ribbon-container .ribbon-tab-button:not([aria-selected="true"])::after,
 .ribbon-container .ribbon-tab-button::before,
 .ribbon-container .ribbon-tab-wrapper::after,
 .ribbon-container .ribbon-tab-wrapper::before {
-    display: none !important;
-    content: none !important;
+  display: none !important;
+  content: none !important;
 }
 
 // Also target any spans that might cause spacing issues in tab content
 .ribbon-container .ribbon-tab-button span.fui-Tab__content--reserved-space {
-    display: none !important;
+  display: none !important;
 }
 
 // Force consistent layout for all internal Fluent UI tab elements
 .ribbon-container [role="tablist"] button[role="tab"] span {
-    display: inline !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    width: auto !important;
-    flex: none !important;
+  display: inline !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: auto !important;
+  flex: none !important;
 }
 
 .ribbon-container [role="tablist"] button[role="tab"] .fui-Tab__content {
-    display: inline !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    width: auto !important;
-    flex: none !important;
+  display: inline !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: auto !important;
+  flex: none !important;
 }
 
 // Back button container for detail views
 .ribbon-back-button-container {
+  display: flex;
+  align-items: center;
+  padding: 0px var(--spacingHorizontalS, 8px);
+  height: 28px; // Match reduced tab height
+  min-height: 28px;
+  max-height: 28px;
+
+  button {
     display: flex;
     align-items: center;
-    padding: 0px var(--spacingHorizontalS, 8px);
+    gap: var(--spacingHorizontalXS, 4px);
     height: 28px; // Match reduced tab height
     min-height: 28px;
     max-height: 28px;
-    
-    button {
-        display: flex;
-        align-items: center;
-        gap: var(--spacingHorizontalXS, 4px);
-        height: 28px; // Match reduced tab height
-        min-height: 28px;
-        max-height: 28px;
-        padding: 0px var(--spacingHorizontalS, 8px);
-        font-weight: var(--fontWeightSemibold, 600);
-        // Match tab button styling for consistency
-        border-radius: var(--borderRadiusMedium, 4px);
-    }
+    padding: 0px var(--spacingHorizontalS, 8px);
+    font-weight: var(--fontWeightSemibold, 600);
+    // Match tab button styling for consistency
+    border-radius: var(--borderRadiusMedium, 4px);
+  }
 }
 
 // ============================================================================
@@ -460,7 +470,7 @@
         h2 {
           color: var(--colorNeutralForeground1, #242424);
           font-size: 24px;
-          font-family: var(--fontFamilyBase, 'Segoe UI', sans-serif);
+          font-family: var(--fontFamilyBase, "Segoe UI", sans-serif);
           font-weight: var(--fontWeightSemibold, 600);
           line-height: var(--lineHeightBase500, 28px);
           margin: 0;
@@ -470,7 +480,7 @@
         .empty-state-description {
           color: var(--colorNeutralForeground2, #424242);
           font-size: var(--fontSizeBase300, 14px);
-          font-family: var(--fontFamilyBase, 'Segoe UI', sans-serif);
+          font-family: var(--fontFamilyBase, "Segoe UI", sans-serif);
           font-weight: var(--fontWeightRegular, 400);
           line-height: var(--lineHeightBase300, 20px);
           text-align: center;
@@ -498,17 +508,17 @@
       width: 184px;
       height: 188px;
       flex-shrink: 0;
-      
+
       margin-left: var(--spacingHorizontalXS);
       margin-right: var(--spacingHorizontalL);
-      
+
       background-color: var(--colorNeutralBackground1);
       border: 1px solid var(--colorNeutralStroke1);
       border-radius: var(--borderRadiusMedium);
       box-shadow: var(--shadow4);
       color: var(--colorNeutralForeground1);
       cursor: pointer;
-      
+
       transition: all var(--durationFast) var(--curveEasyEase);
 
       &:focus {
@@ -628,7 +638,11 @@
     flex-direction: column;
     background: var(--colorNeutralBackground1, #ffffff);
     border-radius: var(--borderRadiusXLarge) 0 0 var(--borderRadiusXLarge);
-    box-shadow: var(--shadow4, 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.14));
+    box-shadow: var(
+      --shadow4,
+      0 0 2px rgba(0, 0, 0, 0.12),
+      0 2px 4px rgba(0, 0, 0, 0.14)
+    );
     overflow: hidden;
     position: relative;
 
@@ -721,7 +735,7 @@
       &::-webkit-scrollbar-thumb {
         background: var(--colorNeutralStroke1, #d1d1d1);
         border-radius: var(--borderRadiusMedium, 4px);
-        
+
         &:hover {
           background: var(--colorNeutralStroke1Hover, #b3b3b3);
         }
@@ -737,20 +751,20 @@
     position: relative;
     flex-shrink: 0;
     z-index: 10;
-    
+
     // Hover state - show the visual indicator
     &:hover {
       background: transparent; /* Keep transparent, use ::after for visual */
     }
-    
+
     // Active/resizing state
     &.resizing {
       background: transparent; /* Keep transparent, use ::after for visual */
     }
-    
+
     // Add a minimal hit area for easier interaction
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       left: -2px;
       right: -2px;
@@ -758,11 +772,11 @@
       bottom: 0;
       background: transparent;
     }
-    
+
     // Visual indicator on hover only
     &:hover::after,
     &.resizing::after {
-      content: '';
+      content: "";
       position: absolute;
       left: 50%;
       top: 50%;
@@ -781,8 +795,12 @@
     display: flex;
     flex-direction: column;
     background: var(--colorNeutralBackground1, #ffffff);
-    border-radius: var(--borderRadiusXLarge, 8px); 
-    box-shadow: var(--shadow4, 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.14));
+    border-radius: var(--borderRadiusXLarge, 8px);
+    box-shadow: var(
+      --shadow4,
+      0 0 2px rgba(0, 0, 0, 0.12),
+      0 2px 4px rgba(0, 0, 0, 0.14)
+    );
     padding: 0;
     min-width: 0; // Prevent flex item from overflowing
     position: relative; // Establish positioning context
@@ -793,8 +811,9 @@
     overflow-x: hidden; // Never allow horizontal scrolling
 
     &[data-testid="item-editor-view-center--with-left-panel"] {
-    border-radius: 0 var(--borderRadiusXLarge, 8px) var(--borderRadiusXLarge, 8px) 0;
-  }
+      border-radius: 0 var(--borderRadiusXLarge, 8px)
+        var(--borderRadiusXLarge, 8px) 0;
+    }
 
     // Custom scrollbar styling - Fabric UX guideline
     &::-webkit-scrollbar {
@@ -808,7 +827,7 @@
     &::-webkit-scrollbar-thumb {
       background: var(--colorNeutralStroke1, #d1d1d1);
       border-radius: var(--borderRadiusMedium, 4px);
-      
+
       &:hover {
         background: var(--colorNeutralStroke1Hover, #b3b3b3);
       }
@@ -829,7 +848,11 @@
     flex-direction: column;
     background: var(--colorNeutralBackground1, #ffffff);
     border-radius: var(--borderRadiusXLarge);
-    box-shadow: var(--shadow4, 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.14));
+    box-shadow: var(
+      --shadow4,
+      0 0 2px rgba(0, 0, 0, 0.12),
+      0 2px 4px rgba(0, 0, 0, 0.14)
+    );
     overflow: hidden;
     margin-top: var(--spacingVerticalS, 6px);
     padding: 0;
@@ -943,7 +966,8 @@
   }
 
   // Support for Fluent UI icon components (rendered as SVG or span)
-  svg, span {
+  svg,
+  span {
     width: 48px;
     height: 48px;
   }
@@ -968,15 +992,18 @@
 
 .item-editor-loading-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, 
-    transparent 0%, 
-    var(--colorBrandBackground) 45%, 
-    var(--colorBrandBackground) 65%, 
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--colorBrandBackground) 45%,
+    var(--colorBrandBackground) 65%,
     transparent 100%
   ); // Add fade effect with gradient
   width: 30%;
   position: absolute;
-  border-radius: var(--borderRadiusMedium); // Add border radius to match container
+  border-radius: var(
+    --borderRadiusMedium
+  ); // Add border radius to match container
   animation: progress-indeterminate 2s ease-in-out infinite;
 }
 
@@ -997,7 +1024,9 @@
   }
 
   .item-editor-loading-icon {
-    img, svg, span {
+    img,
+    svg,
+    span {
       width: 40px;
       height: 40px;
     }
@@ -1055,23 +1084,25 @@
   margin-left: 8px !important; // Add 8px left margin
   min-width: auto !important; // Remove any minimum width constraints
   width: auto !important; // Let the button size to its content
-  
+
   // Icon styling
-  svg, .ribbon-action-button__icon {
+  svg,
+  .ribbon-action-button__icon {
     width: 20px !important; // Updated from 16px to match reference
     height: 20px !important; // Updated from 16px to match reference
     font-size: 20px !important; // Add font-size for icon fonts
     flex-shrink: 0 !important;
   }
-  
+
   // Remove default icon margins from Fluent UI Button component
   .fui-Button__icon {
     margin-right: 0 !important;
     margin-left: 0 !important;
   }
-  
+
   // Text styling
-  .fui-Button__label, span:not(.ribbon-action-button__dropdown-icon) {
+  .fui-Button__label,
+  span:not(.ribbon-action-button__dropdown-icon) {
     font-size: var(--fontSizeBase200) !important;
     font-weight: var(--fontWeightMedium) !important;
     color: inherit !important;
@@ -1082,19 +1113,19 @@
     background-color: var(--colorNeutralBackground1) !important;
     color: var(--colorNeutralForeground1) !important;
     border-color: var(--colorNeutralStroke1) !important;
-    
+
     &:hover {
       background-color: var(--colorNeutralBackground1Hover) !important;
       border-color: var(--colorNeutralStroke1Hover) !important;
       color: var(--colorNeutralForeground1) !important;
     }
-    
+
     &:active {
       background-color: var(--colorNeutralBackground1Pressed) !important;
       border-color: var(--colorNeutralStroke1Pressed) !important;
       color: var(--colorNeutralForeground1) !important;
     }
-    
+
     &:disabled {
       background-color: var(--colorNeutralBackgroundDisabled) !important;
       border-color: var(--colorNeutralStrokeDisabled) !important;
@@ -1108,19 +1139,19 @@
     background-color: var(--colorBrandBackground) !important;
     color: var(--colorNeutralForegroundOnBrand) !important;
     border-color: var(--colorBrandBackground) !important;
-    
+
     &:hover {
       background-color: var(--colorBrandBackgroundHover) !important;
       border-color: var(--colorBrandBackgroundHover) !important;
       color: var(--colorNeutralForegroundOnBrand) !important;
     }
-    
+
     &:active {
       background-color: var(--colorBrandBackgroundPressed) !important;
       border-color: var(--colorBrandBackgroundPressed) !important;
       color: var(--colorNeutralForegroundOnBrand) !important;
     }
-    
+
     &:disabled {
       background-color: var(--colorNeutralBackgroundDisabled) !important;
       border-color: var(--colorNeutralStrokeDisabled) !important;
@@ -1134,17 +1165,17 @@
     background-color: transparent !important;
     color: var(--colorNeutralForeground1) !important;
     border-color: transparent !important;
-    
+
     &:hover {
       background-color: var(--colorSubtleBackgroundHover) !important;
       color: var(--colorNeutralForeground1) !important;
     }
-    
+
     &:active {
       background-color: var(--colorSubtleBackgroundPressed) !important;
       color: var(--colorNeutralForeground1) !important;
     }
-    
+
     &:disabled {
       background-color: transparent !important;
       color: var(--colorNeutralForegroundDisabled) !important;
@@ -1157,17 +1188,17 @@
     background-color: transparent !important;
     color: var(--colorNeutralForeground1) !important;
     border-color: transparent !important;
-    
+
     &:hover {
       background-color: var(--colorTransparentBackgroundHover) !important;
       color: var(--colorNeutralForeground1) !important;
     }
-    
+
     &:active {
       background-color: var(--colorTransparentBackgroundPressed) !important;
       color: var(--colorNeutralForeground1) !important;
     }
-    
+
     &:disabled {
       background-color: transparent !important;
       color: var(--colorNeutralForegroundDisabled) !important;
@@ -1186,7 +1217,7 @@
     flex-shrink: 0 !important;
     color: inherit !important;
   }
-  
+
   // Ensure proper icon positioning for dropdown buttons
   .fui-Button__icon {
     margin-right: 0 !important; // Remove default margin, we handle gap via flexbox
@@ -1205,7 +1236,7 @@
   display: flex !important;
   align-items: center !important;
   gap: var(--spacingHorizontalXS) !important;
-  
+
   .ribbon-action-button {
     margin: 0 !important; // Reset any inherited margins
   }
@@ -1215,21 +1246,21 @@
 @media (prefers-contrast: high) {
   .ribbon-action-button {
     border-width: 2px !important;
-    
+
     &[data-appearance="secondary"] {
       border-color: var(--colorNeutralForeground1) !important;
     }
-    
+
     &[data-appearance="primary"] {
       border-color: var(--colorNeutralForeground1) !important;
     }
-    
-    &[data-appearance="subtle"], 
+
+    &[data-appearance="subtle"],
     &[data-appearance="transparent"] {
       border-color: var(--colorNeutralForeground1) !important;
       border-style: dashed !important;
     }
-    
+
     &:focus-visible {
       outline-color: var(--colorNeutralForeground1) !important;
       outline-width: 3px !important;
@@ -1242,18 +1273,19 @@
   .ribbon-action-button {
     padding: var(--spacingVerticalXXS) var(--spacingHorizontalXS) !important;
     font-size: var(--fontSizeBase100) !important;
-    
-    svg, .ribbon-action-button__icon {
+
+    svg,
+    .ribbon-action-button__icon {
       width: 14px !important;
       height: 14px !important;
     }
-    
+
     .ribbon-action-button__dropdown-icon {
       width: 14px !important;
       height: 14px !important;
     }
   }
-  
+
   .ribbon-header__right-actions {
     gap: var(--spacingHorizontalXXS) !important;
   }

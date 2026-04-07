@@ -9,8 +9,9 @@ A foundational template and reference implementation for creating custom Fabric 
 The HelloWorld Item is the essential starting template for Microsoft Fabric extensibility development. It provides developers with a fully functional, well-documented reference implementation that demonstrates all core patterns and best practices for building custom Fabric items.
 
 **Primary Use Cases:**
+
 - **Template Foundation**: Starting point for new custom Fabric item development
-- **Learning Resource**: Educational example demonstrating Fabric development patterns  
+- **Learning Resource**: Educational example demonstrating Fabric development patterns
 - **Best Practices Reference**: Implementation guide for proper Fabric integration
 - **Rapid Prototyping**: Quick foundation for proof-of-concept development
 
@@ -25,10 +26,12 @@ The HelloWorld Item serves as the primary template and learning resource for dev
 ## 🔌 Fabric APIs & Permissions
 
 ### Required Fabric API Scopes
+
 - **`https://api.fabric.microsoft.com/Item.ReadWrite.All`** - Basic item management operations
 - **`https://api.fabric.microsoft.com/Workspace.Read.All`** - Access workspace context and navigation
 
 ### Fabric Platform APIs Used
+
 - **Items API** (`/v1/workspaces/{workspaceId}/items/{itemId}`)
   - Load item metadata and definition
   - Save item definition and state
@@ -45,6 +48,7 @@ The HelloWorld Item serves as the primary template and learning resource for dev
   - Manage application settings and customization
 
 ### Template Extension Points
+
 When extending this template, additional APIs may be required depending on functionality:
 
 - **OneLake Storage API** - For data file operations
@@ -53,13 +57,16 @@ When extending this template, additional APIs may be required depending on funct
 - **Custom Service APIs** - For domain-specific functionality
 
 ### Authentication Requirements
+
 - **Azure AD Application Registration** with appropriate Fabric API permissions
 - **Delegated Permissions** for user-context operations
 - **Microsoft Authentication Library (MSAL)** integration
 - **Fabric Workspace Access** for item creation and management
 
 ### Minimal Permission Set
+
 This template demonstrates the **minimal required permissions** for Fabric item development:
+
 - Item read/write for basic persistence
 - Workspace read for context and navigation
 - User authentication for security context
@@ -67,18 +74,21 @@ This template demonstrates the **minimal required permissions** for Fabric item 
 ## Key Features
 
 ### Template Foundation
+
 - **Complete Item Structure**: Full implementation of Fabric item patterns
 - **UI Components**: Ribbon, editor, empty state, and settings pages
 - **State Management**: Proper definition handling and persistence
 - **Internationalization**: Multi-language support with React i18n
 
 ### Developer Experience
+
 - **Clear Code Structure**: Well-organized, commented, and documented code
 - **Extensible Architecture**: Modular design for easy customization
 - **Best Practices**: Demonstrates recommended Fabric development patterns
 - **Getting Started Flow**: Built-in onboarding for new items
 
 ### Fabric Integration
+
 - **Workload Client**: Proper integration with Fabric platform APIs
 - **Item Lifecycle**: Complete create, read, update, delete operations
 - **Navigation**: Proper routing and URL parameter handling
@@ -101,6 +111,7 @@ HelloWorldItem/
 ## Quick Start
 
 ### Using as Template
+
 1. **Copy the HelloWorldItem folder** to create your new item
 2. **Rename components** and update imports throughout
 3. **Customize the model** in `HelloWorldItemDefinition.ts`
@@ -108,12 +119,14 @@ HelloWorldItem/
 5. **Modify navigation** and routing configuration
 
 ### Development Workflow
+
 1. **Load Item**: Uses `getWorkloadItem` to load existing items
 2. **State Management**: Proper handling of item definition state
 3. **Save Operations**: `saveItemDefinition` for persistence
 4. **View Switching**: Navigate between empty and default views
 
 ### Customization Points
+
 - **Data Model**: Extend `HelloWorldItemDefinition` interface
 - **UI Components**: Replace or enhance existing components
 - **Business Logic**: Add custom functionality and operations
@@ -122,53 +135,66 @@ HelloWorldItem/
 ## Component Structure
 
 ### HelloWorldItemEditor (Main Component)
+
 **Core responsibilities:**
+
 - Item loading and state management
 - View routing and navigation
 - Save operation handling
 - Integration with Fabric platform
 
 **Key Features:**
+
 - Automatic item loading from URL parameters
 - Proper definition initialization
 - View state management (empty, getting-started)
 - Translation support
 
 ### HelloWorldItemRibbon (Toolbar)
+
 **Provides:**
+
 - Primary action buttons
 - Settings and about page navigation
 - Context-sensitive actions
 - Consistent Fabric UI patterns
 
 ### HelloWorldItemEmptyView (Onboarding)
+
 **Purpose:**
+
 - First-time user experience
 - Getting started guidance
 - Call-to-action for initial setup
 - Easy removal or customization
 
 ### HelloWorldItemDefaultView (Main View)
+
 **Architecture:**
+
 - Uses `ItemEditorDefaultView` for structured multi-panel layout
 - Left panel: Welcome section with hero branding, getting started steps, and message input field
 - Center panel: Resource hub with expandable item details and documentation cards
 - Responsive design with configurable panel widths and resizable interface
 
 **Contains:**
+
 - Welcome messaging and workload development guidance
 - Interactive getting started steps with numbered action items
 - Resource cards linking to documentation, samples, and UX guidelines
 - Expandable item details section showing workspace context and metadata
 
 **Layout Features:**
+
 - Multi-panel architecture with left/center content organization
 - Resizable interface with 600px default width and 350px minimum for left panel
 - Clean, semantic HTML structure with proper accessibility attributes
 - Interactive elements including expandable sections and hover states
 
 ### HelloWorldItemDefinition (Data)
+
 **Defines:**
+
 - Item definition interface
 - View type constants
 - Type definitions
@@ -177,35 +203,40 @@ HelloWorldItem/
 ## Data Model
 
 ### HelloWorldItemDefinition
+
 ```typescript
 interface HelloWorldItemDefinition {
-  state?: string;  // Flexible state storage
+  state?: string; // Flexible state storage
 }
 ```
 
 ### View Types
+
 ```typescript
 const EDITOR_VIEW_TYPES = {
-  EMPTY: 'empty',
-  DEFAULT: 'default'
+  EMPTY: "empty",
+  DEFAULT: "default",
 } as const;
 ```
 
 ## Integration Patterns
 
 ### Fabric Platform Integration
+
 - **WorkloadClient API**: Primary interface to Fabric services
 - **Item CRUD Operations**: Create, read, update, delete functionality
 - **Navigation Controller**: Proper URL routing and parameters
 - **Notification System**: User feedback and status updates
 
 ### State Management
+
 - **Definition Persistence**: Automatic saving of item state
 - **View State**: Proper handling of UI state transitions
 - **Loading States**: User feedback during async operations
 - **Error Handling**: Graceful error recovery and user notification
 
 ### UI/UX Patterns
+
 - **Fluent UI Components**: Consistent Microsoft design system integration
 - **Multi-Panel Layout Architecture**: Uses ItemEditorDefaultView for flexible content organization
 - **Structured Content Areas**: Left panel for welcome/getting started, center panel for resources
@@ -216,18 +247,21 @@ const EDITOR_VIEW_TYPES = {
 ## Development Best Practices
 
 ### Code Organization
+
 - **Component Separation**: Clear separation of concerns
 - **Model Definitions**: Centralized type definitions
 - **Asset Management**: Proper image and resource handling
 - **Styling**: Consistent CSS class naming and organization
 
 ### Error Handling
+
 - **Async Operations**: Proper promise handling and error catching
 - **User Feedback**: Meaningful error messages and notifications
 - **Graceful Degradation**: Fallback behavior for failed operations
 - **Loading States**: Visual feedback during operations
 
 ### Performance
+
 - **Lazy Loading**: Components loaded only when needed
 - **State Optimization**: Minimal re-renders and efficient updates
 - **Asset Optimization**: Optimized images and resources
@@ -236,6 +270,7 @@ const EDITOR_VIEW_TYPES = {
 ## Customization Guide
 
 ### Creating a New Item Type
+
 1. **Copy Template**: Start with HelloWorldItem as foundation
 2. **Rename Components**: Update all component names and files
 3. **Update Model**: Define your custom data structure
@@ -245,6 +280,7 @@ const EDITOR_VIEW_TYPES = {
 7. **Test Integration**: Ensure proper Fabric platform integration
 
 ### Common Customizations
+
 - **Add new views**: Extend view types and routing
 - **Custom data fields**: Enhance the definition interface
 - **Additional actions**: Add ribbon buttons and functionality
@@ -256,11 +292,13 @@ const EDITOR_VIEW_TYPES = {
 The HelloWorld Item includes comprehensive internationalization support:
 
 ### Translation Keys
+
 - `HelloWorldItemEmptyView_Title`: Welcome screen title
 - `HelloWorldItemEmptyView_Description`: Onboarding description
 - `HelloWorldItemEmptyView_StartButton`: Getting started button
 
 ### Adding Translations
+
 1. **Define Keys**: Add translation keys to components
 2. **Update i18n Files**: Add translations for supported languages
 3. **Use useTranslation**: Implement React i18n hooks
@@ -269,12 +307,14 @@ The HelloWorld Item includes comprehensive internationalization support:
 ## Testing and Validation
 
 ### Development Testing
+
 - **Component Rendering**: Verify all components render correctly
 - **State Management**: Test state transitions and persistence
 - **API Integration**: Validate Fabric platform integration
 - **Error Scenarios**: Test error handling and recovery
 
 ### User Acceptance Testing
+
 - **User Flows**: Test complete user workflows
 - **Accessibility**: Verify screen reader and keyboard support
 - **Performance**: Test with realistic data loads

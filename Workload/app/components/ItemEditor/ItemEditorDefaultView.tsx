@@ -1,27 +1,30 @@
 import React, { ReactNode, useState, useCallback } from "react";
 import { Button, Text } from "@fluentui/react-components";
-import { ChevronDoubleLeft20Regular, ChevronDoubleRight20Regular } from "@fluentui/react-icons";
-import { ViewNavigationContext } from './ItemEditor';
-import "./ItemEditor.scss"
+import {
+  ChevronDoubleLeft20Regular,
+  ChevronDoubleRight20Regular,
+} from "@fluentui/react-icons";
+import { ViewNavigationContext } from "./ItemEditor";
+import "./ItemEditor.scss";
 
 /**
  * Left Panel Configuration Interface
- * 
+ *
  * Defines the configuration for the optional left panel in ItemEditorDefaultView.
  * The left panel provides a consistent layout for navigation, properties, file explorers,
  * and other secondary content areas.
- * 
+ *
  * ## Collapse Behavior
  * - **State Management**: Toggle state is always managed internally by ItemEditorDefaultView
  * - **Initial State**: Use `collapsed` to set the initial collapsed state (default: false)
  * - **Notification**: Use `onCollapseChange` to receive notifications when state changes
  * - **No External Control**: External components cannot control the collapse state after initialization
- * 
+ *
  * ## Header Behavior
  * - **Expanded**: Shows title on left, collapse button (⏷) on right
  * - **Collapsed**: Shows only expand button (⏵) in vertical strip
  * - **Pattern**: Follows SampleOneLakeView design for consistency
- * 
+ *
  * @example
  * ```tsx
  * // Basic collapsible panel
@@ -30,7 +33,7 @@ import "./ItemEditor.scss"
  *   title: "Navigation",
  *   collapsible: true
  * };
- * 
+ *
  * // Panel with custom width and notification
  * const leftConfig: LeftPanelConfig = {
  *   content: <FileExplorer />,
@@ -71,23 +74,23 @@ export interface LeftPanelConfig {
 
 /**
  * Central Panel Configuration Interface
- * 
+ *
  * Defines the configuration for the required center content area in ItemEditorDefaultView.
  * The center panel is the main workspace area for content editing, forms, canvases, and primary user interactions.
- * 
+ *
  * ## Design Principles
  * - **Main Content**: Always visible and takes remaining space after left panel
  * - **Flexible**: Adapts to various content types (editors, forms, canvases, etc.)
  * - **Scrollable**: Handles overflow with proper scroll behavior
  * - **Accessible**: Uses proper ARIA roles and semantic HTML
- * 
+ *
  * @example
  * ```tsx
  * // Basic center content
  * const centerConfig: CentralPanelConfig = {
  *   content: <MyMainEditor />
  * };
- * 
+ *
  * // Center content with custom styling and accessibility
  * const centerConfig: CentralPanelConfig = {
  *   content: <DesignCanvas />,
@@ -119,12 +122,12 @@ export interface ItemEditorDefaultViewProps {
 
 /**
  * ItemEditorDefaultView Component
- * 
+ *
  * A flexible layout component for item editor content areas with optional left panel and required center content.
  * This component is designed to be used WITHIN ItemEditor's children area.
- * 
+ *
  * ## Architecture
- * 
+ *
  * ```
  * ┌────────────────────────────────────────────────────┐
  * │  ItemEditor (Ribbon at top)                        │
@@ -145,7 +148,7 @@ export interface ItemEditorDefaultViewProps {
  * │  └──────────────────────────────────────────────┘  │
  * └────────────────────────────────────────────────────┘
  * ```
- * 
+ *
  * ## Design Principles
  * - **Left Panel (Optional)**: 280px default width for navigation/explorer with unified configuration
  * - **Center Area (Required)**: Flexible width, takes remaining space
@@ -153,9 +156,9 @@ export interface ItemEditorDefaultViewProps {
  * - **Accessible**: Semantic HTML with ARIA regions
  * - **Fabric Compliant**: Uses design tokens for spacing and colors
  * - **Header-Based Toggle**: Follows SampleOneLakeView pattern with title and toggle button
- * 
+ *
  * ## Usage Examples
- * 
+ *
  * ### Example 1: Center Content Only (No Left Panel)
  * ```tsx
  * import { ItemEditor, ItemEditorDefaultView } from "../../components/ItemEditor";
@@ -168,7 +171,7 @@ export interface ItemEditorDefaultViewProps {
  *   />
  * </ItemEditor>
  * ```
- * 
+ *
  * ### Example 2: With Left Navigation Panel
  * ```tsx
  * <ItemEditor ribbon={<MyRibbon />}>
@@ -183,7 +186,7 @@ export interface ItemEditorDefaultViewProps {
  *   />
  * </ItemEditor>
  * ```
- * 
+ *
  * ### Example 3: With Custom Left Panel Width
  * ```tsx
  * <ItemEditor ribbon={<MyRibbon />}>
@@ -200,7 +203,7 @@ export interface ItemEditorDefaultViewProps {
  *   />
  * </ItemEditor>
  * ```
- * 
+ *
  * ### Example 4: With Collapsible Left Panel
  * ```tsx
  * <ItemEditor ribbon={<MyRibbon />}>
@@ -219,7 +222,7 @@ export interface ItemEditorDefaultViewProps {
  *   />
  * </ItemEditor>
  * ```
- * 
+ *
  * ### Example 5: With Collapsible Left Panel (Default Resize Enabled)
  * ```tsx
  * <ItemEditor ribbon={<MyRibbon />}>
@@ -237,14 +240,14 @@ export interface ItemEditorDefaultViewProps {
  *   />
  * </ItemEditor>
  * ```
- * 
+ *
  * ## Fabric UX Compliance
  * - Uses Fabric design tokens for consistent spacing
  * - Proper overflow handling for scrollable areas
  * - Semantic HTML structure with ARIA landmarks
  * - Responsive layout patterns
  * - High contrast mode support
- * 
+ *
  * @component
  * @see {@link https://react.fluentui.dev/} Fluent UI v9 Documentation
  * @see {@link ../../../docs/components/ItemEditor/ItemEditorDefaultView.md} - Complete ItemEditorDefaultView documentation
@@ -255,11 +258,13 @@ export function ItemEditorDefaultView(props: ItemEditorDefaultViewProps) {
   const { left, center, className = "" } = props;
 
   // State for left panel collapse
-  const [isLeftPanelCollapsed, setIsLeftPanelCollapsed] = useState(left?.collapsed ?? false);
-  
+  const [isLeftPanelCollapsed, setIsLeftPanelCollapsed] = useState(
+    left?.collapsed ?? false,
+  );
+
   // State for left panel width (for resizing)
   const [leftPanelWidth, setLeftPanelWidth] = useState(left?.width ?? 280);
-  
+
   // Resizing state
   const [isResizing, setIsResizing] = useState(false);
   const [resizeStartX, setResizeStartX] = useState(0);
@@ -286,13 +291,25 @@ export function ItemEditorDefaultView(props: ItemEditorDefaultViewProps) {
   };
 
   // Handle resize move
-  const handleResizeMove = useCallback((e: MouseEvent) => {
-    const deltaX = e.clientX - resizeStartX;
-    const newWidth = Math.min(leftPanelMaxWidth, Math.max(leftPanelMinWidth, resizeStartWidth + deltaX));
-    
-    setLeftPanelWidth(newWidth);
-    left?.onWidthChange?.(newWidth);
-  }, [resizeStartX, resizeStartWidth, leftPanelMinWidth, leftPanelMaxWidth, left]);
+  const handleResizeMove = useCallback(
+    (e: MouseEvent) => {
+      const deltaX = e.clientX - resizeStartX;
+      const newWidth = Math.min(
+        leftPanelMaxWidth,
+        Math.max(leftPanelMinWidth, resizeStartWidth + deltaX),
+      );
+
+      setLeftPanelWidth(newWidth);
+      left?.onWidthChange?.(newWidth);
+    },
+    [
+      resizeStartX,
+      resizeStartWidth,
+      leftPanelMinWidth,
+      leftPanelMaxWidth,
+      left,
+    ],
+  );
 
   // Handle resize end
   const handleResizeEnd = useCallback(() => {
@@ -305,26 +322,26 @@ export function ItemEditorDefaultView(props: ItemEditorDefaultViewProps) {
       const moveHandler = (e: MouseEvent) => handleResizeMove(e);
       const endHandler = () => {
         handleResizeEnd();
-        document.removeEventListener('mousemove', moveHandler);
-        document.removeEventListener('mouseup', endHandler);
+        document.removeEventListener("mousemove", moveHandler);
+        document.removeEventListener("mouseup", endHandler);
       };
 
-      document.addEventListener('mousemove', moveHandler);
-      document.addEventListener('mouseup', endHandler);
+      document.addEventListener("mousemove", moveHandler);
+      document.addEventListener("mouseup", endHandler);
 
       return () => {
-        document.removeEventListener('mousemove', moveHandler);
-        document.removeEventListener('mouseup', endHandler);
+        document.removeEventListener("mousemove", moveHandler);
+        document.removeEventListener("mouseup", endHandler);
       };
     }
-    
+
     return () => {}; // Return empty cleanup function when not resizing
   }, [isResizing, handleResizeMove, handleResizeEnd]);
 
   // Handle resize start
   const handleResizeStart = (e: React.MouseEvent) => {
     if (!enableUserResize) return;
-    
+
     e.preventDefault();
     setIsResizing(true);
     setResizeStartX(e.clientX);
@@ -332,7 +349,7 @@ export function ItemEditorDefaultView(props: ItemEditorDefaultViewProps) {
   };
 
   return (
-    <div 
+    <div
       className={`item-editor-view ${className}`.trim()}
       data-testid="item-editor-view"
     >
@@ -341,11 +358,13 @@ export function ItemEditorDefaultView(props: ItemEditorDefaultViewProps) {
         {/* Left Panel (Optional) */}
         {left && (
           <>
-            <aside 
+            <aside
               className={`item-editor-view__left ${isLeftPanelCollapsed ? "collapsed" : ""}`}
-              style={{ 
+              style={{
                 width: isLeftPanelCollapsed ? "auto" : `${leftPanelWidth}px`,
-                minWidth: isLeftPanelCollapsed ? "auto" : `${leftPanelMinWidth}px`
+                minWidth: isLeftPanelCollapsed
+                  ? "auto"
+                  : `${leftPanelMinWidth}px`,
               }}
               role="complementary"
               aria-label="Navigation panel"
@@ -353,12 +372,14 @@ export function ItemEditorDefaultView(props: ItemEditorDefaultViewProps) {
             >
               {/* Header with title and toggle button - only show if has title or is collapsible */}
               {(left.title || isLeftPanelCollapsible) && (
-                <div className={`item-editor-view__left-header ${isLeftPanelCollapsed ? "collapsed" : ""}`}>
+                <div
+                  className={`item-editor-view__left-header ${isLeftPanelCollapsed ? "collapsed" : ""}`}
+                >
                   {isLeftPanelCollapsed && (
                     <>
                       {isLeftPanelCollapsible && (
-                        <Button 
-                          appearance="subtle" 
+                        <Button
+                          appearance="subtle"
                           icon={<ChevronDoubleRight20Regular />}
                           onClick={handleToggleCollapse}
                           aria-label="Expand panel"
@@ -367,18 +388,30 @@ export function ItemEditorDefaultView(props: ItemEditorDefaultViewProps) {
                         />
                       )}
                       {left.title && (
-                        <Text weight="semibold" size={500} className="item-editor-view__left-title-vertical">{leftPanelTitle}</Text>
+                        <Text
+                          weight="semibold"
+                          size={500}
+                          className="item-editor-view__left-title-vertical"
+                        >
+                          {leftPanelTitle}
+                        </Text>
                       )}
                     </>
                   )}
                   {!isLeftPanelCollapsed && (
                     <>
                       {left.title && (
-                        <Text weight="semibold" size={400} className="item-editor-view__left-title-horizontal">{leftPanelTitle}</Text>
+                        <Text
+                          weight="semibold"
+                          size={400}
+                          className="item-editor-view__left-title-horizontal"
+                        >
+                          {leftPanelTitle}
+                        </Text>
                       )}
                       {isLeftPanelCollapsible && (
-                        <Button 
-                          appearance="subtle" 
+                        <Button
+                          appearance="subtle"
                           icon={<ChevronDoubleLeft20Regular />}
                           onClick={handleToggleCollapse}
                           aria-label="Collapse panel"
@@ -390,7 +423,7 @@ export function ItemEditorDefaultView(props: ItemEditorDefaultViewProps) {
                   )}
                 </div>
               )}
-              
+
               {/* Content area - only show when not collapsed */}
               {!isLeftPanelCollapsed && (
                 <div className="item-editor-view__left-content">
@@ -401,8 +434,8 @@ export function ItemEditorDefaultView(props: ItemEditorDefaultViewProps) {
 
             {/* Resize Handle (Only show when enableUserResize and not collapsed) */}
             {enableUserResize && !isLeftPanelCollapsed && (
-              <div 
-                className={`item-editor-view__resize-handle ${isResizing ? 'resizing' : ''}`}
+              <div
+                className={`item-editor-view__resize-handle ${isResizing ? "resizing" : ""}`}
                 onMouseDown={handleResizeStart}
                 data-testid="item-editor-view-resize-handle"
                 title="Drag to resize panel"
@@ -412,11 +445,15 @@ export function ItemEditorDefaultView(props: ItemEditorDefaultViewProps) {
         )}
 
         {/* Center Content Area (Required) */}
-        <main 
+        <main
           className={`item-editor-view__center ${centerClassName}`.trim()}
           role="main"
           aria-label={centerAriaLabel}
-          data-testid={left  ? "item-editor-view-center--with-left-panel" : "item-editor-view-center"}
+          data-testid={
+            left
+              ? "item-editor-view-center--with-left-panel"
+              : "item-editor-view-center"
+          }
         >
           {center.content}
         </main>
@@ -427,20 +464,20 @@ export function ItemEditorDefaultView(props: ItemEditorDefaultViewProps) {
 
 /**
  * Hook to access view navigation functions from within ItemEditor view components
- * 
- * This hook is part of the ItemEditorDefaultView module as it's an integral part 
+ *
+ * This hook is part of the ItemEditorDefaultView module as it's an integral part
  * of the ItemEditor view system. It provides access to:
  * - setCurrentView: Function to navigate to a different view
  * - goBack: Function to navigate back to previous view (for detail views)
  * - viewHistory: Array of visited view names
- * 
+ *
  * @example
  * ```tsx
  * import { useViewNavigation } from '../../components/ItemEditor';
- * 
+ *
  * function MyViewWrapper() {
  *   const { setCurrentView, goBack } = useViewNavigation();
- * 
+ *
  *   return (
  *     <div>
  *       <button onClick={() => setCurrentView('detail')}>Show Detail</button>
@@ -449,17 +486,19 @@ export function ItemEditorDefaultView(props: ItemEditorDefaultViewProps) {
  *   );
  * }
  * ```
- * 
+ *
  * @returns Navigation context with setCurrentView, goBack, and viewHistory
  * @throws Error if used outside of ItemEditor component
  */
 export function useViewNavigation() {
   const context = React.useContext(ViewNavigationContext);
-  
+
   if (!context) {
-    throw new Error('useViewNavigation must be used within an ItemEditor component');
+    throw new Error(
+      "useViewNavigation must be used within an ItemEditor component",
+    );
   }
-  
+
   return context;
 }
 

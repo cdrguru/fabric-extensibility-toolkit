@@ -1,16 +1,19 @@
 import React from "react";
-import { Toolbar, ToolbarDivider } from '@fluentui/react-toolbar';
-import { RibbonToolbarAction, FluentIconComponent } from './RibbonToolbarAction';
-import { DropdownMenuItem, RibbonActionButtonImpl } from './RibbonActionButton';
+import { Toolbar, ToolbarDivider } from "@fluentui/react-toolbar";
+import {
+  RibbonToolbarAction,
+  FluentIconComponent,
+} from "./RibbonToolbarAction";
+import { DropdownMenuItem, RibbonActionButtonImpl } from "./RibbonActionButton";
 
 /**
  * Configuration for a dropdown menu item (re-exported for convenience)
  */
-export type { DropdownMenuItem } from './RibbonActionButton';
+export type { DropdownMenuItem } from "./RibbonActionButton";
 
 /**
  * Configuration for a ribbon action button
- * 
+ *
  * @see {@link ../../../docs/components/ItemEditor/RibbonToolbar.md} - Complete RibbonToolbar documentation
  * @see {@link ../../../docs/components/ItemEditor/Ribbon.md} - Ribbon integration patterns
  * @see {@link ./RibbonActionButton.tsx} - Individual action button component
@@ -20,52 +23,52 @@ export interface RibbonAction {
    * Unique identifier for the action
    */
   key: string;
-  
+
   /**
    * The icon to display in the button
    */
   icon: FluentIconComponent;
-  
+
   /**
    * The label/tooltip text for the button (optional - can be handled at display level)
    */
   label?: string;
-  
+
   /**
    * Click handler for the action
    */
   onClick: () => void | Promise<void>;
-  
+
   /**
    * Whether the button is disabled
    */
   disabled?: boolean;
-  
+
   /**
    * Optional test ID for the button
    */
   testId?: string;
-  
+
   /**
    * Optional tooltip text for the button (defaults to label)
    */
   tooltip?: string;
-  
+
   /**
    * Optional appearance variant
    */
-  appearance?: 'primary' | 'subtle' | 'transparent';
-  
+  appearance?: "primary" | "subtle" | "transparent";
+
   /**
    * Optional custom aria-label (defaults to label)
    */
   ariaLabel?: string;
-  
+
   /**
    * Whether to show a divider after this action
    */
   showDividerAfter?: boolean;
-  
+
   /**
    * Whether this action should be hidden
    */
@@ -91,8 +94,10 @@ export type RibbonActionType = RibbonAction | RibbonDropdownAction;
 /**
  * Type guard to check if an action is a dropdown action
  */
-export const isDropdownAction = (action: RibbonActionType): action is RibbonDropdownAction => {
-  return 'dropdownItems' in action;
+export const isDropdownAction = (
+  action: RibbonActionType,
+): action is RibbonDropdownAction => {
+  return "dropdownItems" in action;
 };
 
 /**
@@ -104,7 +109,7 @@ export interface RibbonToolbarProps {
    * Can include both regular actions and dropdown actions
    */
   actions: RibbonActionType[];
-  
+
   /**
    * Additional CSS class name
    */
@@ -113,7 +118,7 @@ export interface RibbonToolbarProps {
 
 /**
  * RibbonToolbar - Reusable toolbar component for ribbons
- * 
+ *
  * This component provides:
  * - Consistent action rendering with full tooltip support
  * - Support for dividers between action groups
@@ -121,9 +126,9 @@ export interface RibbonToolbarProps {
  * - Proper spacing and alignment
  * - Integration with RibbonAction and RibbonDropdownAction interfaces
  * - Automatic dropdown detection and rendering
- * 
+ *
  * ## Action Configuration
- * 
+ *
  * Actions support comprehensive configuration:
  * - **Regular Actions**: Standard button actions with icon, label, and click handler
  * - **Dropdown Actions**: Buttons with dropdown menus using RibbonDropdownAction interface
@@ -132,7 +137,7 @@ export interface RibbonToolbarProps {
  * - **Accessibility**: Automatic aria-label and tooltip mapping
  * - **Dividers**: Optional separators between action groups
  * - **Visibility**: Hide/show actions conditionally
- * 
+ *
  * @example
  * ```tsx
  * const actions: RibbonActionType[] = [
@@ -160,17 +165,17 @@ export interface RibbonToolbarProps {
  *     showDividerAfter: true
  *   }
  * ];
- * 
+ *
  * <RibbonToolbar actions={actions} />
  * ```
  */
 export const RibbonToolbar: React.FC<RibbonToolbarProps> = ({
   actions,
-  className = ''
+  className = "",
 }) => {
   // Filter out hidden actions
-  const visibleActions = actions.filter(action => !action.hidden);
-  
+  const visibleActions = actions.filter((action) => !action.hidden);
+
   return (
     <Toolbar className={className}>
       {visibleActions.map((action, index) => (
@@ -181,14 +186,14 @@ export const RibbonToolbar: React.FC<RibbonToolbarProps> = ({
               action={{
                 key: action.key,
                 icon: action.icon,
-                label: action.label || '',
+                label: action.label || "",
                 onClick: action.onClick,
                 disabled: action.disabled,
                 testId: action.testId,
                 tooltip: action.tooltip,
                 appearance: action.appearance,
                 ariaLabel: action.ariaLabel,
-                dropdownItems: action.dropdownItems
+                dropdownItems: action.dropdownItems,
               }}
             />
           ) : (
@@ -204,7 +209,7 @@ export const RibbonToolbar: React.FC<RibbonToolbarProps> = ({
               ariaLabel={action.ariaLabel}
             />
           )}
-          
+
           {/* Show divider if specified and not the last item */}
           {action.showDividerAfter && index < visibleActions.length - 1 && (
             <ToolbarDivider />

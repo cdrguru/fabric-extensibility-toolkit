@@ -8,22 +8,21 @@ import {
   ItemJobInstance,
   RunOnDemandItemJobRequest,
   JobStatus,
-  PaginatedResponse
+  PaginatedResponse,
 } from "./FabricPlatformTypes";
 
 /**
  * API wrapper for Fabric Platform Job Scheduler operations
  * Provides methods for managing item schedules and job instances
- * 
+ *
  * Based on the official Fabric REST API:
  * https://learn.microsoft.com/en-us/rest/api/fabric/core/job-scheduler
- * 
+ *
  * Uses method-based scope selection:
  * - GET operations use read-only scopes
  * - POST/PUT/PATCH/DELETE operations use read-write scopes
  */
 export class JobSchedulerClient extends FabricPlatformClient {
-  
   constructor(workloadClient: WorkloadClientAPI) {
     // Use scope pairs for method-based scope selection
     super(workloadClient, SCOPE_PAIRS.JOB_SCHEDULER);
@@ -45,7 +44,7 @@ export class JobSchedulerClient extends FabricPlatformClient {
     workspaceId: string,
     itemId: string,
     jobType: string,
-    continuationToken?: string
+    continuationToken?: string,
   ): Promise<PaginatedResponse<ItemSchedule>> {
     let endpoint = `/workspaces/${workspaceId}/items/${itemId}/jobs/${jobType}/schedules`;
     if (continuationToken) {
@@ -64,9 +63,11 @@ export class JobSchedulerClient extends FabricPlatformClient {
   async getAllItemSchedules(
     workspaceId: string,
     itemId: string,
-    jobType: string
+    jobType: string,
   ): Promise<ItemSchedule[]> {
-    return this.getAllPages<ItemSchedule>(`/workspaces/${workspaceId}/items/${itemId}/jobs/${jobType}/schedules`);
+    return this.getAllPages<ItemSchedule>(
+      `/workspaces/${workspaceId}/items/${itemId}/jobs/${jobType}/schedules`,
+    );
   }
 
   /**
@@ -81,11 +82,11 @@ export class JobSchedulerClient extends FabricPlatformClient {
     workspaceId: string,
     itemId: string,
     jobType: string,
-    request: CreateScheduleRequest
+    request: CreateScheduleRequest,
   ): Promise<ItemSchedule> {
     return this.post<ItemSchedule>(
       `/workspaces/${workspaceId}/items/${itemId}/jobs/${jobType}/schedules`,
-      request
+      request,
     );
   }
 
@@ -101,10 +102,10 @@ export class JobSchedulerClient extends FabricPlatformClient {
     workspaceId: string,
     itemId: string,
     jobType: string,
-    scheduleId: string
+    scheduleId: string,
   ): Promise<ItemSchedule> {
     return this.get<ItemSchedule>(
-      `/workspaces/${workspaceId}/items/${itemId}/jobs/${jobType}/schedules/${scheduleId}`
+      `/workspaces/${workspaceId}/items/${itemId}/jobs/${jobType}/schedules/${scheduleId}`,
     );
   }
 
@@ -122,11 +123,11 @@ export class JobSchedulerClient extends FabricPlatformClient {
     itemId: string,
     jobType: string,
     scheduleId: string,
-    request: UpdateScheduleRequest
+    request: UpdateScheduleRequest,
   ): Promise<ItemSchedule> {
     return this.patch<ItemSchedule>(
       `/workspaces/${workspaceId}/items/${itemId}/jobs/${jobType}/schedules/${scheduleId}`,
-      request
+      request,
     );
   }
 
@@ -142,10 +143,10 @@ export class JobSchedulerClient extends FabricPlatformClient {
     workspaceId: string,
     itemId: string,
     jobType: string,
-    scheduleId: string
+    scheduleId: string,
   ): Promise<void> {
     await this.delete<void>(
-      `/workspaces/${workspaceId}/items/${itemId}/jobs/${jobType}/schedules/${scheduleId}`
+      `/workspaces/${workspaceId}/items/${itemId}/jobs/${jobType}/schedules/${scheduleId}`,
     );
   }
 
@@ -163,7 +164,7 @@ export class JobSchedulerClient extends FabricPlatformClient {
   async listItemJobInstances(
     workspaceId: string,
     itemId: string,
-    continuationToken?: string
+    continuationToken?: string,
   ): Promise<PaginatedResponse<ItemJobInstance>> {
     let endpoint = `/workspaces/${workspaceId}/items/${itemId}/jobInstances`;
     if (continuationToken) {
@@ -178,8 +179,13 @@ export class JobSchedulerClient extends FabricPlatformClient {
    * @param itemId The item ID
    * @returns Promise<ItemJobInstance[]>
    */
-  async getAllItemJobInstances(workspaceId: string, itemId: string): Promise<ItemJobInstance[]> {
-    return this.getAllPages<ItemJobInstance>(`/workspaces/${workspaceId}/items/${itemId}/jobInstances`);
+  async getAllItemJobInstances(
+    workspaceId: string,
+    itemId: string,
+  ): Promise<ItemJobInstance[]> {
+    return this.getAllPages<ItemJobInstance>(
+      `/workspaces/${workspaceId}/items/${itemId}/jobInstances`,
+    );
   }
 
   /**
@@ -192,10 +198,10 @@ export class JobSchedulerClient extends FabricPlatformClient {
   async getItemJobInstance(
     workspaceId: string,
     itemId: string,
-    jobInstanceId: string
+    jobInstanceId: string,
   ): Promise<ItemJobInstance> {
     return this.get<ItemJobInstance>(
-      `/workspaces/${workspaceId}/items/${itemId}/jobs/instances/${jobInstanceId}`
+      `/workspaces/${workspaceId}/items/${itemId}/jobs/instances/${jobInstanceId}`,
     );
   }
 
@@ -211,31 +217,33 @@ export class JobSchedulerClient extends FabricPlatformClient {
     workspaceId: string,
     itemId: string,
     jobType: string,
-    request?: RunOnDemandItemJobRequest
+    request?: RunOnDemandItemJobRequest,
   ): Promise<string> {
     const endpoint = `/workspaces/${workspaceId}/items/${itemId}/jobs/instances`;
     const queryParam = `?jobType=${encodeURIComponent(jobType)}`;
-    
+
     // Custom request to capture Location header
     const accessToken = await this.getAccessToken();
     const fullUrl = `${this.baseUrl}/v1${endpoint}${queryParam}`;
-    
+
     const response = await fetch(fullUrl, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Authorization': `Bearer ${accessToken.token}`,
-        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken.token}`,
+        "Content-Type": "application/json",
       },
       body: request ? JSON.stringify(request) : undefined,
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`HTTP ${response.status}: ${response.statusText}. ${errorText}`);
+      throw new Error(
+        `HTTP ${response.status}: ${response.statusText}. ${errorText}`,
+      );
     }
 
     // Extract job ID from Location header
-    const location = response.headers.get('Location');
+    const location = response.headers.get("Location");
     if (location) {
       // Location typically contains the full URL, extract the job instance ID
       // Format: /workspaces/{workspaceId}/items/{itemId}/jobs/instances/{jobInstanceId}
@@ -244,8 +252,8 @@ export class JobSchedulerClient extends FabricPlatformClient {
         return jobIdMatch[1];
       }
     }
-    
-    throw new Error('Job instance ID not found in response headers');
+
+    throw new Error("Job instance ID not found in response headers");
   }
 
   /**
@@ -258,19 +266,21 @@ export class JobSchedulerClient extends FabricPlatformClient {
   async cancelItemJobInstance(
     workspaceId: string,
     itemId: string,
-    jobInstanceId: string
+    jobInstanceId: string,
   ): Promise<void> {
     // Try the newer API pattern first (matches runOnDemandItemJob pattern)
     try {
       await this.post<void>(
-        `/workspaces/${workspaceId}/items/${itemId}/jobs/instances/${jobInstanceId}/cancel`
+        `/workspaces/${workspaceId}/items/${itemId}/jobs/instances/${jobInstanceId}/cancel`,
       );
     } catch (error: any) {
       // If the newer pattern fails with 404, try the legacy pattern
-      if (error.message?.includes('404') || error.status === 404) {
-        console.warn(`Job instance cancel endpoint /jobs/instances/ failed, trying legacy /jobInstances/ pattern for job ${jobInstanceId}`);
+      if (error.message?.includes("404") || error.status === 404) {
+        console.warn(
+          `Job instance cancel endpoint /jobs/instances/ failed, trying legacy /jobInstances/ pattern for job ${jobInstanceId}`,
+        );
         await this.post<void>(
-          `/workspaces/${workspaceId}/items/${itemId}/jobInstances/${jobInstanceId}/cancel`
+          `/workspaces/${workspaceId}/items/${itemId}/jobInstances/${jobInstanceId}/cancel`,
         );
       } else {
         // For other errors, rethrow
@@ -293,30 +303,43 @@ export class JobSchedulerClient extends FabricPlatformClient {
   async getJobInstanceWithValidation(
     workspaceId: string,
     itemId: string,
-    jobInstanceId: string
+    jobInstanceId: string,
   ): Promise<ItemJobInstance> {
     console.log(`Attempting to get job instance:`, {
       workspaceId,
       itemId,
       jobInstanceId,
       jobInstanceIdLength: jobInstanceId.length,
-      jobInstanceIdType: typeof jobInstanceId
+      jobInstanceIdType: typeof jobInstanceId,
     });
 
     // First, try to list all job instances to see if the job exists
     try {
       const allJobs = await this.getAllItemJobInstances(workspaceId, itemId);
-      console.log(`Found ${allJobs.length} total job instances for item ${itemId}`);
-      
-      const matchingJob = allJobs.find(job => job.id === jobInstanceId);
+      console.log(
+        `Found ${allJobs.length} total job instances for item ${itemId}`,
+      );
+
+      const matchingJob = allJobs.find((job) => job.id === jobInstanceId);
       if (!matchingJob) {
-        console.error(`Job instance ${jobInstanceId} not found in list of ${allJobs.length} jobs. Available jobs:`, 
-          allJobs.map(j => ({ id: j.id, status: j.status, startTimeUtc: j.startTimeUtc })));
-        throw new Error(`Job instance ${jobInstanceId} not found. Available jobs: ${allJobs.map(j => j.id).join(', ')}`);
+        console.error(
+          `Job instance ${jobInstanceId} not found in list of ${allJobs.length} jobs. Available jobs:`,
+          allJobs.map((j) => ({
+            id: j.id,
+            status: j.status,
+            startTimeUtc: j.startTimeUtc,
+          })),
+        );
+        throw new Error(
+          `Job instance ${jobInstanceId} not found. Available jobs: ${allJobs.map((j) => j.id).join(", ")}`,
+        );
       }
 
-      console.log(`Found matching job in list:`, { id: matchingJob.id, status: matchingJob.status });
-      
+      console.log(`Found matching job in list:`, {
+        id: matchingJob.id,
+        status: matchingJob.status,
+      });
+
       // Now try to get the specific job instance
       return await this.getItemJobInstance(workspaceId, itemId, jobInstanceId);
     } catch (error) {
@@ -335,10 +358,10 @@ export class JobSchedulerClient extends FabricPlatformClient {
   async getJobInstancesByStatus(
     workspaceId: string,
     itemId: string,
-    status: JobStatus
+    status: JobStatus,
   ): Promise<ItemJobInstance[]> {
     const allInstances = await this.getAllItemJobInstances(workspaceId, itemId);
-    return allInstances.filter(instance => instance.status === status);
+    return allInstances.filter((instance) => instance.status === status);
   }
 
   /**
@@ -347,8 +370,11 @@ export class JobSchedulerClient extends FabricPlatformClient {
    * @param itemId The item ID
    * @returns Promise<ItemJobInstance[]>
    */
-  async getRunningJobInstances(workspaceId: string, itemId: string): Promise<ItemJobInstance[]> {
-    return this.getJobInstancesByStatus(workspaceId, itemId, 'InProgress');
+  async getRunningJobInstances(
+    workspaceId: string,
+    itemId: string,
+  ): Promise<ItemJobInstance[]> {
+    return this.getJobInstancesByStatus(workspaceId, itemId, "InProgress");
   }
 
   /**
@@ -357,8 +383,11 @@ export class JobSchedulerClient extends FabricPlatformClient {
    * @param itemId The item ID
    * @returns Promise<ItemJobInstance[]>
    */
-  async getFailedJobInstances(workspaceId: string, itemId: string): Promise<ItemJobInstance[]> {
-    return this.getJobInstancesByStatus(workspaceId, itemId, 'Failed');
+  async getFailedJobInstances(
+    workspaceId: string,
+    itemId: string,
+  ): Promise<ItemJobInstance[]> {
+    return this.getJobInstancesByStatus(workspaceId, itemId, "Failed");
   }
 
   /**
@@ -371,10 +400,14 @@ export class JobSchedulerClient extends FabricPlatformClient {
   async getEnabledSchedules(
     workspaceId: string,
     itemId: string,
-    jobType: string
+    jobType: string,
   ): Promise<ItemSchedule[]> {
-    const allSchedules = await this.getAllItemSchedules(workspaceId, itemId, jobType);
-    return allSchedules.filter(schedule => schedule.enabled);
+    const allSchedules = await this.getAllItemSchedules(
+      workspaceId,
+      itemId,
+      jobType,
+    );
+    return allSchedules.filter((schedule) => schedule.enabled);
   }
 
   /**
@@ -391,17 +424,28 @@ export class JobSchedulerClient extends FabricPlatformClient {
     itemId: string,
     jobType: string,
     scheduleId: string,
-    enabled: boolean
+    enabled: boolean,
   ): Promise<ItemSchedule> {
     // First get the current schedule to preserve its configuration
-    const currentSchedule = await this.getItemSchedule(workspaceId, itemId, jobType, scheduleId);
-    
+    const currentSchedule = await this.getItemSchedule(
+      workspaceId,
+      itemId,
+      jobType,
+      scheduleId,
+    );
+
     const updateRequest: UpdateScheduleRequest = {
       enabled,
-      configuration: currentSchedule.configuration
+      configuration: currentSchedule.configuration,
     };
 
-    return this.updateItemSchedule(workspaceId, itemId, jobType, scheduleId, updateRequest);
+    return this.updateItemSchedule(
+      workspaceId,
+      itemId,
+      jobType,
+      scheduleId,
+      updateRequest,
+    );
   }
 
   /**
@@ -410,11 +454,14 @@ export class JobSchedulerClient extends FabricPlatformClient {
    * @param itemId The item ID
    * @returns Promise<void>
    */
-  async cancelAllRunningJobs(workspaceId: string, itemId: string): Promise<void> {
+  async cancelAllRunningJobs(
+    workspaceId: string,
+    itemId: string,
+  ): Promise<void> {
     const runningJobs = await this.getRunningJobInstances(workspaceId, itemId);
-    
-    const cancellationPromises = runningJobs.map(job => 
-      this.cancelItemJobInstance(workspaceId, itemId, job.id)
+
+    const cancellationPromises = runningJobs.map((job) =>
+      this.cancelItemJobInstance(workspaceId, itemId, job.id),
     );
 
     await Promise.allSettled(cancellationPromises);

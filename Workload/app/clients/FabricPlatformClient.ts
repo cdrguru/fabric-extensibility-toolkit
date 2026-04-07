@@ -2,7 +2,11 @@ import { WorkloadClientAPI, AccessToken } from "@ms-fabric/workload-client";
 import { EnvironmentConstants } from "../constants";
 import { SCOPES, ScopePair, getScopeForMethod } from "./FabricPlatformScopes";
 import { FabricAuthenticationService } from "./FabricAuthenticationService";
-import { AsyncOperationIndicator, AuthenticationConfig, ErrorResponse } from "./FabricPlatformTypes";
+import {
+  AsyncOperationIndicator,
+  AuthenticationConfig,
+  ErrorResponse,
+} from "./FabricPlatformTypes";
 
 /**
  * Custom error class for Fabric Platform API errors
@@ -19,25 +23,26 @@ export class FabricPlatformError extends Error {
     statusText: string,
     errorResponse?: ErrorResponse,
     requestId?: string,
-    originalError?: Error
+    originalError?: Error,
   ) {
-    const message = errorResponse?.error?.message || `HTTP ${statusCode}: ${statusText}`;
+    const message =
+      errorResponse?.error?.message || `HTTP ${statusCode}: ${statusText}`;
     super(message);
-    
-    this.name = 'FabricPlatformError';
+
+    this.name = "FabricPlatformError";
     this.statusCode = statusCode;
     this.statusText = statusText;
     this.errorResponse = errorResponse;
     this.requestId = requestId;
-    
+
     // Maintain proper stack trace for where our error was thrown (only available on V8)
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, FabricPlatformError);
     }
-    
+
     // Include original error stack if available
     if (originalError?.stack) {
-      this.stack += '\nCaused by: ' + originalError.stack;
+      this.stack += "\nCaused by: " + originalError.stack;
     }
   }
 
@@ -67,7 +72,7 @@ export class FabricPlatformError extends Error {
       errorCode: this.errorCode,
       errorResponse: this.errorResponse,
       requestId: this.requestId,
-      stack: this.stack
+      stack: this.stack,
     };
   }
 }
@@ -81,24 +86,30 @@ export abstract class FabricPlatformClient {
   protected workloadClient?: WorkloadClientAPI;
   protected baseUrl: string = EnvironmentConstants.FabricApiBaseUrl;
   protected scopes: string;
-  protected scopePair?: ScopePair;  // Optional scope pair for method-based selection
+  protected scopePair?: ScopePair; // Optional scope pair for method-based selection
   protected authService: FabricAuthenticationService;
 
   constructor(
-    workloadClientOrAuthConfig?: WorkloadClientAPI | AuthenticationConfig, 
+    workloadClientOrAuthConfig?: WorkloadClientAPI | AuthenticationConfig,
     customScopesOrScopePair?: string | ScopePair,
-    authConfig?: AuthenticationConfig
+    authConfig?: AuthenticationConfig,
   ) {
     // Handle different constructor signatures
-    if (workloadClientOrAuthConfig && 'type' in workloadClientOrAuthConfig) {
+    if (workloadClientOrAuthConfig && "type" in workloadClientOrAuthConfig) {
       // First parameter is AuthenticationConfig
-      this.authService = new FabricAuthenticationService(undefined, workloadClientOrAuthConfig);
+      this.authService = new FabricAuthenticationService(
+        undefined,
+        workloadClientOrAuthConfig,
+      );
       this.configureScopesFromParameter(customScopesOrScopePair);
     } else {
       // First parameter is WorkloadClientAPI (legacy behavior)
       this.workloadClient = workloadClientOrAuthConfig as WorkloadClientAPI;
       this.configureScopesFromParameter(customScopesOrScopePair);
-      this.authService = new FabricAuthenticationService(this.workloadClient, authConfig);
+      this.authService = new FabricAuthenticationService(
+        this.workloadClient,
+        authConfig,
+      );
     }
   }
 
@@ -106,12 +117,18 @@ export abstract class FabricPlatformClient {
    * Configure scopes from constructor parameter
    * @param scopesOrScopePair Either a scope string or a ScopePair object
    */
-  private configureScopesFromParameter(scopesOrScopePair?: string | ScopePair): void {
-    if (typeof scopesOrScopePair === 'string') {
+  private configureScopesFromParameter(
+    scopesOrScopePair?: string | ScopePair,
+  ): void {
+    if (typeof scopesOrScopePair === "string") {
       // Traditional string-based scopes
       this.scopes = scopesOrScopePair || SCOPES.DEFAULT;
       this.scopePair = undefined;
-    } else if (scopesOrScopePair && 'read' in scopesOrScopePair && 'write' in scopesOrScopePair) {
+    } else if (
+      scopesOrScopePair &&
+      "read" in scopesOrScopePair &&
+      "write" in scopesOrScopePair
+    ) {
       // ScopePair for method-based selection
       this.scopePair = scopesOrScopePair;
       this.scopes = scopesOrScopePair.write; // Default to write scopes for backward compatibility
@@ -129,12 +146,12 @@ export abstract class FabricPlatformClient {
    */
   protected async getAccessToken(method?: string): Promise<AccessToken> {
     let scopesToUse = this.scopes;
-    
+
     // If we have a scope pair and a method, use method-based scope selection
     if (this.scopePair && method) {
       scopesToUse = getScopeForMethod(this.scopePair, method);
     }
-    
+
     return this.authService.acquireAccessToken(scopesToUse);
   }
 
@@ -145,21 +162,24 @@ export abstract class FabricPlatformClient {
    * @param options RequestInit options
    * @returns Promise<T>
    */
-  protected async makeRequest<T>(url: string, options: RequestInit = {}): Promise<T> {
+  protected async makeRequest<T>(
+    url: string,
+    options: RequestInit = {},
+  ): Promise<T> {
     try {
       // Get appropriate access token based on HTTP method
-      const method = options.method || 'GET';
+      const method = options.method || "GET";
       const accessToken = await this.getAccessToken(method);
-      
+
       // Construct full URL if relative path provided
-      const fullUrl = url.startsWith('http') ? url : `${this.baseUrl}/v1${url}`;
-      
+      const fullUrl = url.startsWith("http") ? url : `${this.baseUrl}/v1${url}`;
+
       const response = await fetch(fullUrl, {
         ...options,
         headers: {
-          'Authorization': `Bearer ${accessToken.token}`,
-          'Content-Type': 'application/json',
-          'User-Agent': 'ms-fabric-extensibility-toolkit',
+          Authorization: `Bearer ${accessToken.token}`,
+          "Content-Type": "application/json",
+          "User-Agent": "ms-fabric-extensibility-toolkit",
           ...options.headers,
         },
       });
@@ -167,7 +187,7 @@ export abstract class FabricPlatformClient {
       if (!response.ok) {
         let errorResponse: ErrorResponse | undefined;
         let requestId: string | undefined;
-        
+
         try {
           // Try to parse the error response as JSON
           const errorText = await response.text();
@@ -176,25 +196,29 @@ export abstract class FabricPlatformClient {
           }
         } catch (parseError) {
           // If parsing fails, we'll just use the status text
-          console.warn('Failed to parse error response as JSON:', parseError);
+          console.warn("Failed to parse error response as JSON:", parseError);
         }
-        
+
         // Extract request ID from headers if available
-        requestId = response.headers.get('x-ms-request-id') || 
-                   response.headers.get('request-id') || 
-                   response.headers.get('x-request-id') ||
-                   undefined;
-        
+        requestId =
+          response.headers.get("x-ms-request-id") ||
+          response.headers.get("request-id") ||
+          response.headers.get("x-request-id") ||
+          undefined;
+
         throw new FabricPlatformError(
           response.status,
           response.statusText,
           errorResponse,
-          requestId
+          requestId,
         );
       }
 
       // Handle empty responses (like 204 No Content)
-      if (response.status === 204 || response.headers.get('content-length') === '0') {
+      if (
+        response.status === 204 ||
+        response.headers.get("content-length") === "0"
+      ) {
         return undefined as unknown as T;
       }
 
@@ -204,14 +228,18 @@ export abstract class FabricPlatformClient {
       if (response.status === 202) {
         const result: AsyncOperationIndicator = {
           // operationId is required - use header value or generate a fallback
-          operationId: response.headers.get('x-ms-operation-id') || `op-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+          operationId:
+            response.headers.get("x-ms-operation-id") ||
+            `op-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
         };
-        
-        if (response.headers.get('Retry-After')) {
-          const retryAfterHeader = response.headers.get('Retry-After');
-          result.retryAfter = retryAfterHeader ? Number(retryAfterHeader) : undefined;
+
+        if (response.headers.get("Retry-After")) {
+          const retryAfterHeader = response.headers.get("Retry-After");
+          result.retryAfter = retryAfterHeader
+            ? Number(retryAfterHeader)
+            : undefined;
         }
-        
+
         return result as unknown as T;
       }
 
@@ -223,7 +251,7 @@ export abstract class FabricPlatformClient {
         console.error(`Fabric API request failed for ${url}:`, error.toJSON());
         throw error;
       }
-      
+
       // For other errors (network issues, etc.), wrap them
       console.error(`API request failed for ${url}:`, error);
       throw error;
@@ -236,7 +264,7 @@ export abstract class FabricPlatformClient {
    * @returns Promise<T>
    */
   protected get<T>(endpoint: string): Promise<T> {
-    return this.makeRequest<T>(endpoint, { method: 'GET' });
+    return this.makeRequest<T>(endpoint, { method: "GET" });
   }
 
   /**
@@ -247,7 +275,7 @@ export abstract class FabricPlatformClient {
    */
   protected post<T>(endpoint: string, data?: any): Promise<T> {
     return this.makeRequest<T>(endpoint, {
-      method: 'POST',
+      method: "POST",
       body: data ? JSON.stringify(data) : undefined,
     });
   }
@@ -260,7 +288,7 @@ export abstract class FabricPlatformClient {
    */
   protected patch<T>(endpoint: string, data: any): Promise<T> {
     return this.makeRequest<T>(endpoint, {
-      method: 'PATCH',
+      method: "PATCH",
       body: JSON.stringify(data),
     });
   }
@@ -273,7 +301,7 @@ export abstract class FabricPlatformClient {
    */
   protected put<T>(endpoint: string, data: any): Promise<T> {
     return this.makeRequest<T>(endpoint, {
-      method: 'PUT',
+      method: "PUT",
       body: JSON.stringify(data),
     });
   }
@@ -284,7 +312,7 @@ export abstract class FabricPlatformClient {
    * @returns Promise<T>
    */
   protected delete<T>(endpoint: string): Promise<T> {
-    return this.makeRequest<T>(endpoint, { method: 'DELETE' });
+    return this.makeRequest<T>(endpoint, { method: "DELETE" });
   }
 
   /**
@@ -295,14 +323,14 @@ export abstract class FabricPlatformClient {
   protected async getAllPages<T>(endpoint: string): Promise<T[]> {
     const allItems: T[] = [];
     let continuationToken: string | undefined;
-    
+
     do {
-      const url = continuationToken 
-        ? `${endpoint}${endpoint.includes('?') ? '&' : '?'}continuationToken=${encodeURIComponent(continuationToken)}`
+      const url = continuationToken
+        ? `${endpoint}${endpoint.includes("?") ? "&" : "?"}continuationToken=${encodeURIComponent(continuationToken)}`
         : endpoint;
-        
+
       const response: any = await this.get(url);
-      
+
       if (response.value && Array.isArray(response.value)) {
         allItems.push(...response.value);
         continuationToken = response.continuationToken;
@@ -316,7 +344,7 @@ export abstract class FabricPlatformClient {
         break;
       }
     } while (continuationToken);
-    
+
     return allItems;
   }
 
@@ -374,10 +402,12 @@ export abstract class FabricPlatformClient {
    * @returns string Combined scopes
    */
   protected combineScopes(additionalScopes: string): string {
-    const currentScopesArray = this.scopes.split(' ');
-    const additionalScopesArray = additionalScopes.split(' ');
-    const combinedScopes = [...new Set([...currentScopesArray, ...additionalScopesArray])];
-    return combinedScopes.join(' ');
+    const currentScopesArray = this.scopes.split(" ");
+    const additionalScopesArray = additionalScopes.split(" ");
+    const combinedScopes = [
+      ...new Set([...currentScopesArray, ...additionalScopesArray]),
+    ];
+    return combinedScopes.join(" ");
   }
 
   // ============================
@@ -431,16 +461,16 @@ export abstract class FabricPlatformClient {
     clientId: string,
     clientSecret: string,
     tenantId: string,
-    authority?: string
+    authority?: string,
   ): AuthenticationConfig {
     return {
-      type: 'ServicePrincipal',
+      type: "ServicePrincipal",
       servicePrincipal: {
         clientId,
         clientSecret,
         tenantId,
-        authority
-      }
+        authority,
+      },
     };
   }
 
@@ -450,7 +480,7 @@ export abstract class FabricPlatformClient {
    */
   static createUserTokenAuth(): AuthenticationConfig {
     return {
-      type: 'UserToken'
+      type: "UserToken",
     };
   }
 
@@ -461,8 +491,8 @@ export abstract class FabricPlatformClient {
    */
   static createCustomTokenAuth(token: string): AuthenticationConfig {
     return {
-      type: 'UserToken',
-      customToken: token
+      type: "UserToken",
+      customToken: token,
     };
   }
 }

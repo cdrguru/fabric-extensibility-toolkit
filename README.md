@@ -48,7 +48,7 @@ More information about Fabric can be found in the [documentation](https://learn.
 
 ### What is a Fabric Workload
 
-In Microsoft Fabric, workloads are a package of different components that are integrated into the Fabric framework. Workloads enhance the usability of your service within the familiar Fabric workspace, eliminating the need to leave the Fabric environment for different services. [Data Factory](https://learn.microsoft.com/en-us/fabric/data-factory/data-factory-overview), [Data Warehouse](https://learn.microsoft.com/en-us/fabric/data-warehouse/data-warehousing) and  [Power BI](https://learn.microsoft.com/en-us/power-bi/enterprise/service-premium-what-is) are some of the built-in Fabric workloads.
+In Microsoft Fabric, workloads are a package of different components that are integrated into the Fabric framework. Workloads enhance the usability of your service within the familiar Fabric workspace, eliminating the need to leave the Fabric environment for different services. [Data Factory](https://learn.microsoft.com/en-us/fabric/data-factory/data-factory-overview), [Data Warehouse](https://learn.microsoft.com/en-us/fabric/data-warehouse/data-warehousing) and [Power BI](https://learn.microsoft.com/en-us/power-bi/enterprise/service-premium-what-is) are some of the built-in Fabric workloads.
 
 ### What is a Fabric Item
 
@@ -112,8 +112,9 @@ The toolkit includes pre-built components to accelerate your workload developmen
 **[📋 View All Components →](./docs/components/README.md)**
 
 Key highlights:
+
 - **ItemEditor Component** - Foundation for all item editors (mandatory)
-- **OneLakeView** - OneLake integration and file browsing  
+- **OneLakeView** - OneLake integration and file browsing
 - **Wizard Component** - Multi-step guided workflows
 
 For complete documentation, examples, and implementation guides, see the [Components Documentation](./docs/components/README.md).

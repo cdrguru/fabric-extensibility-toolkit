@@ -12,22 +12,21 @@ import {
   AssignWorkspaceToCapacityRequest,
   PaginatedResponse,
   WorkspaceRole,
-  WorkspaceIdentity
+  WorkspaceIdentity,
 } from "./FabricPlatformTypes";
 
 /**
  * API wrapper for Fabric Platform Workspace operations
  * Provides methods for managing workspaces, roles, and capacity assignments
- * 
+ *
  * Based on the official Fabric REST API:
  * https://learn.microsoft.com/en-us/rest/api/fabric/core/workspaces
- * 
+ *
  * Uses method-based scope selection:
  * - GET operations use read-only scopes
  * - POST/PUT/PATCH/DELETE operations use read-write scopes
  */
 export class WorkspaceClient extends FabricPlatformClient {
-  
   constructor(workloadClient: WorkloadClientAPI) {
     // Use scope pairs for method-based scope selection
     // GET operations will use WORKSPACE_READ scopes, other operations will use WORKSPACE scopes
@@ -46,18 +45,18 @@ export class WorkspaceClient extends FabricPlatformClient {
    */
   async listWorkspaces(
     roles?: WorkspaceRole[],
-    continuationToken?: string
+    continuationToken?: string,
   ): Promise<PaginatedResponse<Workspace>> {
-    let endpoint = '/workspaces';
+    let endpoint = "/workspaces";
     const params = new URLSearchParams();
-    
+
     if (roles && roles.length > 0) {
-      params.append('roles', roles.join(','));
+      params.append("roles", roles.join(","));
     }
     if (continuationToken) {
-      params.append('continuationToken', continuationToken);
+      params.append("continuationToken", continuationToken);
     }
-    
+
     if (params.toString()) {
       endpoint += `?${params.toString()}`;
     }
@@ -71,9 +70,9 @@ export class WorkspaceClient extends FabricPlatformClient {
    * @returns Promise<Workspace[]>
    */
   async getAllWorkspaces(roles?: WorkspaceRole[]): Promise<Workspace[]> {
-    let endpoint = '/workspaces';
+    let endpoint = "/workspaces";
     if (roles && roles.length > 0) {
-      endpoint += `?roles=${roles.join(',')}`;
+      endpoint += `?roles=${roles.join(",")}`;
     }
     return this.getAllPages<Workspace>(endpoint);
   }
@@ -84,7 +83,7 @@ export class WorkspaceClient extends FabricPlatformClient {
    * @returns Promise<Workspace>
    */
   async createWorkspace(request: CreateWorkspaceRequest): Promise<Workspace> {
-    return this.post<Workspace>('/workspaces', request);
+    return this.post<Workspace>("/workspaces", request);
   }
 
   /**
@@ -102,7 +101,10 @@ export class WorkspaceClient extends FabricPlatformClient {
    * @param request UpdateWorkspaceRequest
    * @returns Promise<Workspace>
    */
-  async updateWorkspace(workspaceId: string, request: UpdateWorkspaceRequest): Promise<Workspace> {
+  async updateWorkspace(
+    workspaceId: string,
+    request: UpdateWorkspaceRequest,
+  ): Promise<Workspace> {
     return this.patch<Workspace>(`/workspaces/${workspaceId}`, request);
   }
 
@@ -127,7 +129,7 @@ export class WorkspaceClient extends FabricPlatformClient {
    */
   async listWorkspaceRoleAssignments(
     workspaceId: string,
-    continuationToken?: string
+    continuationToken?: string,
   ): Promise<PaginatedResponse<WorkspaceRoleAssignment>> {
     let endpoint = `/workspaces/${workspaceId}/roleAssignments`;
     if (continuationToken) {
@@ -141,8 +143,12 @@ export class WorkspaceClient extends FabricPlatformClient {
    * @param workspaceId The workspace ID
    * @returns Promise<WorkspaceRoleAssignment[]>
    */
-  async getAllWorkspaceRoleAssignments(workspaceId: string): Promise<WorkspaceRoleAssignment[]> {
-    return this.getAllPages<WorkspaceRoleAssignment>(`/workspaces/${workspaceId}/roleAssignments`);
+  async getAllWorkspaceRoleAssignments(
+    workspaceId: string,
+  ): Promise<WorkspaceRoleAssignment[]> {
+    return this.getAllPages<WorkspaceRoleAssignment>(
+      `/workspaces/${workspaceId}/roleAssignments`,
+    );
   }
 
   /**
@@ -153,9 +159,12 @@ export class WorkspaceClient extends FabricPlatformClient {
    */
   async addWorkspaceRoleAssignment(
     workspaceId: string,
-    request: AddWorkspaceRoleAssignmentRequest
+    request: AddWorkspaceRoleAssignmentRequest,
   ): Promise<WorkspaceRoleAssignment> {
-    return this.post<WorkspaceRoleAssignment>(`/workspaces/${workspaceId}/roleAssignments`, request);
+    return this.post<WorkspaceRoleAssignment>(
+      `/workspaces/${workspaceId}/roleAssignments`,
+      request,
+    );
   }
 
   /**
@@ -166,9 +175,11 @@ export class WorkspaceClient extends FabricPlatformClient {
    */
   async getWorkspaceRoleAssignment(
     workspaceId: string,
-    roleAssignmentId: string
+    roleAssignmentId: string,
   ): Promise<WorkspaceRoleAssignment> {
-    return this.get<WorkspaceRoleAssignment>(`/workspaces/${workspaceId}/roleAssignments/${roleAssignmentId}`);
+    return this.get<WorkspaceRoleAssignment>(
+      `/workspaces/${workspaceId}/roleAssignments/${roleAssignmentId}`,
+    );
   }
 
   /**
@@ -181,11 +192,11 @@ export class WorkspaceClient extends FabricPlatformClient {
   async updateWorkspaceRoleAssignment(
     workspaceId: string,
     roleAssignmentId: string,
-    request: UpdateWorkspaceRoleAssignmentRequest
+    request: UpdateWorkspaceRoleAssignmentRequest,
   ): Promise<WorkspaceRoleAssignment> {
     return this.patch<WorkspaceRoleAssignment>(
       `/workspaces/${workspaceId}/roleAssignments/${roleAssignmentId}`,
-      request
+      request,
     );
   }
 
@@ -195,8 +206,13 @@ export class WorkspaceClient extends FabricPlatformClient {
    * @param roleAssignmentId The role assignment ID
    * @returns Promise<void>
    */
-  async deleteWorkspaceRoleAssignment(workspaceId: string, roleAssignmentId: string): Promise<void> {
-    await this.delete<void>(`/workspaces/${workspaceId}/roleAssignments/${roleAssignmentId}`);
+  async deleteWorkspaceRoleAssignment(
+    workspaceId: string,
+    roleAssignmentId: string,
+  ): Promise<void> {
+    await this.delete<void>(
+      `/workspaces/${workspaceId}/roleAssignments/${roleAssignmentId}`,
+    );
   }
 
   // ============================
@@ -211,9 +227,12 @@ export class WorkspaceClient extends FabricPlatformClient {
    */
   async assignWorkspaceToCapacity(
     workspaceId: string,
-    request: AssignWorkspaceToCapacityRequest
+    request: AssignWorkspaceToCapacityRequest,
   ): Promise<void> {
-    await this.post<void>(`/workspaces/${workspaceId}/assignToCapacity`, request);
+    await this.post<void>(
+      `/workspaces/${workspaceId}/assignToCapacity`,
+      request,
+    );
   }
 
   /**
@@ -234,8 +253,12 @@ export class WorkspaceClient extends FabricPlatformClient {
    * @param workspaceId The workspace ID
    * @returns Promise<WorkspaceIdentity>
    */
-  async provisionWorkspaceIdentity(workspaceId: string): Promise<WorkspaceIdentity> {
-    return this.post<WorkspaceIdentity>(`/workspaces/${workspaceId}/provisionIdentity`);
+  async provisionWorkspaceIdentity(
+    workspaceId: string,
+  ): Promise<WorkspaceIdentity> {
+    return this.post<WorkspaceIdentity>(
+      `/workspaces/${workspaceId}/provisionIdentity`,
+    );
   }
 
   /**

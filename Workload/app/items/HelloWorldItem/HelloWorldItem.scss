@@ -89,7 +89,6 @@
 
 .hello-world-section-body {
   padding-top: 6px;
-  
 }
 
 .hello-world-section-title {
@@ -127,43 +126,43 @@
     font-family: var(--fontFamilyBase) !important;
     text-decoration: underline !important;
     padding: 0 !important;
-    
+
     &:hover {
       color: var(--colorBrandForegroundLinkHover) !important;
       text-decoration: underline !important;
     }
-    
+
     &:active {
       color: var(--colorBrandForegroundLinkPressed) !important;
       text-decoration: underline !important;
     }
-    
+
     &:focus {
       outline: 2px solid var(--colorCompoundBrandStroke) !important;
       outline-offset: 2px !important;
     }
   }
-  
+
   .fui-Button {
     background: var(--colorNeutralBackground1) !important;
     background-color: var(--colorNeutralBackground1) !important;
     border-color: var(--colorNeutralStroke1) !important;
     color: var(--colorNeutralForeground1) !important;
-    
+
     &:hover {
       background: var(--colorNeutralBackground1Hover) !important;
       background-color: var(--colorNeutralBackground1Hover) !important;
       border-color: var(--colorNeutralStroke1Hover) !important;
       color: var(--colorNeutralForeground1) !important;
     }
-    
+
     &:active {
       background: var(--colorNeutralBackground1Pressed) !important;
       background-color: var(--colorNeutralBackground1Pressed) !important;
       border-color: var(--colorNeutralStroke1Pressed) !important;
       color: var(--colorNeutralForeground1) !important;
     }
-    
+
     &:focus {
       background: var(--colorNeutralBackground1) !important;
       background-color: var(--colorNeutralBackground1) !important;
@@ -277,7 +276,7 @@
   justify-content: flex-start;
   padding: var(--spacingVerticalS) 0;
   gap: var(--spacingHorizontalXS);
-  
+
   // Special handling for rows with input fields
   &:has(.hello-world-hero-input) {
     flex-direction: column;
@@ -292,7 +291,7 @@
   font-family: var(--fontFamilyBase);
 
   &::after {
-    content: ':';
+    content: ":";
   }
 }
 
@@ -326,7 +325,9 @@
   border-radius: var(--borderRadiusMedium);
   background: var(--colorNeutralBackground1);
   padding: var(--spacingVerticalL);
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 .hello-world-card-header-section {

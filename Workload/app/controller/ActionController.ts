@@ -10,13 +10,11 @@ import { WorkloadAction, WorkloadClientAPI } from "@ms-fabric/workload-client";
  * @param {WorkloadClientAPI} workloadClient - An instance of the WorkloadClientAPI.
  */
 export async function callActionOnAction(
-    workloadClient: WorkloadClientAPI,
-    callback: (action: WorkloadAction<unknown>) => Promise<unknown>
-    ) {
-
-    await workloadClient.action.onAction(callback);
+  workloadClient: WorkloadClientAPI,
+  callback: (action: WorkloadAction<unknown>) => Promise<unknown>,
+) {
+  await workloadClient.action.onAction(callback);
 }
-
 
 /**
  * Calls the 'action.execute' function from the WorkloadClientAPI to execute a specific action in a workload.
@@ -26,9 +24,9 @@ export async function callActionOnAction(
  * @param {WorkloadClientAPI} workloadClient - An instance of the WorkloadClientAPI.
  */
 export async function callActionExecute(
-    workloadClient: WorkloadClientAPI,
-    actionName: string,
-    workloadName: string) {
-
-    await workloadClient.action.execute({ action: actionName, workloadName })
+  workloadClient: WorkloadClientAPI,
+  actionName: string,
+  workloadName: string,
+) {
+  await workloadClient.action.execute({ action: actionName, workloadName });
 }

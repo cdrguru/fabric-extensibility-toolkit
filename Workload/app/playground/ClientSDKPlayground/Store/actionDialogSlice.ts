@@ -73,13 +73,13 @@ export const actionDialogSlice = createSlice({
   },
 });
 
-export const { 
-  updateMessageBoxTitle, 
-  updateMessageBoxMessage, 
-  updateMessageBoxLink, 
-  updateButtonCount, 
-  setLocalSharedStateMessage, 
-  updateApiErrorTitle, 
+export const {
+  updateMessageBoxTitle,
+  updateMessageBoxMessage,
+  updateMessageBoxLink,
+  updateButtonCount,
+  setLocalSharedStateMessage,
+  updateApiErrorTitle,
   updateApiErrorStatusCode,
   updateApiErrorMessage,
   updateApiErrorFailureMessage,

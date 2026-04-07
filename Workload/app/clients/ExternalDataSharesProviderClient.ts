@@ -5,22 +5,21 @@ import {
   PaginatedResponse,
   ExternalDataShare,
   CreateExternalDataShareRequest,
-  ExternalDataShareRecipient
+  ExternalDataShareRecipient,
 } from "./FabricPlatformTypes";
 
 /**
  * API wrapper for External Data Shares Provider operations
  * Provides methods for managing external data sharing
- * 
+ *
  * Based on the official Fabric REST API:
  * https://learn.microsoft.com/en-us/rest/api/fabric/core/external-data-shares-provider
- * 
+ *
  * Uses method-based scope selection:
  * - GET operations use read-only scopes
  * - POST/PUT/PATCH/DELETE operations use read-write scopes
  */
 export class ExternalDataSharesProviderClient extends FabricPlatformClient {
-  
   constructor(workloadClient: WorkloadClientAPI) {
     // Use scope pairs for method-based scope selection
     super(workloadClient, SCOPE_PAIRS.EXTERNAL_DATA_SHARES);
@@ -38,16 +37,16 @@ export class ExternalDataSharesProviderClient extends FabricPlatformClient {
    * @returns Promise<ExternalDataShare[]>
    */
   async getAllExternalDataShares(
-    workspaceId: string, 
-    itemId: string, 
-    continuationToken?: string
+    workspaceId: string,
+    itemId: string,
+    continuationToken?: string,
   ): Promise<ExternalDataShare[]> {
     let url = `/workspaces/${workspaceId}/items/${itemId}/externalDataShares`;
-    
+
     if (continuationToken) {
       url += `?continuationToken=${encodeURIComponent(continuationToken)}`;
     }
-    
+
     const response = await this.get<PaginatedResponse<ExternalDataShare>>(url);
     return response.value || [];
   }
@@ -60,9 +59,9 @@ export class ExternalDataSharesProviderClient extends FabricPlatformClient {
    * @returns Promise<ExternalDataShare>
    */
   async createExternalDataShare(
-    workspaceId: string, 
-    itemId: string, 
-    request: CreateExternalDataShareRequest
+    workspaceId: string,
+    itemId: string,
+    request: CreateExternalDataShareRequest,
   ): Promise<ExternalDataShare> {
     const url = `/workspaces/${workspaceId}/items/${itemId}/externalDataShares`;
     return await this.post<ExternalDataShare>(url, request);
@@ -76,9 +75,9 @@ export class ExternalDataSharesProviderClient extends FabricPlatformClient {
    * @returns Promise<ExternalDataShare>
    */
   async getExternalDataShare(
-    workspaceId: string, 
-    itemId: string, 
-    externalDataShareId: string
+    workspaceId: string,
+    itemId: string,
+    externalDataShareId: string,
   ): Promise<ExternalDataShare> {
     const url = `/workspaces/${workspaceId}/items/${itemId}/externalDataShares/${externalDataShareId}`;
     return await this.get<ExternalDataShare>(url);
@@ -92,9 +91,9 @@ export class ExternalDataSharesProviderClient extends FabricPlatformClient {
    * @returns Promise<void>
    */
   async revokeExternalDataShare(
-    workspaceId: string, 
-    itemId: string, 
-    externalDataShareId: string
+    workspaceId: string,
+    itemId: string,
+    externalDataShareId: string,
   ): Promise<void> {
     const url = `/workspaces/${workspaceId}/items/${itemId}/externalDataShares/${externalDataShareId}/revoke`;
     await this.post<void>(url, {});
@@ -111,9 +110,13 @@ export class ExternalDataSharesProviderClient extends FabricPlatformClient {
    * @param status The status to filter by (Pending, Active, Revoked, InvitationExpired)
    * @returns Promise<ExternalDataShare[]>
    */
-  async getSharesByStatus(workspaceId: string, itemId: string, status: string): Promise<ExternalDataShare[]> {
+  async getSharesByStatus(
+    workspaceId: string,
+    itemId: string,
+    status: string,
+  ): Promise<ExternalDataShare[]> {
     const allShares = await this.getAllExternalDataShares(workspaceId, itemId);
-    return allShares.filter(share => share.status === status);
+    return allShares.filter((share) => share.status === status);
   }
 
   /**
@@ -123,9 +126,15 @@ export class ExternalDataSharesProviderClient extends FabricPlatformClient {
    * @param recipientEmail The recipient email to filter by
    * @returns Promise<ExternalDataShare[]>
    */
-  async getSharesByRecipient(workspaceId: string, itemId: string, recipientEmail: string): Promise<ExternalDataShare[]> {
+  async getSharesByRecipient(
+    workspaceId: string,
+    itemId: string,
+    recipientEmail: string,
+  ): Promise<ExternalDataShare[]> {
     const allShares = await this.getAllExternalDataShares(workspaceId, itemId);
-    return allShares.filter(share => share.recipient?.userPrincipalName === recipientEmail);
+    return allShares.filter(
+      (share) => share.recipient?.userPrincipalName === recipientEmail,
+    );
   }
 
   /**
@@ -135,10 +144,14 @@ export class ExternalDataSharesProviderClient extends FabricPlatformClient {
    * @param path The path to filter by
    * @returns Promise<ExternalDataShare[]>
    */
-  async getSharesByPath(workspaceId: string, itemId: string, path: string): Promise<ExternalDataShare[]> {
+  async getSharesByPath(
+    workspaceId: string,
+    itemId: string,
+    path: string,
+  ): Promise<ExternalDataShare[]> {
     const allShares = await this.getAllExternalDataShares(workspaceId, itemId);
-    return allShares.filter(share => 
-      share.paths?.some(pathString => pathString === path)
+    return allShares.filter((share) =>
+      share.paths?.some((pathString) => pathString === path),
     );
   }
 
@@ -149,10 +162,14 @@ export class ExternalDataSharesProviderClient extends FabricPlatformClient {
    * @param pathPattern The path pattern to match
    * @returns Promise<ExternalDataShare[]>
    */
-  async getSharesByPathPattern(workspaceId: string, itemId: string, pathPattern: string): Promise<ExternalDataShare[]> {
+  async getSharesByPathPattern(
+    workspaceId: string,
+    itemId: string,
+    pathPattern: string,
+  ): Promise<ExternalDataShare[]> {
     const allShares = await this.getAllExternalDataShares(workspaceId, itemId);
-    return allShares.filter(share => 
-      share.paths?.some(pathString => pathString.includes(pathPattern))
+    return allShares.filter((share) =>
+      share.paths?.some((pathString) => pathString.includes(pathPattern)),
     );
   }
 
@@ -163,9 +180,13 @@ export class ExternalDataSharesProviderClient extends FabricPlatformClient {
    * @param targetWorkspaceId The target workspace ID to filter by
    * @returns Promise<ExternalDataShare[]>
    */
-  async getSharesByWorkspace(workspaceId: string, itemId: string, targetWorkspaceId: string): Promise<ExternalDataShare[]> {
+  async getSharesByWorkspace(
+    workspaceId: string,
+    itemId: string,
+    targetWorkspaceId: string,
+  ): Promise<ExternalDataShare[]> {
     const allShares = await this.getAllExternalDataShares(workspaceId, itemId);
-    return allShares.filter(share => share.workspaceId === targetWorkspaceId);
+    return allShares.filter((share) => share.workspaceId === targetWorkspaceId);
   }
 
   // ============================
@@ -181,14 +202,14 @@ export class ExternalDataSharesProviderClient extends FabricPlatformClient {
    * @returns Promise<ExternalDataShare>
    */
   async createShareForPath(
-    workspaceId: string, 
-    itemId: string, 
-    path: string, 
-    recipient: ExternalDataShareRecipient
+    workspaceId: string,
+    itemId: string,
+    path: string,
+    recipient: ExternalDataShareRecipient,
   ): Promise<ExternalDataShare> {
     const request: CreateExternalDataShareRequest = {
       paths: [path],
-      recipient
+      recipient,
     };
     return await this.createExternalDataShare(workspaceId, itemId, request);
   }
@@ -202,14 +223,14 @@ export class ExternalDataSharesProviderClient extends FabricPlatformClient {
    * @returns Promise<ExternalDataShare>
    */
   async createShareForPaths(
-    workspaceId: string, 
-    itemId: string, 
-    paths: string[], 
-    recipient: ExternalDataShareRecipient
+    workspaceId: string,
+    itemId: string,
+    paths: string[],
+    recipient: ExternalDataShareRecipient,
   ): Promise<ExternalDataShare> {
     const request: CreateExternalDataShareRequest = {
       paths: paths,
-      recipient
+      recipient,
     };
     return await this.createExternalDataShare(workspaceId, itemId, request);
   }
@@ -220,10 +241,13 @@ export class ExternalDataSharesProviderClient extends FabricPlatformClient {
    * @param itemId The item ID
    * @returns Promise<ExternalDataShare[]>
    */
-  async getExpiredShares(workspaceId: string, itemId: string): Promise<ExternalDataShare[]> {
+  async getExpiredShares(
+    workspaceId: string,
+    itemId: string,
+  ): Promise<ExternalDataShare[]> {
     const allShares = await this.getAllExternalDataShares(workspaceId, itemId);
     const now = new Date();
-    return allShares.filter(share => {
+    return allShares.filter((share) => {
       if (!share.expirationTimeUtc) return false;
       const expirationDate = new Date(share.expirationTimeUtc);
       return expirationDate < now;
@@ -236,9 +260,12 @@ export class ExternalDataSharesProviderClient extends FabricPlatformClient {
    * @param itemId The item ID
    * @returns Promise<ExternalDataShare[]>
    */
-  async getActiveShares(workspaceId: string, itemId: string): Promise<ExternalDataShare[]> {
+  async getActiveShares(
+    workspaceId: string,
+    itemId: string,
+  ): Promise<ExternalDataShare[]> {
     const allShares = await this.getAllExternalDataShares(workspaceId, itemId);
-    return allShares.filter(share => share.status === 'Active');
+    return allShares.filter((share) => share.status === "Active");
   }
 
   /**
@@ -247,9 +274,12 @@ export class ExternalDataSharesProviderClient extends FabricPlatformClient {
    * @param itemId The item ID
    * @returns Promise<ExternalDataShare[]>
    */
-  async getPendingShares(workspaceId: string, itemId: string): Promise<ExternalDataShare[]> {
+  async getPendingShares(
+    workspaceId: string,
+    itemId: string,
+  ): Promise<ExternalDataShare[]> {
     const allShares = await this.getAllExternalDataShares(workspaceId, itemId);
-    return allShares.filter(share => share.status === 'Pending');
+    return allShares.filter((share) => share.status === "Pending");
   }
 
   /**
@@ -258,9 +288,12 @@ export class ExternalDataSharesProviderClient extends FabricPlatformClient {
    * @param itemId The item ID
    * @returns Promise<ExternalDataShare[]>
    */
-  async getRevokedShares(workspaceId: string, itemId: string): Promise<ExternalDataShare[]> {
+  async getRevokedShares(
+    workspaceId: string,
+    itemId: string,
+  ): Promise<ExternalDataShare[]> {
     const allShares = await this.getAllExternalDataShares(workspaceId, itemId);
-    return allShares.filter(share => share.status === 'Revoked');
+    return allShares.filter((share) => share.status === "Revoked");
   }
 
   /**
@@ -270,9 +303,15 @@ export class ExternalDataSharesProviderClient extends FabricPlatformClient {
    * @param path The path to check
    * @returns Promise<boolean>
    */
-  async isPathShared(workspaceId: string, itemId: string, path: string): Promise<boolean> {
+  async isPathShared(
+    workspaceId: string,
+    itemId: string,
+    path: string,
+  ): Promise<boolean> {
     const shares = await this.getSharesByPath(workspaceId, itemId, path);
-    return shares.some(share => share.status === 'Active' || share.status === 'Pending');
+    return shares.some(
+      (share) => share.status === "Active" || share.status === "Pending",
+    );
   }
 
   /**
@@ -282,7 +321,11 @@ export class ExternalDataSharesProviderClient extends FabricPlatformClient {
    * @param recipientEmail The recipient's email
    * @returns Promise<ExternalDataShare[]>
    */
-  async getSharesForRecipient(workspaceId: string, itemId: string, recipientEmail: string): Promise<ExternalDataShare[]> {
+  async getSharesForRecipient(
+    workspaceId: string,
+    itemId: string,
+    recipientEmail: string,
+  ): Promise<ExternalDataShare[]> {
     return await this.getSharesByRecipient(workspaceId, itemId, recipientEmail);
   }
 
@@ -293,9 +336,13 @@ export class ExternalDataSharesProviderClient extends FabricPlatformClient {
    * @param shareIds Array of share IDs to revoke
    * @returns Promise<void>
    */
-  async revokeMultipleShares(workspaceId: string, itemId: string, shareIds: string[]): Promise<void> {
-    const revokePromises = shareIds.map(shareId => 
-      this.revokeExternalDataShare(workspaceId, itemId, shareId)
+  async revokeMultipleShares(
+    workspaceId: string,
+    itemId: string,
+    shareIds: string[],
+  ): Promise<void> {
+    const revokePromises = shareIds.map((shareId) =>
+      this.revokeExternalDataShare(workspaceId, itemId, shareId),
     );
     await Promise.all(revokePromises);
   }

@@ -6,22 +6,21 @@ import {
   CreateFolderRequest,
   UpdateFolderRequest,
   MoveFolderRequest,
-  PaginatedResponse
+  PaginatedResponse,
 } from "./FabricPlatformTypes";
 
 /**
  * API wrapper for Fabric Platform Folder operations
  * Provides methods for managing folders within workspaces
- * 
+ *
  * Based on the official Fabric REST API:
  * https://learn.microsoft.com/en-us/rest/api/fabric/core/folders
- * 
+ *
  * Uses method-based scope selection:
  * - GET operations use read-only scopes
  * - POST/PUT/PATCH/DELETE operations use read-write scopes
  */
 export class FolderClient extends FabricPlatformClient {
-  
   constructor(workloadClient: WorkloadClientAPI) {
     // Use scope pairs for method-based scope selection
     super(workloadClient, SCOPE_PAIRS.FOLDER);
@@ -43,19 +42,19 @@ export class FolderClient extends FabricPlatformClient {
     workspaceId: string,
     rootFolderId?: string,
     recursive: boolean = true,
-    continuationToken?: string
+    continuationToken?: string,
   ): Promise<PaginatedResponse<Folder>> {
     let endpoint = `/workspaces/${workspaceId}/folders`;
     const params = new URLSearchParams();
-    
+
     if (rootFolderId) {
-      params.append('rootFolderId', rootFolderId);
+      params.append("rootFolderId", rootFolderId);
     }
-    params.append('recursive', recursive.toString());
+    params.append("recursive", recursive.toString());
     if (continuationToken) {
-      params.append('continuationToken', continuationToken);
+      params.append("continuationToken", continuationToken);
     }
-    
+
     if (params.toString()) {
       endpoint += `?${params.toString()}`;
     }
@@ -73,16 +72,16 @@ export class FolderClient extends FabricPlatformClient {
   async getAllFolders(
     workspaceId: string,
     rootFolderId?: string,
-    recursive: boolean = true
+    recursive: boolean = true,
   ): Promise<Folder[]> {
     let endpoint = `/workspaces/${workspaceId}/folders`;
     const params = new URLSearchParams();
-    
+
     if (rootFolderId) {
-      params.append('rootFolderId', rootFolderId);
+      params.append("rootFolderId", rootFolderId);
     }
-    params.append('recursive', recursive.toString());
-    
+    params.append("recursive", recursive.toString());
+
     if (params.toString()) {
       endpoint += `?${params.toString()}`;
     }
@@ -96,7 +95,10 @@ export class FolderClient extends FabricPlatformClient {
    * @param request CreateFolderRequest
    * @returns Promise<Folder>
    */
-  async createFolder(workspaceId: string, request: CreateFolderRequest): Promise<Folder> {
+  async createFolder(
+    workspaceId: string,
+    request: CreateFolderRequest,
+  ): Promise<Folder> {
     return this.post<Folder>(`/workspaces/${workspaceId}/folders`, request);
   }
 
@@ -117,8 +119,15 @@ export class FolderClient extends FabricPlatformClient {
    * @param request UpdateFolderRequest
    * @returns Promise<Folder>
    */
-  async updateFolder(workspaceId: string, folderId: string, request: UpdateFolderRequest): Promise<Folder> {
-    return this.patch<Folder>(`/workspaces/${workspaceId}/folders/${folderId}`, request);
+  async updateFolder(
+    workspaceId: string,
+    folderId: string,
+    request: UpdateFolderRequest,
+  ): Promise<Folder> {
+    return this.patch<Folder>(
+      `/workspaces/${workspaceId}/folders/${folderId}`,
+      request,
+    );
   }
 
   /**
@@ -141,9 +150,12 @@ export class FolderClient extends FabricPlatformClient {
   async moveFolder(
     workspaceId: string,
     folderId: string,
-    request: MoveFolderRequest
+    request: MoveFolderRequest,
   ): Promise<Folder> {
-    return this.post<Folder>(`/workspaces/${workspaceId}/folders/${folderId}/move`, request);
+    return this.post<Folder>(
+      `/workspaces/${workspaceId}/folders/${folderId}/move`,
+      request,
+    );
   }
 
   // ============================
@@ -156,7 +168,10 @@ export class FolderClient extends FabricPlatformClient {
    * @param rootFolderId The root folder ID (optional, defaults to workspace root)
    * @returns Promise<Folder[]>
    */
-  async getFolderHierarchy(workspaceId: string, rootFolderId?: string): Promise<Folder[]> {
+  async getFolderHierarchy(
+    workspaceId: string,
+    rootFolderId?: string,
+  ): Promise<Folder[]> {
     return this.getAllFolders(workspaceId, rootFolderId, true);
   }
 
@@ -166,7 +181,10 @@ export class FolderClient extends FabricPlatformClient {
    * @param parentFolderId The parent folder ID (optional, defaults to workspace root)
    * @returns Promise<Folder[]>
    */
-  async getDirectChildFolders(workspaceId: string, parentFolderId?: string): Promise<Folder[]> {
+  async getDirectChildFolders(
+    workspaceId: string,
+    parentFolderId?: string,
+  ): Promise<Folder[]> {
     return this.getAllFolders(workspaceId, parentFolderId, false);
   }
 
@@ -180,15 +198,20 @@ export class FolderClient extends FabricPlatformClient {
   async createFolderHierarchy(
     workspaceId: string,
     folderPath: string[],
-    parentFolderId?: string
+    parentFolderId?: string,
   ): Promise<Folder> {
     let currentParentId = parentFolderId;
     let lastCreatedFolder: Folder | undefined;
 
     for (const folderName of folderPath) {
       // Check if folder already exists
-      const existingFolders = await this.getDirectChildFolders(workspaceId, currentParentId);
-      const existingFolder = existingFolders.find(folder => folder.displayName === folderName);
+      const existingFolders = await this.getDirectChildFolders(
+        workspaceId,
+        currentParentId,
+      );
+      const existingFolder = existingFolders.find(
+        (folder) => folder.displayName === folderName,
+      );
 
       if (existingFolder) {
         currentParentId = existingFolder.id;
@@ -197,7 +220,7 @@ export class FolderClient extends FabricPlatformClient {
         // Create the folder
         const createRequest: CreateFolderRequest = {
           displayName: folderName,
-          parentFolderId: currentParentId
+          parentFolderId: currentParentId,
         };
         lastCreatedFolder = await this.createFolder(workspaceId, createRequest);
         currentParentId = lastCreatedFolder.id;
@@ -205,7 +228,7 @@ export class FolderClient extends FabricPlatformClient {
     }
 
     if (!lastCreatedFolder) {
-      throw new Error('No folders were created or found');
+      throw new Error("No folders were created or found");
     }
 
     return lastCreatedFolder;
@@ -221,13 +244,15 @@ export class FolderClient extends FabricPlatformClient {
   async searchFoldersByName(
     workspaceId: string,
     searchTerm: string,
-    caseSensitive: boolean = false
+    caseSensitive: boolean = false,
   ): Promise<Folder[]> {
     const allFolders = await this.getAllFolders(workspaceId);
     const searchPattern = caseSensitive ? searchTerm : searchTerm.toLowerCase();
-    
-    return allFolders.filter(folder => {
-      const folderName = caseSensitive ? folder.displayName : folder.displayName.toLowerCase();
+
+    return allFolders.filter((folder) => {
+      const folderName = caseSensitive
+        ? folder.displayName
+        : folder.displayName.toLowerCase();
       return folderName.includes(searchPattern);
     });
   }
@@ -238,7 +263,10 @@ export class FolderClient extends FabricPlatformClient {
    * @param folderId The folder ID
    * @returns Promise<string[]> - Array of folder names representing the path
    */
-  async getFolderPath(workspaceId: string, folderId: string): Promise<string[]> {
+  async getFolderPath(
+    workspaceId: string,
+    folderId: string,
+  ): Promise<string[]> {
     const path: string[] = [];
     let currentFolderId: string | undefined = folderId;
 
@@ -258,7 +286,10 @@ export class FolderClient extends FabricPlatformClient {
    * @returns Promise<boolean>
    */
   async isFolderEmpty(workspaceId: string, folderId: string): Promise<boolean> {
-    const childFolders = await this.getDirectChildFolders(workspaceId, folderId);
+    const childFolders = await this.getDirectChildFolders(
+      workspaceId,
+      folderId,
+    );
     return childFolders.length === 0;
   }
 }

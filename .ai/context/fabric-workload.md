@@ -7,12 +7,14 @@ The Microsoft Fabric Extensibility Toolkit enables partners and customers to cre
 ## Key Concepts
 
 ### Workload Architecture
+
 - **Frontend**: React/TypeScript application running in Fabric's web experience
 - **Backend**: Optional REST API service hosted separately (Azure, on-premises, or other cloud)
 - **Manifest**: XML/JSON configuration defining workload capabilities and integration points
 - **Authentication**: Integrated with Entra ID (Azure AD) for seamless user authentication
 
 ### Core Components
+
 - **Items**: Custom data types and experiences (e.g., custom reports, datasets, models)
 - **Editors**: UI components for creating and editing workload items
 - **Viewers**: Read-only views for displaying workload content
@@ -21,6 +23,7 @@ The Microsoft Fabric Extensibility Toolkit enables partners and customers to cre
 ## Implementation Patterns
 
 ### Item Development Pattern
+
 Every workload item requires exactly four components:
 
 ```typescript
@@ -36,20 +39,23 @@ Every workload item requires exactly four components:
 // 3. Empty View - Initial view that is shown if the item does not have a state
 [ItemName]ItemEditorEmptyView.tsx
 
-// 4. Default View - Default view that contains the default editor experience 
+// 4. Default View - Default view that contains the default editor experience
 [ItemName]ItemEditorDefaultView.tsx
 ```
 
 ### Authentication Integration
+
 ```typescript
 // Standard pattern for API authentication
-import { WorkloadClientAPI } from '@ms-fabric/workload-client';
+import { WorkloadClientAPI } from "@ms-fabric/workload-client";
 
 const workloadClient = new WorkloadClientAPI();
-const accessToken = await workloadClient.authentication.acquireAccessToken(scopes);
+const accessToken =
+  await workloadClient.authentication.acquireAccessToken(scopes);
 ```
 
 ### Ribbon Pattern
+
 The toolkit provides a standardized Ribbon component with a clean API for consistent ribbon experiences:
 
 ```typescript
@@ -58,10 +64,10 @@ import { Ribbon, createSaveAction, createSettingsAction } from '../../components
 
 export function MyItemRibbon(props: RibbonProps) {
   const { t } = useTranslation();
-  
+
   // Create a translation helper function
   const translate = (key: string, fallback?: string) => t(key, fallback);
-  
+
   // Define mandatory Home tab actions
   const homeToolbarActions: RibbonAction[] = [
     createSaveAction(
@@ -74,7 +80,7 @@ export function MyItemRibbon(props: RibbonProps) {
       translate
     )
   ];
-  
+
   // Optional: Define additional tabs for complex items
   const additionalToolbars = [
     {
@@ -83,21 +89,21 @@ export function MyItemRibbon(props: RibbonProps) {
       actions: [/* custom actions */]
     }
   ];
-  
+
   return (
-    <Ribbon 
+    <Ribbon
       homeToolbarActions={homeToolbarActions}           // Mandatory
       additionalToolbars={additionalToolbars}     // Optional
-      viewContext={viewContext} 
+      viewContext={viewContext}
     />
   );
 }
 
 // Simple pattern - just home actions (like HelloWorld)
 return (
-  <Ribbon 
+  <Ribbon
     homeToolbarActions={homeToolbarActions}
-    viewContext={viewContext} 
+    viewContext={viewContext}
   />
 );
 ```
@@ -173,7 +179,8 @@ import { ItemEditorDetailView } from '../../components/ItemEditor';
 ```
 
 **L2 Detail View Use Cases:**
-- Item property/configuration screens  
+
+- Item property/configuration screens
 - Record detail forms
 - Settings dialogs
 - Data preview/inspection views
@@ -185,11 +192,11 @@ For general item properties and configuration, use the ItemSettings pattern inst
 
 ```typescript
 // Use createSettingsAction() in ribbon to open settings flyout
-import { createSettingsAction } from '../../components/ItemEditor';
+import { createSettingsAction } from "../../components/ItemEditor";
 
 const homeToolbarActions: RibbonAction[] = [
   createSaveAction(handleSave, !isSaveEnabled, translate),
-  createSettingsAction(handleOpenSettings, translate)  // ⭐ Opens settings flyout
+  createSettingsAction(handleOpenSettings, translate), // ⭐ Opens settings flyout
 ];
 
 // Settings flyout automatically includes:
@@ -202,16 +209,18 @@ function handleOpenSettings() {
 ```
 
 **ItemSettings Use Cases:**
+
 - **Version configuration**: API versions, schema versions
-- **Endpoint configuration**: Connection strings, service URLs  
+- **Endpoint configuration**: Connection strings, service URLs
 - **Authentication settings**: Credentials, tokens, connection modes
 - **Performance settings**: Timeout values, retry policies
 - **Feature toggles**: Enable/disable item features
 - **Metadata**: Tags, categories, custom properties
 
 **Benefits:**
+
 - **Consistent UX**: Standard Fabric settings flyout pattern
-- **Platform Integration**: Item names/descriptions managed automatically  
+- **Platform Integration**: Item names/descriptions managed automatically
 - **Separation of Concerns**: Configuration separate from editing workflow
 - **Discoverability**: Users expect settings in the ribbon settings action
 
@@ -261,12 +270,14 @@ import { ItemEditorEmptyView } from '../../components/ItemEditor';
 ```
 
 **Empty View Use Cases:**
+
 - **New items**: Items created but not yet configured
-- **No definition**: Items without saved state or configuration  
+- **No definition**: Items without saved state or configuration
 - **Onboarding**: Guide users through initial setup steps
 - **Call-to-action**: Present clear next steps for getting started
 
 **Empty View Best Practices:**
+
 - **Clear Value Proposition**: Explain what the item does and why it's useful
 - **Progressive Disclosure**: Start with 1-2 primary actions, not overwhelming choices
 - **Visual Appeal**: Include illustration or icon to make the state feel intentional
@@ -299,10 +310,19 @@ When implementing item editors, prevent unnecessary API calls and loading states
 
 ```typescript
 // RECOMMENDED: Optimize loadDataFromUrl to prevent unnecessary reloads
-async function loadDataFromUrl(pageContext: ContextProps, pathname: string): Promise<void> {
+async function loadDataFromUrl(
+  pageContext: ContextProps,
+  pathname: string,
+): Promise<void> {
   // Prevent unnecessary reload if the same item is already loaded
-  if (pageContext.itemObjectId && item && item.id === pageContext.itemObjectId) {
-    console.log(`Item ${pageContext.itemObjectId} is already loaded, skipping reload`);
+  if (
+    pageContext.itemObjectId &&
+    item &&
+    item.id === pageContext.itemObjectId
+  ) {
+    console.log(
+      `Item ${pageContext.itemObjectId} is already loaded, skipping reload`,
+    );
     return;
   }
 
@@ -312,30 +332,35 @@ async function loadDataFromUrl(pageContext: ContextProps, pathname: string): Pro
 ```
 
 **Benefits of this optimization:**
+
 - **Prevents API calls** when the same item is already loaded
-- **Avoids unnecessary loading states** that cause UI flicker  
+- **Avoids unnecessary loading states** that cause UI flicker
 - **Preserves current state** (like unsaved changes) when navigating within the same item
 - **Reduces server load** by eliminating redundant requests
 
 **When this optimization helps:**
+
 - Navigating between different views of the same item
 - URL changes that don't actually change the item being edited
 - Browser history navigation within the same item context
 - Parent component re-renders that trigger useEffect dependencies
 
 **Implementation Notes:**
+
 - Add the check as the first step in your `loadDataFromUrl` function
 - Compare `pageContext.itemObjectId` with the currently loaded `item.id`
 - Include logging to help with debugging when the optimization is active
 - The function will still reload when the `itemObjectId` actually changes
 
 ### Security Considerations
+
 1. **Minimal Scopes**: Request only necessary OAuth scopes for operations
 2. **Input Validation**: Validate all user inputs and API responses
 3. **Secure Storage**: Use secure storage for sensitive configuration data
 4. **HTTPS Only**: Ensure all backend communications use HTTPS
 
 ### Testing Strategies
+
 1. **Unit Tests**: Test individual components and business logic
 2. **Integration Tests**: Verify API integrations and authentication flows
 3. **E2E Tests**: Test complete user workflows and item lifecycles
@@ -344,21 +369,25 @@ async function loadDataFromUrl(pageContext: ContextProps, pathname: string): Pro
 ## Common Issues
 
 ### Authentication Problems
+
 - **Issue**: Token acquisition failures
 - **Solution**: Verify Entra app configuration and scope permissions
 - **Prevention**: Implement proper error handling and token refresh logic
 
 ### Manifest Validation Errors
+
 - **Issue**: Build failures due to invalid XML/JSON
 - **Solution**: Use schema validation and consistent naming patterns
 - **Prevention**: Regular validation during development process
 
 ### Performance Issues
+
 - **Issue**: Slow loading or unresponsive UI
 - **Solution**: Implement code splitting, lazy loading, and efficient state management
 - **Prevention**: Regular performance profiling and optimization
 
 ### Development Environment Issues
+
 - **Issue**: Local development server connection problems
 - **Solution**: Verify DevGateway configuration and network connectivity
 - **Prevention**: Use provided setup scripts and validate environment configuration
@@ -366,12 +395,14 @@ async function loadDataFromUrl(pageContext: ContextProps, pathname: string): Pro
 ## Development Workflow
 
 ### Setup Process
+
 1. Run `scripts/Setup/SetupWorkload.ps1` with appropriate parameters
 2. Configure environment variables in `.env.*` files
 3. Install dependencies: `npm install` in Workload directory
 4. Build manifest package: `scripts/Build/BuildManifestPackage.ps1`
 
 ### Development Loop
+
 1. Start DevGateway: `scripts/Run/StartDevGateway.ps1`
 2. Start DevServer: `scripts/Run/StartDevServer.ps1`
 3. Implement changes in `Workload/app/` directory
@@ -379,6 +410,7 @@ async function loadDataFromUrl(pageContext: ContextProps, pathname: string): Pro
 5. Build and validate: `scripts/Build/BuildRelease.ps1`
 
 ### Deployment Process
+
 1. Build production release with organization name
 2. Create Azure Web App or alternative hosting
 3. Deploy using `scripts/Deploy/DeployToAzureWebApp.ps1`
@@ -388,12 +420,14 @@ async function loadDataFromUrl(pageContext: ContextProps, pathname: string): Pro
 ## Integration Points
 
 ### Fabric Platform APIs
+
 - **Items API**: CRUD operations for workload items
 - **Workspaces API**: Workspace management and permissions
 - **OneLake API**: Data storage and access patterns
 - **Job Scheduler API**: Background task execution
 
 ### Microsoft Services
+
 - **Power BI**: Embedding reports and dashboards
 - **Azure Services**: Backend hosting and data services
 - **Microsoft 365**: Integration with Office applications

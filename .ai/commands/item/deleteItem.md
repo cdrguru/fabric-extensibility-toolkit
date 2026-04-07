@@ -32,7 +32,8 @@ Workload/app/items/[ItemName]Item/
 └── [ItemName]ItemEditorRibbon.tsx
 ```
 
-**Important**: 
+**Important**:
+
 - Remove the entire `[ItemName]Item/` directory
 - Verify no other files reference these components
 - Check for any shared utilities that might need cleanup
@@ -79,6 +80,7 @@ Update `Workload/Manifest/assets/locales/*/translations.json` files:
 ```
 
 **For All Locales**:
+
 - Remove entries from all locale files (en-US, es, etc.)
 - Ensure consistent cleanup across all translation files
 - Verify no orphaned translation keys remain
@@ -98,6 +100,7 @@ Update `Workload/app/App.tsx` to remove the route:
 ```
 
 **Cleanup Steps**:
+
 1. Remove the import statement for the deleted editor component
 2. Remove the route definition that matched the item's editor path
 3. Verify no other components import the deleted item components
@@ -108,15 +111,17 @@ Update `Workload/app/App.tsx` to remove the route:
 **IMPORTANT**: Remove the item from the `ITEM_NAMES` variable in ALL environment files, or the build will fail trying to find the deleted item:
 
 1. **Update Workload/.env.dev**:
+
    ```bash
    # Before
    ITEM_NAMES=HelloWorld,[ItemName],CustomItem
-   
+
    # After - remove the deleted item
    ITEM_NAMES=HelloWorld,CustomItem
    ```
 
 2. **Update Workload/.env.test**:
+
    ```bash
    ITEM_NAMES=HelloWorld,CustomItem
    ```
@@ -127,6 +132,7 @@ Update `Workload/app/App.tsx` to remove the route:
    ```
 
 **Why This Matters**:
+
 - The ITEM_NAMES variable controls which items are included when building the manifest package
 - Leaving deleted items in this list will cause build failures
 - The BuildManifestPackage.ps1 script will try to find manifest files for items in this list
@@ -137,6 +143,7 @@ Update `Workload/app/App.tsx` to remove the route:
 #### 7.1: Clean Up Item-Specific Assets
 
 Remove any additional assets in `Workload/app/assets/items/[ItemName]/`:
+
 - EditorEmpty.jpg or other item-specific images
 - Any configuration files specific to the item
 - Custom stylesheets or resources
@@ -144,6 +151,7 @@ Remove any additional assets in `Workload/app/assets/items/[ItemName]/`:
 #### 7.2: Check for Shared Assets
 
 Review shared assets that might reference the deleted item:
+
 - CSS files that might have item-specific styles
 - Shared configuration files
 - Documentation or help files
@@ -153,6 +161,7 @@ Review shared assets that might reference the deleted item:
 #### 8.1: Build Validation
 
 1. **Build the project**:
+
    ```powershell
    cd Workload
    npm run build:test
@@ -166,6 +175,7 @@ Review shared assets that might reference the deleted item:
 #### 8.2: Runtime Validation
 
 1. **Start development server**:
+
    ```powershell
    npm run start
    ```
@@ -178,6 +188,7 @@ Review shared assets that might reference the deleted item:
 #### 8.3: Manifest Generation Test
 
 1. **Test manifest generation**:
+
    ```powershell
    .\scripts\Build\BuildManifestPackage.ps1 -Environment dev
    ```
@@ -192,6 +203,7 @@ Review shared assets that might reference the deleted item:
 Remove any generated files that might reference the deleted item:
 
 1. **Clear build directory**:
+
    ```powershell
    Remove-Item -Recurse -Force build/
    ```
@@ -215,31 +227,37 @@ This ensures no stale references to the deleted item remain in generated files.
 After deletion, verify all these components have been removed:
 
 **Implementation Files**:
+
 - [ ] `Workload/app/items/[ItemName]Item/` directory completely removed
 - [ ] No import references to deleted components remain
 - [ ] No TypeScript errors about missing modules
 
 **Manifest Files**:
+
 - [ ] `Workload/Manifest/items/[ItemName]Item/` directory completely removed
 - [ ] Product.json cleaned of any item-specific references
 - [ ] No manifest generation errors
 
 **Asset Files**:
+
 - [ ] `Workload/Manifest/assets/images/[ItemName]Item-icon.png` removed
 - [ ] Localization entries removed from all locale files
 - [ ] No orphaned asset references
 
 **Code Integration**:
+
 - [ ] Route removed from `Workload/app/App.tsx`
 - [ ] Import statement removed
 - [ ] No broken route references
 
 **Environment Variables**:
+
 - [ ] Item removed from `ITEM_NAMES` in `Workload/.env.dev`
 - [ ] Item removed from `ITEM_NAMES` in `Workload/.env.test`
 - [ ] Item removed from `ITEM_NAMES` in `Workload/.env.prod`
 
 **Build Validation**:
+
 - [ ] `npm run build:test` completes without errors
 - [ ] `npm run start` works correctly
 - [ ] `BuildManifestPackage.ps1` runs without errors

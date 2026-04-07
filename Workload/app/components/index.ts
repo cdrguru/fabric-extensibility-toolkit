@@ -1,9 +1,9 @@
 /**
  * Reusable Components for Microsoft Fabric Workload Items
- * 
+ *
  * This module exports commonly used UI components that maintain consistency
  * across all item editors in the workload.
- * 
+ *
  * @see {@link ../../docs/components/README.md} - Complete components documentation overview
  * @see {@link ../../docs/components/ItemEditor.md} - ItemEditor component and architecture
  * @see {@link ../../docs/components/Wizard.md} - Wizard component for step-by-step workflows
@@ -11,7 +11,7 @@
  */
 
 // Base Item Editor - Foundation for all item editors
-export { 
+export {
   ItemEditor,
   ItemEditorDefaultView,
   ItemEditorEmptyView,
@@ -21,11 +21,11 @@ export {
   RibbonToolbarAction,
   createSaveAction,
   createSettingsAction,
-  createAboutAction
-} from './ItemEditor/';
+  createAboutAction,
+} from "./ItemEditor/";
 
-export type { 
-  ItemEditorProps, 
+export type {
+  ItemEditorProps,
   RegisteredView,
   ViewContext,
   LeftPanelConfig,
@@ -35,30 +35,26 @@ export type {
   RibbonProps,
   RibbonAction,
   RibbonActionButton,
-  FluentIconComponent
-} from './ItemEditor/';
+  FluentIconComponent,
+} from "./ItemEditor/";
 
 // Wizard Component - Step-by-step guided workflows
-export { 
-  WizardControl
-} from './Wizard/';
+export { WizardControl } from "./Wizard/";
 
-export type { 
-  WizardStep, 
+export type {
+  WizardStep,
   WizardControlProps,
   WizardStepProps,
-  WizardNavigationProps
-} from './Wizard/';
+  WizardNavigationProps,
+} from "./Wizard/";
 
 // OneLakeView Component - OneLake item browsing and selection
-export { 
-  OneLakeView
-} from './OneLakeView/';
+export { OneLakeView } from "./OneLakeView/";
 
-export type { 
+export type {
   OneLakeViewProps,
   OneLakeViewItem,
   TableMetadata,
   FileMetadata,
-  LoadingStatus
-} from './OneLakeView/';
+  LoadingStatus,
+} from "./OneLakeView/";

@@ -1,25 +1,22 @@
-import React, { useState } from 'react';
-import { Stack } from '@fluentui/react';
+import React, { useState } from "react";
+import { Stack } from "@fluentui/react";
 import {
   Button,
   Radio,
   RadioGroup,
   Label,
   useId,
-  Divider
-} from '@fluentui/react-components';
-import {
-  Lightbulb24Regular,
-  Dismiss24Regular
-} from "@fluentui/react-icons";
-import { TabContentProps } from './ClientSDKPlaygroundModel';
-import { callPanelClose } from '../../controller/PanelController';
-import "../Playground.scss"
+  Divider,
+} from "@fluentui/react-components";
+import { Lightbulb24Regular, Dismiss24Regular } from "@fluentui/react-icons";
+import { TabContentProps } from "./ClientSDKPlaygroundModel";
+import { callPanelClose } from "../../controller/PanelController";
+import "../Playground.scss";
 
 export function PlaygroundPanel(props: TabContentProps) {
   const { workloadClient } = props;
-  const [selectedOption, setSelectedOption] = useState<string>('option1');
-  
+  const [selectedOption, setSelectedOption] = useState<string>("option1");
+
   const radioName = useId("radio");
   const labelId = useId("label");
 
@@ -30,26 +27,17 @@ export function PlaygroundPanel(props: TabContentProps) {
   return (
     <Stack className="panel">
       <Divider alignContent="start">Panel Example</Divider>
-      
+
       {/* Button Section */}
       <div className="section">
         <Stack tokens={{ childrenGap: 10 }}>
-          <Button 
-            icon={<Lightbulb24Regular />} 
-            appearance="primary"
-          >
+          <Button icon={<Lightbulb24Regular />} appearance="primary">
             Button 1
           </Button>
-          <Button 
-            icon={<Lightbulb24Regular />} 
-            appearance="primary"
-          >
+          <Button icon={<Lightbulb24Regular />} appearance="primary">
             Button 2
           </Button>
-          <Button 
-            icon={<Lightbulb24Regular />} 
-            appearance="primary"
-          >
+          <Button icon={<Lightbulb24Regular />} appearance="primary">
             Button 3
           </Button>
         </Stack>
@@ -58,8 +46,8 @@ export function PlaygroundPanel(props: TabContentProps) {
       {/* Radio Group Section */}
       <div className="section">
         <Label id={labelId}>Radio group</Label>
-        <RadioGroup 
-          aria-labelledby={labelId} 
+        <RadioGroup
+          aria-labelledby={labelId}
           value={selectedOption}
           onChange={(e, data) => setSelectedOption(data.value)}
         >
@@ -71,7 +59,7 @@ export function PlaygroundPanel(props: TabContentProps) {
 
       {/* Close Button Section */}
       <div className="section">
-        <Button 
+        <Button
           icon={<Dismiss24Regular />}
           appearance="outline"
           onClick={onClosePanel}

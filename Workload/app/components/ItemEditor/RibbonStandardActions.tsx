@@ -2,36 +2,45 @@ import {
   Save24Regular,
   Settings24Regular,
   Info24Regular,
-  Share24Regular
+  Share24Regular,
 } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
-import { RibbonAction, RibbonDropdownAction, DropdownMenuItem } from './RibbonToolbar';
+import {
+  RibbonAction,
+  RibbonDropdownAction,
+  DropdownMenuItem,
+} from "./RibbonToolbar";
 
 // Re-export types for convenience
-export type { RibbonAction, RibbonDropdownAction, DropdownMenuItem, RibbonActionType } from './RibbonToolbar';
+export type {
+  RibbonAction,
+  RibbonDropdownAction,
+  DropdownMenuItem,
+  RibbonActionType,
+} from "./RibbonToolbar";
 
 /**
  * Standard ribbon action configurations following Fabric guidelines
- * 
+ *
  * These factory functions provide consistent action configurations that can be
  * reused across different item editors while maintaining the same look and feel.
- * 
+ *
  * Core Standard Actions:
  * - Save: Universal save action for persisting changes
  * - Settings: Common configuration/settings panel access
  * - About: Information and help action
  * - Export (Dropdown): Common export options with dropdown menu
- * 
+ *
  * Note: Other actions (Undo, Redo, Delete, Share, Print, Download, Upload, Add, Edit, Close)
  * should be implemented as custom actions specific to each item editor's needs.
  * See HelloWorldItemRibbon.tsx for examples of creating custom actions.
- * 
+ *
  * Translation: All actions use default translation keys with fallbacks for internationalization.
- * 
+ *
  * @example Basic Usage with Dropdown
  * ```tsx
  * import { createSaveAction, createExportDropdownAction, RibbonActionType } from './RibbonStandardActions';
- * 
+ *
  * const homeToolbarActions: RibbonActionType[] = [
  *   createSaveAction(handleSave, !hasChanges),
  *   createExportDropdownAction([
@@ -52,17 +61,17 @@ export type { RibbonAction, RibbonDropdownAction, DropdownMenuItem, RibbonAction
 export const createSaveAction = (
   onClick: () => void | Promise<void>,
   disabled: boolean = false,
-  label?: string
+  label?: string,
 ): RibbonAction => {
   const { t } = useTranslation();
-  
+
   return {
-    key: 'save',
+    key: "save",
     icon: Save24Regular,
     label: label || t("ItemEditor_Ribbon_Save_Label", "Save"),
     onClick,
     disabled,
-    testId: 'ribbon-save-btn',
+    testId: "ribbon-save-btn",
   };
 };
 
@@ -77,18 +86,18 @@ export const createSettingsAction = (
   onClick: () => void | Promise<void>,
   label?: string,
   disabled: boolean = false,
-  showDividerAfter: boolean = true
+  showDividerAfter: boolean = true,
 ): RibbonAction => {
   const { t } = useTranslation();
-  
+
   return {
-    key: 'settings',
+    key: "settings",
     icon: Settings24Regular,
     label: label || t("ItemEditor_Ribbon_Settings_Label", "Settings"),
     onClick,
     disabled,
-    testId: 'ribbon-settings-btn',
-    showDividerAfter
+    testId: "ribbon-settings-btn",
+    showDividerAfter,
   };
 };
 
@@ -101,17 +110,17 @@ export const createSettingsAction = (
 export const createAboutAction = (
   onClick: () => void | Promise<void>,
   label?: string,
-  disabled: boolean = false
+  disabled: boolean = false,
 ): RibbonAction => {
   const { t } = useTranslation();
-  
+
   return {
-    key: 'about',
+    key: "about",
     icon: Info24Regular,
     label: label || t("ItemEditor_Ribbon_About_Label", "About"),
     onClick,
     disabled,
-    testId: 'ribbon-about-btn'
+    testId: "ribbon-about-btn",
   };
 };
 
@@ -126,18 +135,18 @@ export const createExportDropdownAction = (
   exportItems: DropdownMenuItem[],
   label?: string,
   disabled: boolean = false,
-  showDividerAfter: boolean = false
+  showDividerAfter: boolean = false,
 ): RibbonDropdownAction => {
   const { t } = useTranslation();
-  
+
   return {
-    key: 'export',
+    key: "export",
     icon: Share24Regular,
     label: label || t("ItemEditor_Ribbon_Export_Label", "Export"),
     onClick: () => {}, // Not used for dropdown actions
     disabled,
-    testId: 'ribbon-export-btn',
+    testId: "ribbon-export-btn",
     showDividerAfter,
-    dropdownItems: exportItems
+    dropdownItems: exportItems,
   };
 };

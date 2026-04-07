@@ -3,14 +3,13 @@
  * This module provides functions to handle errors in the Workload Client API.
  */
 
-import { 
-    ErrorKind, 
-    HandleRequestFailureResult, 
-    WorkloadClientAPI, 
-    WorkloadErrorDetails} 
-from "@ms-fabric/workload-client";
+import {
+  ErrorKind,
+  HandleRequestFailureResult,
+  WorkloadClientAPI,
+  WorkloadErrorDetails,
+} from "@ms-fabric/workload-client";
 import { callDialogOpenMsgBox } from "./DialogController";
-
 
 /**
  * Calls the 'errorHandling.openErrorDialog' function from the WorkloadClientAPI to open an error dialog.
@@ -23,24 +22,24 @@ import { callDialogOpenMsgBox } from "./DialogController";
  * @param {WorkloadClientAPI} workloadClient - An instance of the WorkloadClientAPI.
  */
 export async function callErrorHandlingOpenDialog(
-    workloadClient: WorkloadClientAPI,
-    errorMessage: string,
-    title: string,
-    statusCode: string,
-    stackTrace: string,
-    requestId: string) {
-
-    await workloadClient.errorHandling.openErrorDialog({
-        errorMsg: errorMessage,
-        errorOptions: {
-            title,
-            statusCode,
-            stackTrace,
-            requestId,
-            errorTime: Date().toString() // Set the timestamp of the error
-        },
-        kind: ErrorKind.Error
-    });
+  workloadClient: WorkloadClientAPI,
+  errorMessage: string,
+  title: string,
+  statusCode: string,
+  stackTrace: string,
+  requestId: string,
+) {
+  await workloadClient.errorHandling.openErrorDialog({
+    errorMsg: errorMessage,
+    errorOptions: {
+      title,
+      statusCode,
+      stackTrace,
+      requestId,
+      errorTime: Date().toString(), // Set the timestamp of the error
+    },
+    kind: ErrorKind.Error,
+  });
 }
 
 /**
@@ -51,17 +50,25 @@ export async function callErrorHandlingOpenDialog(
  * @param {WorkloadClientAPI} workloadClient - An instance of the WorkloadClientAPI.
  */
 export async function callErrorHandlingRequestFailure(
-    workloadClient: WorkloadClientAPI,
-    errorMessage: string,
-    statusCode: number,
-    ) {
+  workloadClient: WorkloadClientAPI,
+  errorMessage: string,
+  statusCode: number,
+) {
+  // the handleRequestFailure API handles MFA errors coming from Fabric.
+  // Such errors are identified by the inclusion of the below text inside the 'body'.
+  const errorCodeMFA = "AdalMultiFactorAuthRequiredErrorCode";
 
-    // the handleRequestFailure API handles MFA errors coming from Fabric. 
-    // Such errors are identified by the inclusion of the below text inside the 'body'.
-    const errorCodeMFA = "AdalMultiFactorAuthRequiredErrorCode";
-
-    const result: HandleRequestFailureResult = await workloadClient.errorHandling.handleRequestFailure({ status: statusCode, body: errorMessage + errorCodeMFA });
-    callDialogOpenMsgBox(workloadClient, "Request Failure handling", `Failure has ${result.handled ? "" : "NOT"} been handled by Fabric`, []);
+  const result: HandleRequestFailureResult =
+    await workloadClient.errorHandling.handleRequestFailure({
+      status: statusCode,
+      body: errorMessage + errorCodeMFA,
+    });
+  callDialogOpenMsgBox(
+    workloadClient,
+    "Request Failure handling",
+    `Failure has ${result.handled ? "" : "NOT"} been handled by Fabric`,
+    [],
+  );
 }
 
 /**
@@ -75,45 +82,54 @@ export async function callErrorHandlingRequestFailure(
  * @returns {Promise<any>} - Whether the exception was handled or not.
  */
 export async function handleException(
-    workloadClient: WorkloadClientAPI,
-    exception: any,
-    isRetry: boolean = false,
-    action: (...args: any[]) => Promise<any>,
-    ...actionArgs: any[]
+  workloadClient: WorkloadClientAPI,
+  exception: any,
+  isRetry: boolean = false,
+  action: (...args: any[]) => Promise<any>,
+  ...actionArgs: any[]
 ): Promise<any> {
-    var parsedException: WorkloadErrorDetails = parseExceptionErrorResponse(exception);
-    
-    // error could not be handled, show the error dialog
-    let message = parsedException?.Message || "Unknown error occurred";
-    const errorCode = parsedException?.ErrorCode ?? exception.error?.message?.code;
-    let title = getAdditionalParameterValue(parsedException, "title") ?? `Could not handle exception: ${errorCode}`;
+  var parsedException: WorkloadErrorDetails =
+    parseExceptionErrorResponse(exception);
 
-    if (exception.error?.message?.code === "PowerBICapacityValidationFailed") { 
-        message = `Your workspace is assigned to invalid capacity.\n` +
-                  `Please verify that the workspace has a valid and active capacity assigned, and try again.`;
-        title = "Power BI Capacity Validation Failed";
-    }
-    await callErrorHandlingOpenDialog(
-        workloadClient,
-        message,
-        title,
-        exception.error?.statusCode,
-        exception.response?.stackTrace,
-        exception.response?.headers?.requestId
-    );
-    return null;
+  // error could not be handled, show the error dialog
+  let message = parsedException?.Message || "Unknown error occurred";
+  const errorCode =
+    parsedException?.ErrorCode ?? exception.error?.message?.code;
+  let title =
+    getAdditionalParameterValue(parsedException, "title") ??
+    `Could not handle exception: ${errorCode}`;
+
+  if (exception.error?.message?.code === "PowerBICapacityValidationFailed") {
+    message =
+      `Your workspace is assigned to invalid capacity.\n` +
+      `Please verify that the workspace has a valid and active capacity assigned, and try again.`;
+    title = "Power BI Capacity Validation Failed";
+  }
+  await callErrorHandlingOpenDialog(
+    workloadClient,
+    message,
+    title,
+    exception.error?.statusCode,
+    exception.response?.stackTrace,
+    exception.response?.headers?.requestId,
+  );
+  return null;
 }
 
-function getAdditionalParameterValue(parsedException: WorkloadErrorDetails, parameterName: string): string {
-    return parsedException?.MoreDetails?.[0]?.AdditionalParameters?.find(ap => ap.Name == parameterName)?.Value;
+function getAdditionalParameterValue(
+  parsedException: WorkloadErrorDetails,
+  parameterName: string,
+): string {
+  return parsedException?.MoreDetails?.[0]?.AdditionalParameters?.find(
+    (ap) => ap.Name == parameterName,
+  )?.Value;
 }
 
 function parseExceptionErrorResponse(exception: any): WorkloadErrorDetails {
-    const errorResponse = exception?.error?.message?.["pbi.error"]?.parameters?.ErrorResponse;
-    if (!errorResponse) {
-        return null;
-    }
-    return JSON.parse(errorResponse);
+  const errorResponse =
+    exception?.error?.message?.["pbi.error"]?.parameters?.ErrorResponse;
+  if (!errorResponse) {
+    return null;
+  }
+  return JSON.parse(errorResponse);
 }
-
-

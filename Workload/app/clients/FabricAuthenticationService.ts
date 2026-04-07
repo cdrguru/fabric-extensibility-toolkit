@@ -1,5 +1,8 @@
 import { AccessToken, WorkloadClientAPI } from "@ms-fabric/workload-client";
-import { AuthenticationConfig, ServicePrincipalConfig } from "./FabricPlatformTypes";
+import {
+  AuthenticationConfig,
+  ServicePrincipalConfig,
+} from "./FabricPlatformTypes";
 
 /**
  * Service for handling authentication in Fabric Platform APIs
@@ -9,7 +12,10 @@ export class FabricAuthenticationService {
   private workloadClient?: WorkloadClientAPI;
   private authConfig?: AuthenticationConfig;
 
-  constructor(workloadClient?: WorkloadClientAPI, authConfig?: AuthenticationConfig) {
+  constructor(
+    workloadClient?: WorkloadClientAPI,
+    authConfig?: AuthenticationConfig,
+  ) {
     this.workloadClient = workloadClient;
     this.authConfig = authConfig;
   }
@@ -23,13 +29,19 @@ export class FabricAuthenticationService {
     // If custom token is provided, use it directly
     if (this.authConfig?.customToken) {
       return {
-        token: this.authConfig.customToken
+        token: this.authConfig.customToken,
       };
     }
 
     // If service principal config is provided, use service principal authentication
-    if (this.authConfig?.type === 'ServicePrincipal' && this.authConfig.servicePrincipal) {
-      return this.acquireServicePrincipalToken(this.authConfig.servicePrincipal, scopes);
+    if (
+      this.authConfig?.type === "ServicePrincipal" &&
+      this.authConfig.servicePrincipal
+    ) {
+      return this.acquireServicePrincipalToken(
+        this.authConfig.servicePrincipal,
+        scopes,
+      );
     }
 
     // Default to user token authentication via WorkloadClient
@@ -37,7 +49,9 @@ export class FabricAuthenticationService {
       return this.acquireUserToken(scopes);
     }
 
-    throw new Error('No valid authentication configuration provided. Please provide either WorkloadClientAPI, service principal config, or custom token.');
+    throw new Error(
+      "No valid authentication configuration provided. Please provide either WorkloadClientAPI, service principal config, or custom token.",
+    );
   }
 
   /**
@@ -47,11 +61,13 @@ export class FabricAuthenticationService {
    */
   private async acquireUserToken(scopes: string): Promise<AccessToken> {
     if (!this.workloadClient) {
-      throw new Error('WorkloadClientAPI is required for user token authentication');
+      throw new Error(
+        "WorkloadClientAPI is required for user token authentication",
+      );
     }
-    
-    return this.workloadClient.auth.acquireFrontendAccessToken({ 
-      scopes: scopes?.length ? scopes.split(' ') : [] 
+
+    return this.workloadClient.auth.acquireFrontendAccessToken({
+      scopes: scopes?.length ? scopes.split(" ") : [],
     });
   }
 
@@ -62,40 +78,46 @@ export class FabricAuthenticationService {
    * @returns Promise<AccessToken>
    */
   private async acquireServicePrincipalToken(
-    config: ServicePrincipalConfig, 
-    scopes: string
+    config: ServicePrincipalConfig,
+    scopes: string,
   ): Promise<AccessToken> {
-    const authority = config.authority || `https://login.microsoftonline.com/${config.tenantId}`;
+    const authority =
+      config.authority ||
+      `https://login.microsoftonline.com/${config.tenantId}`;
     const tokenUrl = `${authority}/oauth2/v2.0/token`;
 
     const body = new URLSearchParams({
-      grant_type: 'client_credentials',
+      grant_type: "client_credentials",
       client_id: config.clientId,
       client_secret: config.clientSecret,
-      scope: scopes || 'https://api.fabric.microsoft.com/.default'
+      scope: scopes || "https://api.fabric.microsoft.com/.default",
     });
 
     try {
       const response = await fetch(tokenUrl, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          "Content-Type": "application/x-www-form-urlencoded",
         },
         body: body.toString(),
       });
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`Service principal authentication failed: ${response.status} ${errorText}`);
+        throw new Error(
+          `Service principal authentication failed: ${response.status} ${errorText}`,
+        );
       }
 
       const tokenResponse = await response.json();
-      
+
       return {
-        token: tokenResponse.access_token
+        token: tokenResponse.access_token,
       };
     } catch (error: any) {
-      throw new Error(`Failed to acquire service principal token: ${error.message}`);
+      throw new Error(
+        `Failed to acquire service principal token: ${error.message}`,
+      );
     }
   }
 
@@ -120,7 +142,10 @@ export class FabricAuthenticationService {
    * @returns boolean
    */
   isServicePrincipalAuth(): boolean {
-    return this.authConfig?.type === 'ServicePrincipal' && !!this.authConfig.servicePrincipal;
+    return (
+      this.authConfig?.type === "ServicePrincipal" &&
+      !!this.authConfig.servicePrincipal
+    );
   }
 
   /**
@@ -128,7 +153,10 @@ export class FabricAuthenticationService {
    * @returns boolean
    */
   isUserTokenAuth(): boolean {
-    return this.authConfig?.type === 'UserToken' || (!this.authConfig && !!this.workloadClient);
+    return (
+      this.authConfig?.type === "UserToken" ||
+      (!this.authConfig && !!this.workloadClient)
+    );
   }
 }
 
@@ -137,8 +165,8 @@ export class FabricAuthenticationService {
  * @deprecated Use FabricAuthenticationService instead
  */
 export async function callAcquireFrontendAccessToken(
-  workloadClient: WorkloadClientAPI, 
-  scopes: string
+  workloadClient: WorkloadClientAPI,
+  scopes: string,
 ): Promise<AccessToken> {
   const authService = new FabricAuthenticationService(workloadClient);
   return authService.acquireAccessToken(scopes);

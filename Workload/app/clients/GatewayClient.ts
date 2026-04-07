@@ -1,6 +1,6 @@
 import { WorkloadClientAPI } from "@ms-fabric/workload-client";
-import { FabricPlatformClient } from './FabricPlatformClient';
-import { SCOPE_PAIRS } from './FabricPlatformScopes';
+import { FabricPlatformClient } from "./FabricPlatformClient";
+import { SCOPE_PAIRS } from "./FabricPlatformScopes";
 import {
   Gateway,
   OnPremisesGateway,
@@ -19,21 +19,21 @@ import {
   UpdateGatewayRoleAssignmentRequest,
   GatewayRole,
   GatewayType,
-  PrincipalType
-} from './FabricPlatformTypes';
+  PrincipalType,
+} from "./FabricPlatformTypes";
 
 /**
  * Client for interacting with Microsoft Fabric Gateway APIs
  * Provides comprehensive management of gateways including on-premises, personal, and virtual network gateways.
- * 
+ *
  * Based on the official Fabric REST API:
  * https://learn.microsoft.com/en-us/rest/api/fabric/core/gateways
- * 
+ *
  * API Features:
  * - Gateway Management: List, get, create, update, and delete gateways
  * - Gateway Members: Manage members of on-premises gateway clusters
  * - Role Assignments: Manage user/group access to gateways with specific roles
- * 
+ *
  * Supported Gateway Types:
  * - OnPremises: Standard on-premises data gateway clusters
  * - OnPremisesPersonal: Personal mode on-premises data gateways
@@ -53,8 +53,10 @@ export class GatewayClient extends FabricPlatformClient {
    * @param continuationToken Optional token for retrieving the next page of results
    * @returns Promise resolving to list of gateways
    */
-  async listGateways(continuationToken?: string): Promise<ListGatewaysResponse> {
-    let endpoint = '/gateways';
+  async listGateways(
+    continuationToken?: string,
+  ): Promise<ListGatewaysResponse> {
+    let endpoint = "/gateways";
     if (continuationToken) {
       endpoint += `?continuationToken=${encodeURIComponent(continuationToken)}`;
     }
@@ -99,8 +101,10 @@ export class GatewayClient extends FabricPlatformClient {
    * @param request The gateway creation request
    * @returns Promise resolving to the created gateway
    */
-  async createVirtualNetworkGateway(request: CreateVirtualNetworkGatewayRequest): Promise<VirtualNetworkGateway> {
-    return this.post<VirtualNetworkGateway>('/gateways', request);
+  async createVirtualNetworkGateway(
+    request: CreateVirtualNetworkGatewayRequest,
+  ): Promise<VirtualNetworkGateway> {
+    return this.post<VirtualNetworkGateway>("/gateways", request);
   }
 
   /**
@@ -109,7 +113,10 @@ export class GatewayClient extends FabricPlatformClient {
    * @param request The update request
    * @returns Promise resolving when the gateway is updated
    */
-  async updateOnPremisesGateway(gatewayId: string, request: UpdateOnPremisesGatewayRequest): Promise<OnPremisesGateway> {
+  async updateOnPremisesGateway(
+    gatewayId: string,
+    request: UpdateOnPremisesGatewayRequest,
+  ): Promise<OnPremisesGateway> {
     return this.patch<OnPremisesGateway>(`/gateways/${gatewayId}`, request);
   }
 
@@ -119,7 +126,10 @@ export class GatewayClient extends FabricPlatformClient {
    * @param request The update request
    * @returns Promise resolving when the gateway is updated
    */
-  async updateVirtualNetworkGateway(gatewayId: string, request: UpdateVirtualNetworkGatewayRequest): Promise<VirtualNetworkGateway> {
+  async updateVirtualNetworkGateway(
+    gatewayId: string,
+    request: UpdateVirtualNetworkGatewayRequest,
+  ): Promise<VirtualNetworkGateway> {
     return this.patch<VirtualNetworkGateway>(`/gateways/${gatewayId}`, request);
   }
 
@@ -141,8 +151,12 @@ export class GatewayClient extends FabricPlatformClient {
    * @param gatewayId The ID of the on-premises gateway
    * @returns Promise resolving to list of gateway members
    */
-  async listGatewayMembers(gatewayId: string): Promise<ListGatewayMembersResponse> {
-    return this.get<ListGatewayMembersResponse>(`/gateways/${gatewayId}/members`);
+  async listGatewayMembers(
+    gatewayId: string,
+  ): Promise<ListGatewayMembersResponse> {
+    return this.get<ListGatewayMembersResponse>(
+      `/gateways/${gatewayId}/members`,
+    );
   }
 
   /**
@@ -152,7 +166,11 @@ export class GatewayClient extends FabricPlatformClient {
    * @param request The update request
    * @returns Promise resolving when the member is updated
    */
-  async updateGatewayMember(gatewayId: string, memberId: string, request: UpdateGatewayMemberRequest): Promise<void> {
+  async updateGatewayMember(
+    gatewayId: string,
+    memberId: string,
+    request: UpdateGatewayMemberRequest,
+  ): Promise<void> {
     await this.patch(`/gateways/${gatewayId}/members/${memberId}`, request);
   }
 
@@ -162,7 +180,10 @@ export class GatewayClient extends FabricPlatformClient {
    * @param memberId The ID of the gateway member to delete
    * @returns Promise resolving when the member is deleted
    */
-  async deleteGatewayMember(gatewayId: string, memberId: string): Promise<void> {
+  async deleteGatewayMember(
+    gatewayId: string,
+    memberId: string,
+  ): Promise<void> {
     await this.delete(`/gateways/${gatewayId}/members/${memberId}`);
   }
 
@@ -172,7 +193,10 @@ export class GatewayClient extends FabricPlatformClient {
    * @param memberId The ID of the gateway member
    * @returns Promise resolving when the member is enabled
    */
-  async enableGatewayMember(gatewayId: string, memberId: string): Promise<void> {
+  async enableGatewayMember(
+    gatewayId: string,
+    memberId: string,
+  ): Promise<void> {
     await this.updateGatewayMember(gatewayId, memberId, { enabled: true });
   }
 
@@ -182,7 +206,10 @@ export class GatewayClient extends FabricPlatformClient {
    * @param memberId The ID of the gateway member
    * @returns Promise resolving when the member is disabled
    */
-  async disableGatewayMember(gatewayId: string, memberId: string): Promise<void> {
+  async disableGatewayMember(
+    gatewayId: string,
+    memberId: string,
+  ): Promise<void> {
     await this.updateGatewayMember(gatewayId, memberId, { enabled: false });
   }
 
@@ -196,7 +223,10 @@ export class GatewayClient extends FabricPlatformClient {
    * @param continuationToken Optional token for retrieving the next page of results
    * @returns Promise resolving to list of role assignments
    */
-  async listGatewayRoleAssignments(gatewayId: string, continuationToken?: string): Promise<GatewayRoleAssignments> {
+  async listGatewayRoleAssignments(
+    gatewayId: string,
+    continuationToken?: string,
+  ): Promise<GatewayRoleAssignments> {
     let endpoint = `/gateways/${gatewayId}/roleAssignments`;
     if (continuationToken) {
       endpoint += `?continuationToken=${encodeURIComponent(continuationToken)}`;
@@ -211,12 +241,18 @@ export class GatewayClient extends FabricPlatformClient {
    * @param maxResults Optional maximum number of assignments to retrieve (default: no limit)
    * @returns Promise resolving to array of all role assignments
    */
-  async getAllGatewayRoleAssignments(gatewayId: string, maxResults?: number): Promise<GatewayRoleAssignment[]> {
+  async getAllGatewayRoleAssignments(
+    gatewayId: string,
+    maxResults?: number,
+  ): Promise<GatewayRoleAssignment[]> {
     const allAssignments: GatewayRoleAssignment[] = [];
     let continuationToken: string | undefined;
 
     do {
-      const response = await this.listGatewayRoleAssignments(gatewayId, continuationToken);
+      const response = await this.listGatewayRoleAssignments(
+        gatewayId,
+        continuationToken,
+      );
       allAssignments.push(...response.value);
 
       if (maxResults && allAssignments.length >= maxResults) {
@@ -235,8 +271,13 @@ export class GatewayClient extends FabricPlatformClient {
    * @param principalId The ID of the principal
    * @returns Promise resolving to the role assignment
    */
-  async getGatewayRoleAssignment(gatewayId: string, principalId: string): Promise<GatewayRoleAssignment> {
-    return this.get<GatewayRoleAssignment>(`/gateways/${gatewayId}/roleAssignments/${principalId}`);
+  async getGatewayRoleAssignment(
+    gatewayId: string,
+    principalId: string,
+  ): Promise<GatewayRoleAssignment> {
+    return this.get<GatewayRoleAssignment>(
+      `/gateways/${gatewayId}/roleAssignments/${principalId}`,
+    );
   }
 
   /**
@@ -245,8 +286,14 @@ export class GatewayClient extends FabricPlatformClient {
    * @param request The role assignment request
    * @returns Promise resolving to the created role assignment
    */
-  async addGatewayRoleAssignment(gatewayId: string, request: AddGatewayRoleAssignmentRequest): Promise<GatewayRoleAssignment> {
-    return this.post<GatewayRoleAssignment>(`/gateways/${gatewayId}/roleAssignments`, request);
+  async addGatewayRoleAssignment(
+    gatewayId: string,
+    request: AddGatewayRoleAssignmentRequest,
+  ): Promise<GatewayRoleAssignment> {
+    return this.post<GatewayRoleAssignment>(
+      `/gateways/${gatewayId}/roleAssignments`,
+      request,
+    );
   }
 
   /**
@@ -256,8 +303,15 @@ export class GatewayClient extends FabricPlatformClient {
    * @param request The update request
    * @returns Promise resolving to the updated role assignment
    */
-  async updateGatewayRoleAssignment(gatewayId: string, principalId: string, request: UpdateGatewayRoleAssignmentRequest): Promise<GatewayRoleAssignment> {
-    return this.patch<GatewayRoleAssignment>(`/gateways/${gatewayId}/roleAssignments/${principalId}`, request);
+  async updateGatewayRoleAssignment(
+    gatewayId: string,
+    principalId: string,
+    request: UpdateGatewayRoleAssignmentRequest,
+  ): Promise<GatewayRoleAssignment> {
+    return this.patch<GatewayRoleAssignment>(
+      `/gateways/${gatewayId}/roleAssignments/${principalId}`,
+      request,
+    );
   }
 
   /**
@@ -266,7 +320,10 @@ export class GatewayClient extends FabricPlatformClient {
    * @param principalId The ID of the principal
    * @returns Promise resolving when the role assignment is deleted
    */
-  async deleteGatewayRoleAssignment(gatewayId: string, principalId: string): Promise<void> {
+  async deleteGatewayRoleAssignment(
+    gatewayId: string,
+    principalId: string,
+  ): Promise<void> {
     await this.delete(`/gateways/${gatewayId}/roleAssignments/${principalId}`);
   }
 
@@ -281,7 +338,7 @@ export class GatewayClient extends FabricPlatformClient {
    */
   async getGatewaysByType(type: GatewayType): Promise<Gateway[]> {
     const allGateways = await this.getAllGateways();
-    return allGateways.filter(gateway => gateway.type === type);
+    return allGateways.filter((gateway) => gateway.type === type);
   }
 
   /**
@@ -289,7 +346,7 @@ export class GatewayClient extends FabricPlatformClient {
    * @returns Promise resolving to on-premises gateways
    */
   async getOnPremisesGateways(): Promise<OnPremisesGateway[]> {
-    const gateways = await this.getGatewaysByType('OnPremises');
+    const gateways = await this.getGatewaysByType("OnPremises");
     return gateways as OnPremisesGateway[];
   }
 
@@ -298,7 +355,7 @@ export class GatewayClient extends FabricPlatformClient {
    * @returns Promise resolving to personal mode gateways
    */
   async getPersonalGateways(): Promise<OnPremisesGatewayPersonal[]> {
-    const gateways = await this.getGatewaysByType('OnPremisesPersonal');
+    const gateways = await this.getGatewaysByType("OnPremisesPersonal");
     return gateways as OnPremisesGatewayPersonal[];
   }
 
@@ -307,7 +364,7 @@ export class GatewayClient extends FabricPlatformClient {
    * @returns Promise resolving to virtual network gateways
    */
   async getVirtualNetworkGateways(): Promise<VirtualNetworkGateway[]> {
-    const gateways = await this.getGatewaysByType('VirtualNetwork');
+    const gateways = await this.getGatewaysByType("VirtualNetwork");
     return gateways as VirtualNetworkGateway[];
   }
 
@@ -318,8 +375,9 @@ export class GatewayClient extends FabricPlatformClient {
    */
   async findGatewayByName(displayName: string): Promise<Gateway | undefined> {
     const allGateways = await this.getAllGateways();
-    return allGateways.find(gateway => 
-      ('displayName' in gateway && gateway.displayName === displayName)
+    return allGateways.find(
+      (gateway) =>
+        "displayName" in gateway && gateway.displayName === displayName,
     );
   }
 
@@ -328,13 +386,19 @@ export class GatewayClient extends FabricPlatformClient {
    * @param principalId The ID of the principal
    * @returns Promise resolving to gateways where the principal has role assignments
    */
-  async getGatewaysForPrincipal(principalId: string): Promise<{ gateway: Gateway; assignment: GatewayRoleAssignment }[]> {
+  async getGatewaysForPrincipal(
+    principalId: string,
+  ): Promise<{ gateway: Gateway; assignment: GatewayRoleAssignment }[]> {
     const allGateways = await this.getAllGateways();
-    const results: { gateway: Gateway; assignment: GatewayRoleAssignment }[] = [];
+    const results: { gateway: Gateway; assignment: GatewayRoleAssignment }[] =
+      [];
 
     for (const gateway of allGateways) {
       try {
-        const assignment = await this.getGatewayRoleAssignment(gateway.id, principalId);
+        const assignment = await this.getGatewayRoleAssignment(
+          gateway.id,
+          principalId,
+        );
         results.push({ gateway, assignment });
       } catch (error) {
         // Principal doesn't have access to this gateway, continue
@@ -352,7 +416,7 @@ export class GatewayClient extends FabricPlatformClient {
    */
   async getGatewayAdmins(gatewayId: string): Promise<GatewayRoleAssignment[]> {
     const allAssignments = await this.getAllGatewayRoleAssignments(gatewayId);
-    return allAssignments.filter(assignment => assignment.role === 'Admin');
+    return allAssignments.filter((assignment) => assignment.role === "Admin");
   }
 
   /**
@@ -361,10 +425,16 @@ export class GatewayClient extends FabricPlatformClient {
    * @param principalId The ID of the principal
    * @returns Promise resolving to true if the principal is an admin
    */
-  async isGatewayAdmin(gatewayId: string, principalId: string): Promise<boolean> {
+  async isGatewayAdmin(
+    gatewayId: string,
+    principalId: string,
+  ): Promise<boolean> {
     try {
-      const assignment = await this.getGatewayRoleAssignment(gatewayId, principalId);
-      return assignment.role === 'Admin';
+      const assignment = await this.getGatewayRoleAssignment(
+        gatewayId,
+        principalId,
+      );
+      return assignment.role === "Admin";
     } catch (error) {
       return false;
     }
@@ -377,10 +447,14 @@ export class GatewayClient extends FabricPlatformClient {
    * @param principalType The type of the principal
    * @returns Promise resolving to the created role assignment
    */
-  async grantGatewayAdmin(gatewayId: string, principalId: string, principalType: PrincipalType): Promise<GatewayRoleAssignment> {
+  async grantGatewayAdmin(
+    gatewayId: string,
+    principalId: string,
+    principalType: PrincipalType,
+  ): Promise<GatewayRoleAssignment> {
     return this.addGatewayRoleAssignment(gatewayId, {
       principal: { id: principalId, type: principalType },
-      role: 'Admin'
+      role: "Admin",
     });
   }
 
@@ -393,15 +467,17 @@ export class GatewayClient extends FabricPlatformClient {
    * @returns Promise resolving to the created role assignment
    */
   async grantConnectionCreator(
-    gatewayId: string, 
-    principalId: string, 
-    principalType: PrincipalType, 
-    withResharing: boolean = false
+    gatewayId: string,
+    principalId: string,
+    principalType: PrincipalType,
+    withResharing: boolean = false,
   ): Promise<GatewayRoleAssignment> {
-    const role: GatewayRole = withResharing ? 'ConnectionCreatorWithResharing' : 'ConnectionCreator';
+    const role: GatewayRole = withResharing
+      ? "ConnectionCreatorWithResharing"
+      : "ConnectionCreator";
     return this.addGatewayRoleAssignment(gatewayId, {
       principal: { id: principalId, type: principalType },
-      role
+      role,
     });
   }
 
@@ -421,36 +497,40 @@ export class GatewayClient extends FabricPlatformClient {
     numberOfMemberGateways?: number;
   }): Promise<VirtualNetworkGateway> {
     // Validate inactivity minutes
-    const validInactivityValues = [30, 60, 90, 120, 150, 240, 360, 480, 720, 1440];
+    const validInactivityValues = [
+      30, 60, 90, 120, 150, 240, 360, 480, 720, 1440,
+    ];
     const inactivityMinutes = config.inactivityMinutesBeforeSleep || 1440;
-    
+
     if (!validInactivityValues.includes(inactivityMinutes)) {
-      throw new Error(`Invalid inactivityMinutesBeforeSleep. Must be one of: ${validInactivityValues.join(', ')}`);
+      throw new Error(
+        `Invalid inactivityMinutesBeforeSleep. Must be one of: ${validInactivityValues.join(", ")}`,
+      );
     }
 
     // Validate number of member gateways
     const numberOfMembers = config.numberOfMemberGateways || 1;
     if (numberOfMembers < 1 || numberOfMembers > 7) {
-      throw new Error('numberOfMemberGateways must be between 1 and 7');
+      throw new Error("numberOfMemberGateways must be between 1 and 7");
     }
 
     // Validate display name length
     if (config.displayName.length > 200) {
-      throw new Error('displayName must be 200 characters or less');
+      throw new Error("displayName must be 200 characters or less");
     }
 
     const request: CreateVirtualNetworkGatewayRequest = {
-      type: 'VirtualNetwork',
+      type: "VirtualNetwork",
       displayName: config.displayName,
       capacityId: config.capacityId,
       virtualNetworkAzureResource: {
         subscriptionId: config.subscriptionId,
         resourceGroupName: config.resourceGroupName,
         virtualNetworkName: config.virtualNetworkName,
-        subnetName: config.subnetName
+        subnetName: config.subnetName,
       },
       inactivityMinutesBeforeSleep: inactivityMinutes,
-      numberOfMemberGateways: numberOfMembers
+      numberOfMemberGateways: numberOfMembers,
     };
 
     return this.createVirtualNetworkGateway(request);
@@ -461,9 +541,11 @@ export class GatewayClient extends FabricPlatformClient {
    * @param gatewayId The ID of the on-premises gateway
    * @returns Promise resolving to enabled gateway members
    */
-  async getEnabledGatewayMembers(gatewayId: string): Promise<OnPremisesGatewayMember[]> {
+  async getEnabledGatewayMembers(
+    gatewayId: string,
+  ): Promise<OnPremisesGatewayMember[]> {
     const response = await this.listGatewayMembers(gatewayId);
-    return response.value.filter(member => member.enabled);
+    return response.value.filter((member) => member.enabled);
   }
 
   /**
@@ -471,8 +553,10 @@ export class GatewayClient extends FabricPlatformClient {
    * @param gatewayId The ID of the on-premises gateway
    * @returns Promise resolving to disabled gateway members
    */
-  async getDisabledGatewayMembers(gatewayId: string): Promise<OnPremisesGatewayMember[]> {
+  async getDisabledGatewayMembers(
+    gatewayId: string,
+  ): Promise<OnPremisesGatewayMember[]> {
     const response = await this.listGatewayMembers(gatewayId);
-    return response.value.filter(member => !member.enabled);
+    return response.value.filter((member) => !member.enabled);
   }
 }

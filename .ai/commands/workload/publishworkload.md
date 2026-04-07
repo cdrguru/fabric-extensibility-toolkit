@@ -9,6 +9,7 @@ Based on the official Microsoft documentation: [Publish a workload to the Fabric
 ### Publishing Architecture
 
 The Fabric Workload Hub is where users browse, explore, and manage workloads within Fabric. Workloads are categorized into:
+
 - **Core Fabric workloads**: Microsoft-developed workloads
 - **Partner workloads**: Third-party developed workloads
 
@@ -24,18 +25,22 @@ Publishing follows a structured four-stage process:
 ## Prerequisites
 
 ### Administrative Requirements
+
 - **Fabric Admin Account**: Account with admin permissions in the target tenant
 - **Publishing Tenant**: Production Fabric tenant for workload lifecycle management
 - **Workload Registration**: Completed registration form with Microsoft
 
 ### Technical Requirements
+
 - **NuGet Package**: Built manifest package (.nupkg file)
 - **Workload ID**: Registered unique identifier in format `[Publisher].[Workload]`
 - **Production Configuration**: Workload configured for production environment
 - **Testing Complete**: Workload validated in development environment
 
 ### Registration Requirements
+
 Before publishing outside your organization, you must:
+
 1. **Complete Workload Registration Form**: [Submit form](https://aka.ms/fabric_workload_registration)
 2. **Define Publisher Name**: Meaningful company name or abbreviation
 3. **Define Workload Name**: Align with product name or offering
@@ -68,8 +73,9 @@ Use the build script to create the manifest package:
 ```
 
 **Verify Package Contents:**
+
 - Workload manifest with correct ID
-- Item definitions properly configured  
+- Item definitions properly configured
 - All required assets included
 - Version information accurate
 
@@ -94,6 +100,7 @@ Use the build script to create the manifest package:
 #### 1.4: Internal Validation
 
 **Test Scenarios:**
+
 - Workload appears in experience switcher
 - Item creation functions correctly
 - Editor loading and functionality
@@ -135,12 +142,14 @@ For each test tenant, the administrator must:
 #### 2.3: Preview Audience Characteristics
 
 **User Experience:**
+
 - Workload shows clear preview indication
 - Available to all users in enabled tenants
 - Publishing requirements not yet validated
 - Limited to specified test tenants only
 
 **Testing Focus:**
+
 - Multi-tenant compatibility
 - Different organizational configurations
 - User experience validation
@@ -167,12 +176,14 @@ To move to Preview stage:
 #### 3.2: Microsoft Validation Process
 
 **Validation Steps:**
+
 1. **Technical Review**: Workload functionality and integration
 2. **Security Assessment**: Security controls and compliance
-3. **Documentation Review**: User guides and technical documentation  
+3. **Documentation Review**: User guides and technical documentation
 4. **Requirements Check**: Against [Publishing Requirements](https://learn.microsoft.com/en-us/fabric/workload-development-kit/publish-workload-requirements)
 
 **Communication:**
+
 - Microsoft provides feedback on validation results
 - Partners receive status updates through provided contact details
 - Additional information may be requested during review
@@ -180,6 +191,7 @@ To move to Preview stage:
 #### 3.3: Preview Activation
 
 Upon successful validation:
+
 - Workload appears in Workload Hub for all Fabric users
 - Clear preview indication shown to users
 - Available across all Fabric tenants
@@ -188,12 +200,14 @@ Upon successful validation:
 #### 3.4: Preview Management
 
 **Monitor and Collect:**
+
 - User adoption metrics
 - Feedback and support requests
 - Performance and reliability data
 - Feature usage patterns
 
 **Iterate Based on Feedback:**
+
 - Address identified issues
 - Implement requested enhancements
 - Update documentation
@@ -219,6 +233,7 @@ When ready for GA:
 #### 4.2: GA Validation Requirements
 
 **Enhanced Validation:**
+
 - **Stability Metrics**: Demonstrated reliability and performance
 - **Support Infrastructure**: 24/7 support capabilities where required
 - **Documentation Completeness**: Full user and admin documentation
@@ -228,6 +243,7 @@ When ready for GA:
 #### 4.3: GA Activation
 
 Upon successful GA validation:
+
 - Preview indication removed from workload
 - Full production status across all Fabric tenants
 - Enhanced discoverability in Workload Hub
@@ -240,6 +256,7 @@ Upon successful GA validation:
 #### Step 1: Access Fabric Admin Portal
 
 1. **Sign In**:
+
    ```
    Navigate to: https://powerbi.com/
    Sign in with Fabric admin account
@@ -318,7 +335,6 @@ To deactivate a workload:
 
 1. **Select Workload**:
    - In Workloads section, select workload
-   
 2. **Deactivate**:
    - On the "Add" tab, click "Deactivate"
    - Confirm deactivation
@@ -340,6 +356,7 @@ To delete a workload version:
 ### Pre-Publishing Checklist
 
 **Technical Validation:**
+
 - [ ] Manifest package builds without errors
 - [ ] All item types function correctly
 - [ ] Authentication flows work properly
@@ -347,6 +364,7 @@ To delete a workload version:
 - [ ] Security controls implemented
 
 **Documentation Preparation:**
+
 - [ ] User documentation complete
 - [ ] Admin documentation available
 - [ ] API documentation (if applicable)
@@ -354,7 +372,8 @@ To delete a workload version:
 - [ ] Troubleshooting guides
 
 **Business Readiness:**
-- [ ] Support processes established  
+
+- [ ] Support processes established
 - [ ] Pricing model defined (if applicable)
 - [ ] Marketing materials prepared
 - [ ] Legal compliance verified
@@ -363,6 +382,7 @@ To delete a workload version:
 ### Testing Strategy
 
 #### Internal Testing Phase
+
 - Test in isolated development environment
 - Validate all functionality thoroughly
 - Performance testing under load
@@ -370,6 +390,7 @@ To delete a workload version:
 - Cross-browser compatibility
 
 #### Preview Audience Testing
+
 - Select diverse test organizations
 - Provide clear testing guidelines
 - Establish feedback collection methods
@@ -377,6 +398,7 @@ To delete a workload version:
 - Document and address issues promptly
 
 #### Preview Testing
+
 - Monitor usage analytics
 - Collect user feedback systematically
 - Address compatibility issues
@@ -386,12 +408,14 @@ To delete a workload version:
 ### Support and Maintenance
 
 #### Support Infrastructure
+
 - **Contact Methods**: Email, portal, documentation
-- **Response Times**: Define SLAs for different issue types  
+- **Response Times**: Define SLAs for different issue types
 - **Escalation Procedures**: Clear paths for critical issues
 - **Knowledge Base**: Comprehensive troubleshooting guides
 
 #### Ongoing Maintenance
+
 - **Regular Updates**: Bug fixes and enhancements
 - **Security Patches**: Timely security updates
 - **Compatibility**: Maintain compatibility with Fabric updates
@@ -402,24 +426,30 @@ To delete a workload version:
 ### Common Upload Issues
 
 #### Issue: Package Upload Fails
+
 **Symptoms**: Error during package upload process
 **Solutions**:
+
 - Verify .nupkg file is not corrupted
 - Check manifest syntax and validation
 - Ensure all required files are included
 - Verify package size limits not exceeded
 
 #### Issue: Workload Not Appearing
+
 **Symptoms**: Uploaded workload doesn't appear in list
 **Solutions**:
+
 - Refresh admin portal page
 - Check workload ID matches registration
 - Verify upload completed successfully
 - Contact Microsoft support if issue persists
 
 #### Issue: Activation Fails
+
 **Symptoms**: Cannot activate uploaded workload
 **Solutions**:
+
 - Verify manifest syntax is correct
 - Check all dependencies are satisfied
 - Ensure no conflicting workloads
@@ -428,16 +458,20 @@ To delete a workload version:
 ### Preview Stage Issues
 
 #### Issue: Preview Audience Not Seeing Workload
+
 **Symptoms**: Test tenants cannot access workload
 **Solutions**:
+
 - Verify tenant IDs are correct
 - Check tenant settings are enabled
 - Confirm workload is in preview audience list
 - Allow time for propagation (up to 24 hours)
 
 #### Issue: Publishing Request Rejected
+
 **Symptoms**: Microsoft rejects publishing request
 **Solutions**:
+
 - Review feedback provided by Microsoft
 - Address all identified requirements gaps
 - Update documentation as needed
@@ -446,8 +480,10 @@ To delete a workload version:
 ### General Availability Issues
 
 #### Issue: GA Request Denied
+
 **Symptoms**: Request for GA status rejected
 **Solutions**:
+
 - Review enhanced GA requirements
 - Demonstrate improved stability metrics
 - Enhance support infrastructure

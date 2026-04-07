@@ -10,68 +10,60 @@ Views and notifications are defined as simple arrays and use hooks for navigatio
 ### Define Views Statically
 
 ```tsx
-import { ItemEditor, RegisteredView, useViewNavigation } from '../../components/ItemEditor';
+import {
+  ItemEditor,
+  RegisteredView,
+  useViewNavigation,
+} from "../../components/ItemEditor";
 
 // Create wrapper components that use the navigation hook
 const EmptyViewWrapper = () => {
   const { setCurrentView } = useViewNavigation();
-  
-  return (
-    <EmptyView 
-      onNavigate={() => setCurrentView('default')}
-    />
-  );
+
+  return <EmptyView onNavigate={() => setCurrentView("default")} />;
 };
 
 const DefaultViewWrapper = () => {
   const { setCurrentView } = useViewNavigation();
-  
-  return (
-    <DefaultView 
-      onShowDetail={(id) => setCurrentView(`detail-${id}`)}
-    />
-  );
+
+  return <DefaultView onShowDetail={(id) => setCurrentView(`detail-${id}`)} />;
 };
 
 const DetailViewWrapper = () => {
   const { goBack } = useViewNavigation();
-  
-  return (
-    <DetailView 
-      onBack={goBack}
-    />
-  );
+
+  return <DetailView onBack={goBack} />;
 };
 
 // Define views as static array - like ribbon actions
 const views: RegisteredView[] = [
   {
-    name: 'empty',
-    component: <EmptyViewWrapper />
+    name: "empty",
+    component: <EmptyViewWrapper />,
   },
   {
-    name: 'default',
-    component: <DefaultViewWrapper />
+    name: "default",
+    component: <DefaultViewWrapper />,
   },
   {
-    name: 'detail-123',
+    name: "detail-123",
     component: <DetailViewWrapper />,
-    isDetailView: true  // Enables automatic back navigation
-  }
+    isDetailView: true, // Enables automatic back navigation
+  },
 ];
 
 // Usage
-<ItemEditor 
-  views={views} 
+<ItemEditor
+  views={views}
   initialView="empty"
   ribbon={(context) => <MyRibbon viewContext={context} />}
-/>
+/>;
 ```
 
 ## Key Benefits
 
 1. **Simple Definition**: Views defined as static array like ribbon actions
-2. **Clean Navigation**: Use `useViewNavigation()` hook in components  
+2. **Clean Navigation**: Use `useViewNavigation()` hook in components
 3. **Automatic Back Navigation**: Detail views get back navigation for free
 4. **Better TypeScript**: No complex function wrapper types
 5. **Easier Testing**: View components can be tested independently
@@ -80,10 +72,10 @@ const views: RegisteredView[] = [
 ## Navigation Hook API
 
 ```tsx
-const { 
-  setCurrentView,  // (view: string) => void - Navigate to any view
-  goBack,          // () => void - Navigate back (for detail views)
-  viewHistory      // string[] - Array of visited views
+const {
+  setCurrentView, // (view: string) => void - Navigate to any view
+  goBack, // () => void - Navigate back (for detail views)
+  viewHistory, // string[] - Array of visited views
 } = useViewNavigation();
 ```
 
@@ -92,14 +84,14 @@ const {
 ### Define Notifications Statically
 
 ```tsx
-import { RegisteredNotification } from '../../components/ItemEditor';
-import { MessageBar, MessageBarBody, Button } from '@fluentui/react-components';
+import { RegisteredNotification } from "../../components/ItemEditor";
+import { MessageBar, MessageBarBody, Button } from "@fluentui/react-components";
 
 // Static notification definitions - like views!
 const notifications: RegisteredNotification[] = [
   {
-    name: 'default-warning',
-    showInViews: ['default'], // Only show in specific views
+    name: "default-warning",
+    showInViews: ["default"], // Only show in specific views
     component: showWarning ? (
       <MessageBar intent="warning">
         <MessageBarBody>
@@ -107,33 +99,25 @@ const notifications: RegisteredNotification[] = [
         </MessageBarBody>
         <MessageBarActions
           containerAction={
-            <Button onClick={() => setShowWarning(false)}>
-              Dismiss
-            </Button>
+            <Button onClick={() => setShowWarning(false)}>Dismiss</Button>
           }
         />
       </MessageBar>
-    ) : null
+    ) : null,
   },
   {
-    name: 'global-info',
+    name: "global-info",
     showInViews: [], // Empty array = show in all views
     component: (
       <MessageBar intent="info">
-        <MessageBarBody>
-          This notification appears in all views.
-        </MessageBarBody>
+        <MessageBarBody>This notification appears in all views.</MessageBarBody>
       </MessageBar>
-    )
-  }
+    ),
+  },
 ];
 
 // Usage
-<ItemEditor 
-  views={views}
-  notifications={notifications}
-  initialView="empty"
-/>
+<ItemEditor views={views} notifications={notifications} initialView="empty" />;
 ```
 
 ### Notification Features
@@ -165,23 +149,27 @@ When `isDetailView: true`:
 ## Complete Example
 
 ```tsx
-import { ItemEditor, useViewNavigation, RegisteredNotification } from '../../components/ItemEditor';
-import { MessageBar, MessageBarBody, Button } from '@fluentui/react-components';
+import {
+  ItemEditor,
+  useViewNavigation,
+  RegisteredNotification,
+} from "../../components/ItemEditor";
+import { MessageBar, MessageBarBody, Button } from "@fluentui/react-components";
 
 export function MyItemEditor() {
   const [showWarning, setShowWarning] = useState(true);
-  
+
   // View wrapper components
   const EmptyViewWrapper = () => {
     const { setCurrentView } = useViewNavigation();
-    return <EmptyView onStart={() => setCurrentView('main')} />;
+    return <EmptyView onStart={() => setCurrentView("main")} />;
   };
-  
+
   const MainViewWrapper = () => {
     const { setCurrentView } = useViewNavigation();
     return <MainView onShowDetail={(id) => setCurrentView(`detail-${id}`)} />;
   };
-  
+
   const DetailViewWrapper = () => {
     const { goBack } = useViewNavigation();
     return <DetailView onBack={goBack} />;
@@ -189,16 +177,20 @@ export function MyItemEditor() {
 
   // Static view definitions
   const views = [
-    { name: 'empty', component: <EmptyViewWrapper /> },
-    { name: 'main', component: <MainViewWrapper /> },
-    { name: 'detail-123', component: <DetailViewWrapper />, isDetailView: true }
+    { name: "empty", component: <EmptyViewWrapper /> },
+    { name: "main", component: <MainViewWrapper /> },
+    {
+      name: "detail-123",
+      component: <DetailViewWrapper />,
+      isDetailView: true,
+    },
   ];
 
   // Static notification definitions
   const notifications: RegisteredNotification[] = [
     {
-      name: 'main-warning',
-      showInViews: ['main'],
+      name: "main-warning",
+      showInViews: ["main"],
       component: showWarning ? (
         <MessageBar intent="warning">
           <MessageBarBody>
@@ -206,14 +198,12 @@ export function MyItemEditor() {
           </MessageBarBody>
           <MessageBarActions
             containerAction={
-              <Button onClick={() => setShowWarning(false)}>
-                Dismiss
-              </Button>
+              <Button onClick={() => setShowWarning(false)}>Dismiss</Button>
             }
           />
         </MessageBar>
-      ) : null
-    }
+      ) : null,
+    },
   ];
 
   return (
@@ -232,4 +222,3 @@ export function MyItemEditor() {
   );
 }
 ```
-

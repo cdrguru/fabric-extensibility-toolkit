@@ -15,21 +15,35 @@
     "codeGeneration": {
       "languages": ["typescript", "tsx", "javascript", "jsx", "json", "xml"],
       "frameworks": ["react", "fluent-ui"],
-      "patterns": ["extensibility-toolkit-item-pattern", "authentication", "api-clients"]
+      "patterns": [
+        "extensibility-toolkit-item-pattern",
+        "authentication",
+        "api-clients"
+      ]
     },
     "architecture": {
-      "domains": ["workload-development", "platform-integration", "security", "deployment"],
+      "domains": [
+        "workload-development",
+        "platform-integration",
+        "security",
+        "deployment"
+      ],
       "expertise": ["microsoft-fabric", "azure", "power-bi", "onelake"]
     },
     "troubleshooting": {
-      "areas": ["authentication", "deployment", "api-integration", "manifest-configuration"]
+      "areas": [
+        "authentication",
+        "deployment",
+        "api-integration",
+        "manifest-configuration"
+      ]
     }
   },
   "activation": {
     "keywords": [
       "fabric",
       "workload",
-      "extensibility-toolkit", 
+      "extensibility-toolkit",
       "onelake",
       "powerbi",
       "entra",
@@ -41,7 +55,7 @@
     ],
     "filePatterns": [
       "Workload/app/**/*.ts",
-      "Workload/app/**/*.tsx", 
+      "Workload/app/**/*.tsx",
       "config/Manifest/**/*.xml",
       "config/Manifest/**/*.json",
       "scripts/**/*.ps1"

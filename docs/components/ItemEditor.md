@@ -8,7 +8,7 @@ This is the main entry point for ItemEditor documentation. Detailed documentatio
 
 ### Core Components
 
-- **[ItemEditor](./ItemEditor/README.md)** - Main container with view registration system  
+- **[ItemEditor](./ItemEditor/README.md)** - Main container with view registration system
 - **[Ribbon](./ItemEditor/Ribbon.md)** - Ribbon container with automatic back navigation
 - **[RibbonToolbar](./ItemEditor/RibbonToolbar.md)** - Standardized toolbar actions
 
@@ -80,7 +80,7 @@ The `ItemEditor` component provides a complete view management system with autom
 ✅ **Fixed Navigation** - Ribbon stays visible during scroll  
 ✅ **Full Height** - Properly fills the iframe container  
 ✅ **Independent Scrolling** - Content scrolls without affecting ribbon  
-✅ **Fabric Compliant** - Follows Microsoft Fabric design guidelines  
+✅ **Fabric Compliant** - Follows Microsoft Fabric design guidelines
 
 ## Architecture
 
@@ -111,27 +111,35 @@ ItemEditor (manages state internally)
 ## Features
 
 ### Automatic View Management
+
 ItemEditor manages view state internally - no need for manual useState in parent components.
 
 ### ViewContext Integration
+
 Ribbons automatically receive navigation context with current view, navigation functions, and detail view flags.
 
 ### Detail View Support
+
 Views marked with `isDetailView: true` automatically:
+
 - Show back button instead of tabs in ribbon
 - Track navigation history
 - Provide goBack() function
 
 ### Fixed Ribbon
+
 The ribbon remains visible at the top of the editor regardless of scroll position, ensuring users always have access to primary actions.
 
 ### Full-Height Layout
+
 The editor automatically fills 100% of the iframe height, providing a native app-like experience within Fabric.
 
 ### Independent Scrolling
+
 Content area scrolls independently while the ribbon stays fixed, preventing "double scrolling" issues.
 
 ### Flexible Content
+
 Supports any React component as content through view registration.
 
 ## View Registration System
@@ -192,7 +200,7 @@ export function MyItemEditor(props: PageProps) {
   useEffect(() => {
     if (!isLoading && item && viewSetter) {
       // Determine the correct view based on item state
-      const correctView = !item?.definition?.message ? EDITOR_VIEW_TYPES.EMPTY : EDITOR_VIEW_TYPES.DEFAULT;   
+      const correctView = !item?.definition?.message ? EDITOR_VIEW_TYPES.EMPTY : EDITOR_VIEW_TYPES.DEFAULT;
       viewSetter(correctView);
     }
   }, [isLoading, item, viewSetter]);
@@ -239,11 +247,11 @@ The ViewContext provides complete navigation control to ribbon components:
 
 ```typescript
 interface ViewContext {
-  currentView: string;           // "empty", "default", "details"
+  currentView: string; // "empty", "default", "details"
   setCurrentView: (view) => void; // Navigate to any view
-  isDetailView: boolean;         // true if current view is detail view
-  goBack: () => void;            // Navigate to previous view (detail views)
-  viewHistory: string[];         // Complete navigation history
+  isDetailView: boolean; // true if current view is detail view
+  goBack: () => void; // Navigate to previous view (detail views)
+  viewHistory: string[]; // Complete navigation history
 }
 ```
 
@@ -314,9 +322,9 @@ import { MyItemDefaultView } from "./MyItemDefaultView";
 import { MyItemDetailsView } from "./MyItemDetailsView";
 
 const EDITOR_VIEW_TYPES = {
-  EMPTY: 'empty',
-  DEFAULT: 'default',
-  DETAILS: 'details'
+  EMPTY: "empty",
+  DEFAULT: "default",
+  DETAILS: "details",
 } as const;
 
 export function MyItemEditor(props: PageProps) {
@@ -326,22 +334,18 @@ export function MyItemEditor(props: PageProps) {
   return (
     <ItemEditor
       ribbon={(context) => (
-        <MyItemRibbon
-          {...props}
-          viewContext={context}
-          onSave={handleSave}
-        />
+        <MyItemRibbon {...props} viewContext={context} onSave={handleSave} />
       )}
       messageBar={[
         {
-          name: 'welcome-message',
+          name: "welcome-message",
           showInViews: [EDITOR_VIEW_TYPES.DEFAULT],
           component: (
             <MessageBar intent="info">
               <MessageBarBody>Welcome to your new item!</MessageBarBody>
             </MessageBar>
-          )
-        }
+          ),
+        },
       ]}
       views={(setCurrentView) => [
         {
@@ -349,9 +353,11 @@ export function MyItemEditor(props: PageProps) {
           component: (
             <MyItemEmptyView
               workloadClient={workloadClient}
-              onNavigateToDefault={() => setCurrentView(EDITOR_VIEW_TYPES.DEFAULT)}
+              onNavigateToDefault={() =>
+                setCurrentView(EDITOR_VIEW_TYPES.DEFAULT)
+              }
             />
-          )
+          ),
         },
         {
           name: EDITOR_VIEW_TYPES.DEFAULT,
@@ -361,21 +367,22 @@ export function MyItemEditor(props: PageProps) {
               item={item}
               onViewDetails={() => setCurrentView(EDITOR_VIEW_TYPES.DETAILS)}
             />
-          )
+          ),
         },
         {
           name: EDITOR_VIEW_TYPES.DETAILS,
           component: (
-            <MyItemDetailsView
-              workloadClient={workloadClient}
-              item={item}
-            />
+            <MyItemDetailsView workloadClient={workloadClient} item={item} />
           ),
-          isDetailView: true  // ⭐ Enables automatic back navigation
-        }
+          isDetailView: true, // ⭐ Enables automatic back navigation
+        },
       ]}
-      initialView={!item?.definition?.state ? EDITOR_VIEW_TYPES.EMPTY : EDITOR_VIEW_TYPES.DEFAULT}
-      onViewChange={(view) => console.log('Navigated to:', view)}
+      initialView={
+        !item?.definition?.state
+          ? EDITOR_VIEW_TYPES.EMPTY
+          : EDITOR_VIEW_TYPES.DEFAULT
+      }
+      onViewChange={(view) => console.log("Navigated to:", view)}
     />
   );
 }
@@ -386,6 +393,7 @@ export function MyItemEditor(props: PageProps) {
 The following examples show different layout patterns using the flexible `ItemEditorDefaultView` component:
 
 #### Basic Single Panel Layout
+
 ```tsx
 // Simple layout with only center content
 {
@@ -401,6 +409,7 @@ The following examples show different layout patterns using the flexible `ItemEd
 ```
 
 #### Multi-Panel Layout with Navigation
+
 ```tsx
 // Left navigation panel + center content
 {
@@ -420,6 +429,7 @@ The following examples show different layout patterns using the flexible `ItemEd
 ```
 
 #### Advanced Layout with Resizable Panels
+
 ```tsx
 // Full-featured layout with file explorer and editor
 {
@@ -446,7 +456,8 @@ The following examples show different layout patterns using the flexible `ItemEd
 ```
 
 #### Properties Panel Layout
-```tsx
+
+````tsx
 // Design tool with properties panel and canvas
 {
   name: EDITOR_VIEW_TYPES.DESIGNER,
@@ -535,7 +546,7 @@ export interface ViewContext {
   /** History of visited views */
   viewHistory: string[];
 }
-```
+````
 
 ## Layout Guidelines
 
@@ -578,6 +589,7 @@ export interface ViewContext {
 The `ItemEditor` supports different view types through the view registration system:
 
 ### Empty View
+
 First screen users see when creating a new item. Registered as a view with navigation to getting started.
 
 ```tsx
@@ -585,20 +597,22 @@ First screen users see when creating a new item. Registered as a view with navig
 {
   name: EDITOR_VIEW_TYPES.EMPTY,
   component: (
-    <MyItemEmptyView 
-      onStart={() => setCurrentView(EDITOR_VIEW_TYPES.DEFAULT)} 
+    <MyItemEmptyView
+      onStart={() => setCurrentView(EDITOR_VIEW_TYPES.DEFAULT)}
     />
   )
 }
 ```
 
 **Characteristics:**
+
 - Centered content with call-to-action
 - Illustration or icon
 - Navigation to main view
 - Minimal height: 500px for proper centering
 
 ### Default/Getting Started View
+
 Main editing interface or onboarding flow.
 
 ```tsx
@@ -606,7 +620,7 @@ Main editing interface or onboarding flow.
 {
   name: VIEW_TYPES.DEFAULT,
   component: (
-    <MyItemEditorDefault 
+    <MyItemEditorDefault
       item={item}
       onViewDetails={() => setCurrentView(VIEW_TYPES.DETAILS)}
     />
@@ -615,6 +629,7 @@ Main editing interface or onboarding flow.
 ```
 
 **Characteristics:**
+
 - Full-featured forms or onboarding content
 - Multiple sections/cards
 - Scrolls when content overflows
@@ -622,6 +637,7 @@ Main editing interface or onboarding flow.
 - Navigation to detail views
 
 ### Detail Views (Level 2)
+
 Deep-dive pages accessed from the main view with automatic back navigation.
 
 ```tsx
@@ -634,6 +650,7 @@ Deep-dive pages accessed from the main view with automatic back navigation.
 ```
 
 **Characteristics:**
+
 - **Automatic back button** in ribbon (replaces tabs)
 - **Automatic navigation history** tracking
 - **goBack() function** provided automatically
@@ -641,6 +658,7 @@ Deep-dive pages accessed from the main view with automatic back navigation.
 - Follows same styling patterns
 
 ### Custom Views
+
 Any custom content specific to your item type.
 
 ```tsx
@@ -657,17 +675,17 @@ Any custom content specific to your item type.
 // From ribbon actions
 const actions: RibbonAction[] = [
   {
-    key: 'details',
-    label: 'View Details',
+    key: "details",
+    label: "View Details",
     onClick: () => viewContext.setCurrentView(EDITOR_VIEW_TYPES.DETAILS),
-    hidden: viewContext.currentView === EDITOR_VIEW_TYPES.DETAILS
-  }
+    hidden: viewContext.currentView === EDITOR_VIEW_TYPES.DETAILS,
+  },
 ];
 
 // From view components
 <Button onClick={() => setCurrentView(EDITOR_VIEW_TYPES.DETAILS)}>
   View Details
-</Button>
+</Button>;
 
 // Automatic back navigation (detail views only)
 // Back button appears automatically - no manual implementation needed
@@ -712,27 +730,29 @@ var(--colorNeutralStroke1Hover) // Thumb hover
   center={{ content: <div>No padding content</div> }}
 />
 
-// ✅ Correct - Content handles its own padding  
+// ✅ Correct - Content handles its own padding
 <ItemEditorDefaultView
   center={{ content: <div className="my-item-view">Padded content</div> }}
 />
 ```
 
 **Required CSS Pattern:**
+
 ```scss
 // MyItem.scss - REQUIRED for all view content
 .my-item-view {
-  padding: var(--spacingVerticalM, 12px);  // ✅ Consistent 12px padding
+  padding: var(--spacingVerticalM, 12px); // ✅ Consistent 12px padding
   width: 100%;
   height: 100%;
-  box-sizing: border-box;  // ✅ CRITICAL: Include padding in dimensions
-  overflow: hidden;        // ✅ Prevent content overflow
+  box-sizing: border-box; // ✅ CRITICAL: Include padding in dimensions
+  overflow: hidden; // ✅ Prevent content overflow
 }
 ```
 
 **Why Zero Padding?**
+
 - Gives maximum control to content components
-- Allows custom layouts without fighting inherited padding  
+- Allows custom layouts without fighting inherited padding
 - Enables full-bleed designs when needed
 - Consistent with modern layout patterns
 
@@ -785,23 +805,22 @@ export function MyItemEditor(props: PageProps) {
           item={item}
           onNavigateToDefault={() => setCurrentView(VIEW_TYPES.DEFAULT)}
         />
-      )
+      ),
     },
     {
       name: VIEW_TYPES.DEFAULT,
       component: (
-        <MyItemDefaultView
-          workloadClient={workloadClient}
-          item={item}
-        />
-      )
-    }
+        <MyItemDefaultView workloadClient={workloadClient} item={item} />
+      ),
+    },
   ];
 
   return (
     <ItemEditor
       views={views}
-      initialView={item?.definition?.data ? VIEW_TYPES.DEFAULT : VIEW_TYPES.EMPTY}
+      initialView={
+        item?.definition?.data ? VIEW_TYPES.DEFAULT : VIEW_TYPES.EMPTY
+      }
       ribbon={(viewContext) => (
         <MyItemRibbon
           {...props}
@@ -826,21 +845,19 @@ export function MyItemEditor(props: PageProps) {
     {
       name: VIEW_TYPES.MAIN,
       component: (
-        <MyItemMain 
+        <MyItemMain
           onViewDetail={(id) => {
             setSelectedDetailId(id);
             setCurrentView(VIEW_TYPES.DETAIL);
           }}
         />
-      )
+      ),
     },
     {
       name: VIEW_TYPES.DETAIL,
-      component: (
-        <MyItemDetail detailId={selectedDetailId} />
-      ),
-      isDetailView: true  // ⭐ Enables automatic back navigation
-    }
+      component: <MyItemDetail detailId={selectedDetailId} />,
+      isDetailView: true, // ⭐ Enables automatic back navigation
+    },
   ];
 
   return (
@@ -848,10 +865,7 @@ export function MyItemEditor(props: PageProps) {
       views={views}
       initialView={VIEW_TYPES.MAIN}
       ribbon={(viewContext) => (
-        <MyItemRibbon 
-          {...props}
-          viewContext={viewContext}
-        />
+        <MyItemRibbon {...props} viewContext={viewContext} />
       )}
     />
   );
@@ -873,7 +887,7 @@ export function MyItemEditor(props: PageProps) {
 ✅ **Use ItemEditorDefaultView** for multi-panel layouts when appropriate  
 ✅ **Test resizable panels** with different content types and screen sizes  
 ✅ **Provide meaningful panel titles** for collapsible panels  
-✅ **Save panel preferences** (width, collapse state) when appropriate  
+✅ **Save panel preferences** (width, collapse state) when appropriate
 
 ### ❌ Don'ts
 
@@ -886,25 +900,28 @@ export function MyItemEditor(props: PageProps) {
 ❌ **Don't mix old Stack patterns** with ItemEditor  
 ❌ **Don't nest scroll containers** in panels - let panels handle their own scrolling  
 ❌ **Don't put essential actions** in collapsible panels only  
-❌ **Don't create overly complex layouts** - keep it simple and functional  
+❌ **Don't create overly complex layouts** - keep it simple and functional
 
 ### Common Patterns
 
 #### Pattern 1: View Registration System
+
 ```tsx
 const views: RegisteredView[] = [
   { name: VIEW_TYPES.EMPTY, component: <EmptyView /> },
-  { name: VIEW_TYPES.DEFAULT, component: <DefaultView /> }
+  { name: VIEW_TYPES.DEFAULT, component: <DefaultView /> },
 ];
 ```
 
 #### Pattern 2: Automatic Loading (Handled Internally)
+
 ```tsx
 // ItemEditor handles loading states automatically - no manual guard needed
 return <ItemEditor views={views} ribbon={(context) => ...} />;
 ```
 
 #### Pattern 3: Automatic Detail Navigation
+
 ```tsx
 {
   name: VIEW_TYPES.DETAIL,
@@ -914,9 +931,10 @@ return <ItemEditor views={views} ribbon={(context) => ...} />;
 ```
 
 #### Pattern 4: ViewContext Integration
+
 ```tsx
 ribbon={(viewContext) => (
-  <MyRibbon 
+  <MyRibbon
     viewContext={viewContext}
     onAction={() => viewContext.setCurrentView(VIEW_TYPES.OTHER)}
   />
@@ -927,14 +945,18 @@ ribbon={(viewContext) => (
 
 ```tsx
 export function MyItemEditor(props: PageProps) {
-  const [viewSetter, setViewSetter] = useState<((view: string) => void) | null>(null);
+  const [viewSetter, setViewSetter] = useState<((view: string) => void) | null>(
+    null,
+  );
   const [item, setItem] = useState<ItemWithDefinition<MyItemDefinition>>();
   const [isLoading, setIsLoading] = useState(true);
 
   // Effect to set the correct view after loading completes
   useEffect(() => {
     if (!isLoading && item && viewSetter) {
-      const correctView = !item?.definition?.message ? EDITOR_VIEW_TYPES.EMPTY : EDITOR_VIEW_TYPES.DEFAULT;   
+      const correctView = !item?.definition?.message
+        ? EDITOR_VIEW_TYPES.EMPTY
+        : EDITOR_VIEW_TYPES.DEFAULT;
       viewSetter(correctView);
     }
   }, [isLoading, item, viewSetter]);
@@ -955,6 +977,7 @@ export function MyItemEditor(props: PageProps) {
 ```
 
 #### Pattern 6: Multi-Panel Layout with ItemEditorDefaultView
+
 ```tsx
 {
   name: VIEW_TYPES.DEFAULT,
@@ -986,10 +1009,16 @@ export function MyItemEditor(props: PageProps) {
 
 ```tsx
 <div className="base-item-editor" data-testid="base-item-editor">
-  <div className="base-item-editor__ribbon" data-testid="base-item-editor-ribbon">
+  <div
+    className="base-item-editor__ribbon"
+    data-testid="base-item-editor-ribbon"
+  >
     {ribbon}
   </div>
-  <div className="base-item-editor__content" data-testid="base-item-editor-content">
+  <div
+    className="base-item-editor__content"
+    data-testid="base-item-editor-content"
+  >
     {children}
   </div>
 </div>
@@ -1016,13 +1045,14 @@ Add appropriate ARIA attributes to your content:
 
 ## 🔗 Related Documentation
 
-- **[Sample Implementation](../items/HelloWorldItem/README.md)** - HelloWorld sample item for guidance  
-- **[Project Structure](../Project_Structure.md)** - Overall toolkit organization  
+- **[Sample Implementation](../items/HelloWorldItem/README.md)** - HelloWorld sample item for guidance
+- **[Project Structure](../Project_Structure.md)** - Overall toolkit organization
 - **[Fabric Design Guidelines](https://learn.microsoft.com/en-us/fabric/)** - Official Fabric design system
 
 ## 💬 Support
 
 For questions or issues related to ItemEditor:
+
 1. Review the component documentation in this folder
 2. Check the [HelloWorld sample implementation](../../Workload/app/items/HelloWorldItem/HelloWorldItemEditor.tsx) for examples
 3. Consult the Fabric Extensibility team
@@ -1031,5 +1061,3 @@ For questions or issues related to ItemEditor:
 
 **Last Updated**: 2025-10-21  
 **Version**: 2.0.0 - View Registration System
-
-

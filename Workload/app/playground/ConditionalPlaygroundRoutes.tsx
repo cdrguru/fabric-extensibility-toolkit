@@ -12,30 +12,33 @@ let PlaygroundPanel: React.ComponentType<any> | null = null;
 let Provider: React.ComponentType<any> | null = null;
 
 // Only load playground components in development
-if (process.env.NODE_ENV === 'development' || process.env.ENABLE_PLAYGROUND === 'true') {
+if (
+  process.env.NODE_ENV === "development" ||
+  process.env.ENABLE_PLAYGROUND === "true"
+) {
   try {
     const playgroundModule = require("./ClientSDKPlayground/ClientSDKPlayground");
     ClientSDKPlayground = playgroundModule.ClientSDKPlayground;
     SamplePage = playgroundModule.SamplePage;
-    
+
     const storeModule = require("./ClientSDKPlayground/Store/Store");
     ClientSDKStore = storeModule.ClientSDKStore;
-    
+
     const dataModule = require("./DataPlayground/DataPlayground");
     DataPlayground = dataModule.DataPlayground;
-    
+
     const sharedStateModule = require("./ClientSDKPlayground/playgroundSharedStatePage");
     PlaygroundSharedStatePage = sharedStateModule.default;
-    
+
     const panelModule = require("./ClientSDKPlayground/PlaygroungPanel");
     PlaygroundPanel = panelModule.PlaygroundPanel;
-    
+
     const reactReduxModule = require("react-redux");
     Provider = reactReduxModule.Provider;
-    
-    console.log('🎮 Playground components loaded for development');
+
+    console.log("🎮 Playground components loaded for development");
   } catch (error) {
-    console.log('⚠️ Playground components not available:', error.message);
+    console.log("⚠️ Playground components not available:", error.message);
   }
 }
 
@@ -45,9 +48,19 @@ interface ConditionalPlaygroundRoutesProps extends PageProps {}
  * Conditionally rendered playground routes
  * Only includes routes when components are available (development mode)
  */
-export function ConditionalPlaygroundRoutes({ workloadClient }: ConditionalPlaygroundRoutesProps) {
+export function ConditionalPlaygroundRoutes({
+  workloadClient,
+}: ConditionalPlaygroundRoutesProps) {
   // If playground components aren't loaded, return null
-  if (!ClientSDKPlayground || !DataPlayground || !SamplePage || !PlaygroundSharedStatePage || !PlaygroundPanel || !Provider || !ClientSDKStore) {
+  if (
+    !ClientSDKPlayground ||
+    !DataPlayground ||
+    !SamplePage ||
+    !PlaygroundSharedStatePage ||
+    !PlaygroundPanel ||
+    !Provider ||
+    !ClientSDKStore
+  ) {
     return null;
   }
 

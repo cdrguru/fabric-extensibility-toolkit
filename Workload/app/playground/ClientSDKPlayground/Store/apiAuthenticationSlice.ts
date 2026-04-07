@@ -13,14 +13,14 @@ interface ApiAuthenticationState {
 }
 
 const initialState: ApiAuthenticationState = {
-  claimsForConditionalAccessPolicy: '',
-  additionalScopesToConsent: '',
-  token: '',
-  acquireTokenError: '',
-  serverUrl: '',
-  serverResponse: '',
-  httpMethod: '',
-  requestBody: '',
+  claimsForConditionalAccessPolicy: "",
+  additionalScopesToConsent: "",
+  token: "",
+  acquireTokenError: "",
+  serverUrl: "",
+  serverResponse: "",
+  httpMethod: "",
+  requestBody: "",
   requestDefaultConsent: false,
 };
 
@@ -28,7 +28,10 @@ export const apiAuthenticationSlice = createSlice({
   name: "apiAuthentication",
   initialState,
   reducers: {
-    setClaimsForConditionalAccessPolicy: (state, action: PayloadAction<string>) => {
+    setClaimsForConditionalAccessPolicy: (
+      state,
+      action: PayloadAction<string>,
+    ) => {
       state.claimsForConditionalAccessPolicy = action.payload;
     },
     setAdditionalScopesToConsent: (state, action: PayloadAction<string>) => {

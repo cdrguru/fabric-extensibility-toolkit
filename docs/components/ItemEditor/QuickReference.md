@@ -12,16 +12,18 @@ import { ItemEditor, RegisteredView } from "../../components/ItemEditor";
 export function MyItemEditor(props: PageProps) {
   const views: RegisteredView[] = [
     {
-      name: 'main',
-      component: <MyContent />
-    }
+      name: "main",
+      component: <MyContent />,
+    },
   ];
 
   return (
     <ItemEditor
       views={views}
       initialView="main"
-      ribbon={(viewContext) => <MyItemRibbon {...props} viewContext={viewContext} />}
+      ribbon={(viewContext) => (
+        <MyItemRibbon {...props} viewContext={viewContext} />
+      )}
     />
   );
 }
@@ -39,31 +41,31 @@ import { ItemEditor, ItemEditorProps } from "../../components/ItemEditor";
 
 ### ItemEditorProps
 
-| Prop | Type | Required | Description |
-|------|------|----------|-------------|
-| `views` | `RegisteredView[]` | ✅ | Array of view definitions |
-| `initialView` | `string` | ✅ | Initial view name to display |
-| `ribbon` | `(context: ViewContext) => ReactNode` | ✅ | Ribbon with ViewContext |
-| `className` | `string` | ❌ | Additional CSS class for container |
-| `contentClassName` | `string` | ❌ | Additional CSS class for content area |
+| Prop               | Type                                  | Required | Description                           |
+| ------------------ | ------------------------------------- | -------- | ------------------------------------- |
+| `views`            | `RegisteredView[]`                    | ✅       | Array of view definitions             |
+| `initialView`      | `string`                              | ✅       | Initial view name to display          |
+| `ribbon`           | `(context: ViewContext) => ReactNode` | ✅       | Ribbon with ViewContext               |
+| `className`        | `string`                              | ❌       | Additional CSS class for container    |
+| `contentClassName` | `string`                              | ❌       | Additional CSS class for content area |
 
 ### ViewContext Interface
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `currentView` | `string` | Name of currently active view |
-| `setCurrentView` | `(view: string) => void` | Navigate to different view |
-| `isDetailView` | `boolean` | True if current view is a detail view |
-| `goBack` | `() => void` | Navigate to previous view |
-| `viewHistory` | `string[]` | Stack of previous views |
+| Property         | Type                     | Description                           |
+| ---------------- | ------------------------ | ------------------------------------- |
+| `currentView`    | `string`                 | Name of currently active view         |
+| `setCurrentView` | `(view: string) => void` | Navigate to different view            |
+| `isDetailView`   | `boolean`                | True if current view is a detail view |
+| `goBack`         | `() => void`             | Navigate to previous view             |
+| `viewHistory`    | `string[]`               | Stack of previous views               |
 
 ### RegisteredView Interface
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `name` | `string` | ✅ | Unique identifier for the view |
-| `component` | `ReactNode` | ✅ | React component to render |
-| `isDetailView` | `boolean` | ❌ | Enables automatic back navigation |
+| Property       | Type        | Required | Description                       |
+| -------------- | ----------- | -------- | --------------------------------- |
+| `name`         | `string`    | ✅       | Unique identifier for the view    |
+| `component`    | `ReactNode` | ✅       | React component to render         |
+| `isDetailView` | `boolean`   | ❌       | Enables automatic back navigation |
 
 ## 📐 Layout Structure
 
@@ -84,20 +86,20 @@ import { ItemEditor, ItemEditorProps } from "../../components/ItemEditor";
 ```tsx
 const views: RegisteredView[] = [
   {
-    name: 'empty',
-    component: <MyEmptyView onStart={() => setCurrentView('main')} />
+    name: "empty",
+    component: <MyEmptyView onStart={() => setCurrentView("main")} />,
   },
   {
-    name: 'main',
-    component: <MyDefaultView item={item} />
-  }
+    name: "main",
+    component: <MyDefaultView item={item} />,
+  },
 ];
 
 <ItemEditor
   views={views}
-  initialView={item?.id ? 'main' : 'empty'}
+  initialView={item?.id ? "main" : "empty"}
   ribbon={(viewContext) => <MyRibbon viewContext={viewContext} />}
-/>
+/>;
 ```
 
 ### Pattern 2: With Loading State
@@ -130,21 +132,21 @@ return (
 ```tsx
 const views: RegisteredView[] = [
   {
-    name: 'main',
-    component: <MyMainView onViewDetail={(id) => setCurrentView('detail')} />
+    name: "main",
+    component: <MyMainView onViewDetail={(id) => setCurrentView("detail")} />,
   },
   {
-    name: 'detail',
+    name: "detail",
     component: <MyDetailView detailId={selectedId} />,
-    isDetailView: true  // ⭐ Auto back button
-  }
+    isDetailView: true, // ⭐ Auto back button
+  },
 ];
 
 <ItemEditor
   views={views}
   initialView="main"
   ribbon={(viewContext) => <MyRibbon viewContext={viewContext} />}
-/>
+/>;
 ```
 
 ## 🎨 View Types
@@ -154,21 +156,21 @@ const views: RegisteredView[] = [
 ```tsx
 const views = [
   {
-    name: 'empty',
+    name: "empty",
     component: (
       <div className="empty-state-container">
         <h2>Welcome!</h2>
         <Button onClick={onStart}>Get Started</Button>
       </div>
-    )
-  }
+    ),
+  },
 ];
 
 <ItemEditor
   views={views}
   initialView="empty"
   ribbon={(viewContext) => <MyRibbon viewContext={viewContext} />}
-/>
+/>;
 ```
 
 **Key Classes**: `empty-state-container`  
@@ -179,7 +181,7 @@ const views = [
 ```tsx
 const views = [
   {
-    name: 'main',
+    name: "main",
     component: (
       <div className="editor-default-view">
         <div className="main">
@@ -187,15 +189,15 @@ const views = [
           {/* Forms, cards, etc. */}
         </div>
       </div>
-    )
-  }
+    ),
+  },
 ];
 
 <ItemEditor
   views={views}
   initialView="main"
   ribbon={(viewContext) => <MyRibbon viewContext={viewContext} />}
-/>
+/>;
 ```
 
 **Key Classes**: `editor-default-view`, `main`
@@ -205,7 +207,7 @@ const views = [
 ```tsx
 const views = [
   {
-    name: 'detail',
+    name: "detail",
     component: (
       <div className="editor-detail-view">
         <div className="detail-content">
@@ -214,15 +216,15 @@ const views = [
         </div>
       </div>
     ),
-    isDetailView: true
-  }
+    isDetailView: true,
+  },
 ];
 
 <ItemEditor
   views={views}
   initialView="detail"
   ribbon={(viewContext) => <MyRibbon viewContext={viewContext} />}
-/>
+/>;
 ```
 
 **Key Classes**: `editor-detail-view`, `detail-content`
@@ -247,19 +249,19 @@ export function MyItemEditor(props: PageProps) {
 
   const views = [
     {
-      name: 'empty',
-      component: <MyItemEmpty onStart={() => setCurrentView('default')} />
+      name: "empty",
+      component: <MyItemEmpty onStart={() => setCurrentView("default")} />,
     },
     {
-      name: 'default', 
-      component: <MyItemDefault item={item} onUpdate={handleUpdate} />
-    }
+      name: "default",
+      component: <MyItemDefault item={item} onUpdate={handleUpdate} />,
+    },
   ];
 
   return (
     <ItemEditor
       views={views}
-      initialView={item?.definition?.state ? 'default' : 'empty'}
+      initialView={item?.definition?.state ? "default" : "empty"}
       ribbon={(viewContext) => (
         <MyItemRibbon
           {...props}
@@ -276,6 +278,7 @@ export function MyItemEditor(props: PageProps) {
 ## ✅ Best Practices
 
 ### Do's
+
 - ✅ Always use `ItemEditor` for item editors
 - ✅ Keep ribbon content minimal
 - ✅ Handle loading states before rendering
@@ -284,6 +287,7 @@ export function MyItemEditor(props: PageProps) {
 - ✅ Implement keyboard navigation
 
 ### Don'ts
+
 - ❌ Don't add scroll to outer container
 - ❌ Don't use fixed heights on content
 - ❌ Don't put multiple ribbons
@@ -337,7 +341,7 @@ export function MyItemEditor(props: PageProps) {
   &::-webkit-scrollbar {
     width: 8px;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: var(--colorNeutralStroke1);
   }
@@ -357,9 +361,9 @@ data-testid="base-item-editor-content" // Content area
 ### Example Test
 
 ```tsx
-const editor = screen.getByTestId('base-item-editor');
-const ribbon = screen.getByTestId('base-item-editor-ribbon');
-const content = screen.getByTestId('base-item-editor-content');
+const editor = screen.getByTestId("base-item-editor");
+const ribbon = screen.getByTestId("base-item-editor-ribbon");
+const content = screen.getByTestId("base-item-editor-content");
 
 expect(editor).toBeInTheDocument();
 expect(ribbon).toBeVisible();
@@ -370,7 +374,7 @@ expect(content).toBeVisible();
 
 - **[Full ItemEditor Documentation](./README.md)**
 - **[Ribbon](./Ribbon.md)** - Ribbon container
-- **[RibbonToolbar](./RibbonToolbar.md)** - Toolbar actions  
+- **[RibbonToolbar](./RibbonToolbar.md)** - Toolbar actions
 - **[ItemEditorView](./ItemEditorView.md)** - Default view layout
 - **[ItemEditorEmptyView](./ItemEditorEmptyView.md)** - Empty state layout
 - **[ItemEditorDetailView](./ItemEditorDetailView.md)** - Detail view layout
@@ -379,18 +383,21 @@ expect(content).toBeVisible();
 ## 🆘 Common Issues
 
 ### Issue: Content Not Scrolling
+
 **Solution**: Remove any `overflow: hidden` from parent elements
 
 ### Issue: Ribbon Not Fixed
+
 **Solution**: Ensure no `position` CSS overrides on ribbon container
 
 ### Issue: Content Behind Ribbon
+
 **Solution**: Don't use `position: absolute` on content
 
 ### Issue: Height Not Filling
+
 **Solution**: Ensure parent containers have proper height (`100%` or `100vh`)
 
 ---
 
 **Quick Tip**: Check `HelloWorldItemEditor.tsx` for a complete sample implementation!
-

@@ -12,7 +12,7 @@ The `ItemEditorView` component provides a standardized layout for default/main v
 ✅ **Scroll Management** - Proper overflow handling  
 ✅ **Accessibility Compliant** - Semantic HTML and ARIA support  
 ✅ **Flexible Content** - Supports any child components  
-✅ **TypeScript Support** - Full type definitions and IntelliSense  
+✅ **TypeScript Support** - Full type definitions and IntelliSense
 
 ## 🚀 Quick Start
 
@@ -50,7 +50,7 @@ export function MyItemDefaultView() {
           <p>Main configuration options...</p>
         </CardBody>
       </Card>
-      
+
       <Card>
         <CardHeader>
           <h3>Data</h3>
@@ -75,8 +75,8 @@ const views: RegisteredView[] = [
       <ItemEditorView>
         <MyItemContent />
       </ItemEditorView>
-    )
-  }
+    ),
+  },
 ];
 ```
 
@@ -84,11 +84,11 @@ const views: RegisteredView[] = [
 
 ### ItemEditorViewProps
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `children` | `ReactNode` | ✅ | Content to display in the view |
-| `className` | `string` | ❌ | Additional CSS classes |
-| `padding` | `'none' \| 'small' \| 'medium' \| 'large'` | ❌ | Padding size (default: 'medium') |
+| Property    | Type                                       | Required | Description                      |
+| ----------- | ------------------------------------------ | -------- | -------------------------------- |
+| `children`  | `ReactNode`                                | ✅       | Content to display in the view   |
+| `className` | `string`                                   | ❌       | Additional CSS classes           |
+| `padding`   | `'none' \| 'small' \| 'medium' \| 'large'` | ❌       | Padding size (default: 'medium') |
 
 ## 🎯 Key Features
 
@@ -115,9 +115,9 @@ padding: var(--spacingVerticalL) var(--spacingHorizontalXL);
 
 ```scss
 .base-item-editor-view {
-  overflow-y: auto;  // Scrolls when content overflows
-  flex: 1;           // Takes available space
-  min-height: 0;     // Allows flexbox shrinking
+  overflow-y: auto; // Scrolls when content overflows
+  flex: 1; // Takes available space
+  min-height: 0; // Allows flexbox shrinking
 }
 ```
 
@@ -188,7 +188,10 @@ export function MyItemView() {
             <Input value={name} onChange={(e) => setName(e.target.value)} />
           </Field>
           <Field label="Description">
-            <Textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </Field>
         </CardBody>
       </Card>
@@ -198,7 +201,10 @@ export function MyItemView() {
           <Text variant="title3">Advanced Settings</Text>
         </CardHeader>
         <CardBody>
-          <Switch checked={enabled} onChange={(e) => setEnabled(e.currentTarget.checked)} />
+          <Switch
+            checked={enabled}
+            onChange={(e) => setEnabled(e.currentTarget.checked)}
+          />
           <Label>Enable advanced features</Label>
         </CardBody>
       </Card>
@@ -215,18 +221,18 @@ export function MyItemForm() {
     <ItemEditorView>
       <div className="form-section">
         <Text variant="title2">Configuration</Text>
-        
+
         <Field label="Item Name" required>
           <Input value={name} onChange={handleNameChange} />
         </Field>
-        
+
         <Field label="Category">
           <Dropdown value={category} onOptionSelect={handleCategoryChange}>
             <Option value="type1">Type 1</Option>
             <Option value="type2">Type 2</Option>
           </Dropdown>
         </Field>
-        
+
         <Field label="Settings">
           <Checkbox checked={setting1} onChange={handleSetting1}>
             Enable Setting 1
@@ -247,7 +253,7 @@ export function MyItemForm() {
 export function FullWidthView() {
   return (
     <ItemEditorView padding="none">
-      <div style={{ padding: '0 24px' }}>
+      <div style={{ padding: "0 24px" }}>
         {/* Custom spacing control */}
         <MyCustomContent />
       </div>
@@ -262,7 +268,7 @@ export function FullWidthView() {
 export function SplitLayoutView() {
   return (
     <ItemEditorView>
-      <div style={{ display: 'flex', gap: '16px' }}>
+      <div style={{ display: "flex", gap: "16px" }}>
         <div style={{ flex: 1 }}>
           <Card>
             <CardBody>Left content</CardBody>
@@ -305,9 +311,7 @@ export function SplitLayoutView() {
 <ItemEditorView>
   <div role="main" aria-label="Item configuration">
     <h2 id="config-title">Configuration</h2>
-    <div aria-labelledby="config-title">
-      {/* configuration content */}
-    </div>
+    <div aria-labelledby="config-title">{/* configuration content */}</div>
   </div>
 </ItemEditorView>
 ```
@@ -356,7 +360,7 @@ export function SplitLayoutView() {
 ✅ **Test responsive behavior** on different screen sizes  
 ✅ **Use semantic HTML** for accessibility  
 ✅ **Keep content focused** - one main task per view  
-✅ **Test scroll behavior** with long content  
+✅ **Test scroll behavior** with long content
 
 ### ❌ Don'ts
 
@@ -364,7 +368,7 @@ export function SplitLayoutView() {
 ❌ **Don't use fixed heights** - let content flow naturally  
 ❌ **Don't override padding** unless using padding="none"  
 ❌ **Don't nest scrollable containers** - creates usability issues  
-❌ **Don't ignore responsive design** - test on mobile  
+❌ **Don't ignore responsive design** - test on mobile
 
 ## 🔗 Related Components
 
@@ -376,6 +380,6 @@ export function SplitLayoutView() {
 ## 📝 Examples
 
 For complete examples, see:
+
 - [Sample Implementation](../../Workload/app/items/HelloWorldItem/HelloWorldItemDefaultView.tsx) - HelloWorld reference implementation
 - [ItemEditor README](./README.md) - Integration patterns
-

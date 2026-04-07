@@ -1,7 +1,15 @@
 import { WorkloadClientAPI } from "@ms-fabric/workload-client";
 import { FabricPlatformClient } from "./FabricPlatformClient";
 import { SCOPE_PAIRS } from "./FabricPlatformScopes";
-import { BatchRequest, BatchResponse, BatchState, SessionRequest, SessionResponse, StatementRequest, StatementResponse } from "./FabricPlatformTypes";
+import {
+  BatchRequest,
+  BatchResponse,
+  BatchState,
+  SessionRequest,
+  SessionResponse,
+  StatementRequest,
+  StatementResponse,
+} from "./FabricPlatformTypes";
 
 // Livy API version
 const LIVY_API_VERSION = "2024-07-30";
@@ -9,16 +17,15 @@ const LIVY_API_VERSION = "2024-07-30";
 /**
  * API wrapper for Spark Livy operations in Fabric
  * Provides methods for managing Spark batch jobs and interactive sessions
- * 
+ *
  * Based on the official Fabric REST API:
  * https://learn.microsoft.com/en-us/rest/api/fabric/spark/spark-livy
- * 
+ *
  * Uses method-based scope selection:
  * - GET operations use read-only scopes
  * - POST/PUT/PATCH/DELETE operations use read-write scopes
  */
 export class SparkLivyClient extends FabricPlatformClient {
-  
   constructor(workloadClient: WorkloadClientAPI) {
     // Use scope pairs for method-based scope selection
     super(workloadClient, SCOPE_PAIRS.SPARK_LIVY);
@@ -38,7 +45,7 @@ export class SparkLivyClient extends FabricPlatformClient {
   async createBatch(
     workspaceId: string,
     lakehouseId: string,
-    batchRequest: BatchRequest
+    batchRequest: BatchRequest,
   ): Promise<BatchResponse> {
     try {
       const endpoint = `/workspaces/${workspaceId}/lakehouses/${lakehouseId}/livyApi/versions/${LIVY_API_VERSION}/batches`;
@@ -57,7 +64,7 @@ export class SparkLivyClient extends FabricPlatformClient {
    */
   async listBatches(
     workspaceId: string,
-    lakehouseId: string
+    lakehouseId: string,
   ): Promise<BatchResponse[]> {
     try {
       const endpoint = `/workspaces/${workspaceId}/lakehouses/${lakehouseId}/livyApi/versions/${LIVY_API_VERSION}/batches`;
@@ -78,7 +85,7 @@ export class SparkLivyClient extends FabricPlatformClient {
   async getBatch(
     workspaceId: string,
     lakehouseId: string,
-    batchId: string
+    batchId: string,
   ): Promise<BatchResponse> {
     try {
       const endpoint = `/workspaces/${workspaceId}/lakehouses/${lakehouseId}/livyApi/versions/${LIVY_API_VERSION}/batches/${batchId}`;
@@ -99,7 +106,7 @@ export class SparkLivyClient extends FabricPlatformClient {
   async deleteBatch(
     workspaceId: string,
     lakehouseId: string,
-    batchId: string
+    batchId: string,
   ): Promise<void> {
     try {
       const endpoint = `/workspaces/${workspaceId}/lakehouses/${lakehouseId}/livyApi/versions/${LIVY_API_VERSION}/batches/${batchId}`;
@@ -120,7 +127,7 @@ export class SparkLivyClient extends FabricPlatformClient {
   async cancelBatch(
     workspaceId: string,
     lakehouseId: string,
-    batchId: string
+    batchId: string,
   ): Promise<BatchResponse> {
     try {
       const endpoint = `/workspaces/${workspaceId}/lakehouses/${lakehouseId}/livyApi/versions/${LIVY_API_VERSION}/batches/${batchId}/state`;
@@ -145,23 +152,25 @@ export class SparkLivyClient extends FabricPlatformClient {
     lakehouseId: string,
     batchId: string,
     from?: number,
-    size?: number
-  ): Promise<{ id: string, log: string[] }> {
+    size?: number,
+  ): Promise<{ id: string; log: string[] }> {
     try {
       let endpoint = `/workspaces/${workspaceId}/lakehouses/${lakehouseId}/livyApi/versions/${LIVY_API_VERSION}/batches/${batchId}/log`;
-      
+
       // Add optional query parameters if provided
       const params = new URLSearchParams();
       if (from !== undefined) params.append("from", from.toString());
       if (size !== undefined) params.append("size", size.toString());
-      
+
       if (params.toString()) {
         endpoint += `?${params.toString()}`;
       }
-      
-      return this.get<{ id: string, log: string[] }>(endpoint);
+
+      return this.get<{ id: string; log: string[] }>(endpoint);
     } catch (error: any) {
-      console.error(`Error getting logs for batch job ${batchId}: ${error.message}`);
+      console.error(
+        `Error getting logs for batch job ${batchId}: ${error.message}`,
+      );
       throw error;
     }
   }
@@ -176,13 +185,15 @@ export class SparkLivyClient extends FabricPlatformClient {
   async getBatchState(
     workspaceId: string,
     lakehouseId: string,
-    batchId: string
-  ): Promise<{ id: string, state: BatchState }> {
+    batchId: string,
+  ): Promise<{ id: string; state: BatchState }> {
     try {
       const endpoint = `/workspaces/${workspaceId}/lakehouses/${lakehouseId}/livyApi/versions/${LIVY_API_VERSION}/batches/${batchId}/state`;
-      return this.get<{ id: string, state: BatchState }>(endpoint);
+      return this.get<{ id: string; state: BatchState }>(endpoint);
     } catch (error: any) {
-      console.error(`Error getting state for batch job ${batchId}: ${error.message}`);
+      console.error(
+        `Error getting state for batch job ${batchId}: ${error.message}`,
+      );
       throw error;
     }
   }
@@ -201,7 +212,7 @@ export class SparkLivyClient extends FabricPlatformClient {
   async createSession(
     workspaceId: string,
     lakehouseId: string,
-    sessionRequest: SessionRequest
+    sessionRequest: SessionRequest,
   ): Promise<SessionResponse> {
     try {
       const endpoint = `/workspaces/${workspaceId}/lakehouses/${lakehouseId}/livyApi/versions/${LIVY_API_VERSION}/sessions`;
@@ -220,7 +231,7 @@ export class SparkLivyClient extends FabricPlatformClient {
    */
   async listSessions(
     workspaceId: string,
-    lakehouseId: string
+    lakehouseId: string,
   ): Promise<SessionResponse[]> {
     try {
       const endpoint = `/workspaces/${workspaceId}/lakehouses/${lakehouseId}/livyApi/versions/${LIVY_API_VERSION}/sessions`;
@@ -241,7 +252,7 @@ export class SparkLivyClient extends FabricPlatformClient {
   async getSession(
     workspaceId: string,
     lakehouseId: string,
-    sessionId: string
+    sessionId: string,
   ): Promise<SessionResponse> {
     try {
       const endpoint = `/workspaces/${workspaceId}/lakehouses/${lakehouseId}/livyApi/versions/${LIVY_API_VERSION}/sessions/${sessionId}`;
@@ -262,7 +273,7 @@ export class SparkLivyClient extends FabricPlatformClient {
   async deleteSession(
     workspaceId: string,
     lakehouseId: string,
-    sessionId: string
+    sessionId: string,
   ): Promise<void> {
     try {
       const endpoint = `/workspaces/${workspaceId}/lakehouses/${lakehouseId}/livyApi/versions/${LIVY_API_VERSION}/sessions/${sessionId}`;
@@ -283,7 +294,7 @@ export class SparkLivyClient extends FabricPlatformClient {
   async cancelSession(
     workspaceId: string,
     lakehouseId: string,
-    sessionId: string
+    sessionId: string,
   ): Promise<SessionResponse> {
     try {
       const endpoint = `/workspaces/${workspaceId}/lakehouses/${lakehouseId}/livyApi/versions/${LIVY_API_VERSION}/sessions/${sessionId}/state`;
@@ -310,13 +321,15 @@ export class SparkLivyClient extends FabricPlatformClient {
     workspaceId: string,
     lakehouseId: string,
     sessionId: string,
-    statementRequest: StatementRequest
+    statementRequest: StatementRequest,
   ): Promise<StatementResponse> {
     try {
       const endpoint = `/workspaces/${workspaceId}/lakehouses/${lakehouseId}/livyApi/versions/${LIVY_API_VERSION}/sessions/${sessionId}/statements`;
       return this.post<StatementResponse>(endpoint, statementRequest);
     } catch (error: any) {
-      console.error(`Error submitting statement to session ${sessionId}: ${error.message}`);
+      console.error(
+        `Error submitting statement to session ${sessionId}: ${error.message}`,
+      );
       throw error;
     }
   }
@@ -333,13 +346,15 @@ export class SparkLivyClient extends FabricPlatformClient {
     workspaceId: string,
     lakehouseId: string,
     sessionId: string,
-    statementId: string
+    statementId: string,
   ): Promise<StatementResponse> {
     try {
       const endpoint = `/workspaces/${workspaceId}/lakehouses/${lakehouseId}/livyApi/versions/${LIVY_API_VERSION}/sessions/${sessionId}/statements/${statementId}`;
       return this.get<StatementResponse>(endpoint);
     } catch (error: any) {
-      console.error(`Error getting statement ${statementId} in session ${sessionId}: ${error.message}`);
+      console.error(
+        `Error getting statement ${statementId} in session ${sessionId}: ${error.message}`,
+      );
       throw error;
     }
   }
@@ -354,13 +369,15 @@ export class SparkLivyClient extends FabricPlatformClient {
   async listStatements(
     workspaceId: string,
     lakehouseId: string,
-    sessionId: string
+    sessionId: string,
   ): Promise<StatementResponse[]> {
     try {
       const endpoint = `/workspaces/${workspaceId}/lakehouses/${lakehouseId}/livyApi/versions/${LIVY_API_VERSION}/sessions/${sessionId}/statements`;
       return this.get<StatementResponse[]>(endpoint);
     } catch (error: any) {
-      console.error(`Error listing statements in session ${sessionId}: ${error.message}`);
+      console.error(
+        `Error listing statements in session ${sessionId}: ${error.message}`,
+      );
       throw error;
     }
   }

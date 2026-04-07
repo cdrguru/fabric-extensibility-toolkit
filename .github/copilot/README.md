@@ -11,21 +11,25 @@ Activate the Fabric AI Agent in GitHub Copilot by using:
 ## Examples
 
 ### Workload Development
+
 ```
 @fabric How do I create a new custom item type for document processing?
 ```
 
 ### Authentication
+
 ```
 @fabric Show me how to implement OAuth scope selection in my API client
 ```
 
 ### Platform Integration
+
 ```
 @fabric What's the best way to integrate my workload with OneLake for data storage?
 ```
 
 ### Troubleshooting
+
 ```
 @fabric My workload authentication is failing, how do I debug this?
 ```

@@ -26,16 +26,16 @@ The API wrappers are built on top of the `@ms-fabric/workload-client` SDK and pr
 
 ### Controllers
 
-| Controller | Purpose | Key Features |
-|------------|---------|--------------|
-| `WorkspaceController` | Workspace management | CRUD operations, role assignments, capacity management |
-| `ItemController` | Item management | CRUD operations, definition management, search capabilities |
-| `FolderController` | Folder hierarchy | CRUD operations, path utilities, hierarchy management |
-| `CapacityController` | Capacity management | Capacity info, workload management, workspace assignments |
-| `JobSchedulerController` | Job scheduling | Schedule management, job execution, status tracking |
-| `OneLakeShortcutController` | OneLake shortcuts | Shortcut creation/management for external data sources |
-| `LongRunningOperationsController` | Operation tracking | Progress monitoring, polling utilities |
-| `SparkLivyController` | Spark Livy operations | Batch jobs, interactive sessions, statement management |
+| Controller                        | Purpose               | Key Features                                                |
+| --------------------------------- | --------------------- | ----------------------------------------------------------- |
+| `WorkspaceController`             | Workspace management  | CRUD operations, role assignments, capacity management      |
+| `ItemController`                  | Item management       | CRUD operations, definition management, search capabilities |
+| `FolderController`                | Folder hierarchy      | CRUD operations, path utilities, hierarchy management       |
+| `CapacityController`              | Capacity management   | Capacity info, workload management, workspace assignments   |
+| `JobSchedulerController`          | Job scheduling        | Schedule management, job execution, status tracking         |
+| `OneLakeShortcutController`       | OneLake shortcuts     | Shortcut creation/management for external data sources      |
+| `LongRunningOperationsController` | Operation tracking    | Progress monitoring, polling utilities                      |
+| `SparkLivyController`             | Spark Livy operations | Batch jobs, interactive sessions, statement management      |
 
 ### Authentication Methods
 
@@ -61,7 +61,7 @@ Centralized scope management ensures proper permissions for each controller:
 ### User Token Authentication (Default)
 
 ```typescript
-import { FabricPlatformAPIClient, WorkloadClientAPI } from './controller';
+import { FabricPlatformAPIClient, WorkloadClientAPI } from "./controller";
 
 // Initialize the workload client (typically provided by Fabric platform)
 const workloadClient = new WorkloadClientAPI();
@@ -75,8 +75,8 @@ const workspace = await fabricAPI.workspaces.getWorkspace(workspaceId); // Uses 
 
 // POST/PUT/DELETE operations automatically use read-write scopes
 const newWorkspace = await fabricAPI.workspaces.createWorkspace({
-  displayName: 'New Workspace',
-  description: 'Created with write scopes'
+  displayName: "New Workspace",
+  description: "Created with write scopes",
 }); // Uses write scopes
 ```
 
@@ -92,13 +92,13 @@ This provides better security by requesting minimal permissions for read-only op
 ### Service Principal Authentication
 
 ```typescript
-import { FabricPlatformAPIClient } from './controller';
+import { FabricPlatformAPIClient } from "./controller";
 
 // Create client with service principal authentication
 const fabricAPI = FabricPlatformAPIClient.createWithServicePrincipal(
-  'your-client-id',
-  'your-client-secret',
-  'your-tenant-id'
+  "your-client-id",
+  "your-client-secret",
+  "your-tenant-id",
 );
 
 // Use the APIs (same interface as user token auth, with automatic scope selection)
@@ -109,10 +109,11 @@ const newItem = await fabricAPI.items.createItem(workspaceId, itemRequest); // U
 ### Custom Token Authentication
 
 ```typescript
-import { FabricPlatformAPIClient } from './controller';
+import { FabricPlatformAPIClient } from "./controller";
 
 // Create client with pre-acquired token
-const fabricAPI = FabricPlatformAPIClient.createWithCustomToken('your-access-token');
+const fabricAPI =
+  FabricPlatformAPIClient.createWithCustomToken("your-access-token");
 
 // Use the APIs
 const workspaces = await fabricAPI.workspaces.getAllWorkspaces();
@@ -135,7 +136,7 @@ const items = await fabricAPI.items.getAllItems(workspaceId);
 #### With User Token Authentication
 
 ```typescript
-import { WorkspaceController, WorkloadClientAPI } from './controller';
+import { WorkspaceController, WorkloadClientAPI } from "./controller";
 
 const workloadClient = new WorkloadClientAPI();
 const workspaceController = new WorkspaceController(workloadClient);
@@ -145,21 +146,21 @@ const workspace = await workspaceController.getWorkspace(workspaceId);
 
 // Create a new workspace
 const newWorkspace = await workspaceController.createWorkspace({
-  displayName: 'My New Workspace',
-  description: 'A workspace for my project'
+  displayName: "My New Workspace",
+  description: "A workspace for my project",
 });
 ```
 
 #### With Service Principal Authentication
 
 ```typescript
-import { SparkLivyController, FabricPlatformClient } from './controller';
+import { SparkLivyController, FabricPlatformClient } from "./controller";
 
 // Create authentication config
 const authConfig = FabricPlatformClient.createServicePrincipalAuth(
-  'client-id',
-  'client-secret', 
-  'tenant-id'
+  "client-id",
+  "client-secret",
+  "tenant-id",
 );
 
 // Create controller with service principal auth
@@ -182,8 +183,8 @@ const workspace = await fabricAPI.workspaces.getWorkspace(workspaceId);
 
 // Update workspace
 await fabricAPI.workspaces.updateWorkspace(workspaceId, {
-  displayName: 'Updated Name',
-  description: 'Updated description'
+  displayName: "Updated Name",
+  description: "Updated description",
 });
 
 // Assign workspace to capacity
@@ -197,16 +198,16 @@ await fabricAPI.workspaces.assignToCapacity(workspaceId, capacityId);
 const items = await fabricAPI.items.getAllItems(workspaceId);
 
 // Search items by name
-const reports = await fabricAPI.items.searchByName(workspaceId, 'Sales Report');
+const reports = await fabricAPI.items.searchByName(workspaceId, "Sales Report");
 
 // Get items by type
-const notebooks = await fabricAPI.items.getItemsByType(workspaceId, 'Notebook');
+const notebooks = await fabricAPI.items.getItemsByType(workspaceId, "Notebook");
 
 // Create new item
 const newItem = await fabricAPI.items.createItem(workspaceId, {
-  displayName: 'My Report',
-  type: 'Report',
-  description: 'Monthly sales report'
+  displayName: "My Report",
+  type: "Report",
+  description: "Monthly sales report",
 });
 ```
 
@@ -215,26 +216,29 @@ const newItem = await fabricAPI.items.createItem(workspaceId, {
 ```typescript
 // Create a schedule
 const schedule = await fabricAPI.scheduler.createItemSchedule(
-  workspaceId, 
-  itemId, 
-  'Refresh',
+  workspaceId,
+  itemId,
+  "Refresh",
   {
     enabled: true,
     configuration: {
-      type: 'Daily',
-      startDateTime: '2024-01-01T09:00:00Z',
-      endDateTime: '2024-12-31T09:00:00Z',
-      localTimeZoneId: 'UTC',
-      times: ['09:00:00']
-    }
-  }
+      type: "Daily",
+      startDateTime: "2024-01-01T09:00:00Z",
+      endDateTime: "2024-12-31T09:00:00Z",
+      localTimeZoneId: "UTC",
+      times: ["09:00:00"],
+    },
+  },
 );
 
 // Run job on-demand
-await fabricAPI.scheduler.runOnDemandItemJob(workspaceId, itemId, 'Refresh');
+await fabricAPI.scheduler.runOnDemandItemJob(workspaceId, itemId, "Refresh");
 
 // Get job instances
-const jobInstances = await fabricAPI.scheduler.getAllItemJobInstances(workspaceId, itemId);
+const jobInstances = await fabricAPI.scheduler.getAllItemJobInstances(
+  workspaceId,
+  itemId,
+);
 ```
 
 ### Spark Livy Operations
@@ -242,51 +246,67 @@ const jobInstances = await fabricAPI.scheduler.getAllItemJobInstances(workspaceI
 ```typescript
 // Create a Spark batch job
 const batchRequest = {
-  name: 'My Batch Job',
-  file: 'abfss://workspace@onelake.dfs.fabric.microsoft.com/lakehouse/Files/my_script.py',
-  args: ['arg1', 'arg2'],
+  name: "My Batch Job",
+  file: "abfss://workspace@onelake.dfs.fabric.microsoft.com/lakehouse/Files/my_script.py",
+  args: ["arg1", "arg2"],
   conf: {
-    'spark.executor.memory': '2g',
-    'spark.executor.cores': '2'
-  }
+    "spark.executor.memory": "2g",
+    "spark.executor.cores": "2",
+  },
 };
 
-const batch = await fabricAPI.sparkLivy.createBatch(workspaceId, lakehouseId, batchRequest);
+const batch = await fabricAPI.sparkLivy.createBatch(
+  workspaceId,
+  lakehouseId,
+  batchRequest,
+);
 
 // List all batch jobs
 const batches = await fabricAPI.sparkLivy.listBatches(workspaceId, lakehouseId);
 
 // Get batch job status
-const batchStatus = await fabricAPI.sparkLivy.getBatch(workspaceId, lakehouseId, batch.id);
+const batchStatus = await fabricAPI.sparkLivy.getBatch(
+  workspaceId,
+  lakehouseId,
+  batch.id,
+);
 
 // Get batch job logs
-const logs = await fabricAPI.sparkLivy.getBatchLogs(workspaceId, lakehouseId, batch.id);
+const logs = await fabricAPI.sparkLivy.getBatchLogs(
+  workspaceId,
+  lakehouseId,
+  batch.id,
+);
 
 // Create an interactive Spark session
 const sessionRequest = {
-  name: 'My Interactive Session',
-  kind: 'pyspark',
+  name: "My Interactive Session",
+  kind: "pyspark",
   conf: {
-    'spark.executor.memory': '1g'
-  }
+    "spark.executor.memory": "1g",
+  },
 };
 
-const session = await fabricAPI.sparkLivy.createSession(workspaceId, lakehouseId, sessionRequest);
+const session = await fabricAPI.sparkLivy.createSession(
+  workspaceId,
+  lakehouseId,
+  sessionRequest,
+);
 
 // Submit code to session
 const statement = await fabricAPI.sparkLivy.submitStatement(
-  workspaceId, 
-  lakehouseId, 
-  session.id, 
-  { code: 'df = spark.read.table("my_table")\ndf.show()' }
+  workspaceId,
+  lakehouseId,
+  session.id,
+  { code: 'df = spark.read.table("my_table")\ndf.show()' },
 );
 
 // Get statement result
 const result = await fabricAPI.sparkLivy.getStatement(
-  workspaceId, 
-  lakehouseId, 
-  session.id, 
-  statement.id
+  workspaceId,
+  lakehouseId,
+  session.id,
+  statement.id,
 );
 ```
 
@@ -297,21 +317,21 @@ const result = await fabricAPI.sparkLivy.getStatement(
 const shortcut = await fabricAPI.shortcuts.createOneLakeShortcut(
   workspaceId,
   lakehouseId,
-  'shared_data',
-  '/Files/shared_data',
+  "shared_data",
+  "/Files/shared_data",
   sourceWorkspaceId,
   sourceLakehouseId,
-  '/Files/source_data'
+  "/Files/source_data",
 );
 
 // Create ADLS Gen2 shortcut
 const adlsShortcut = await fabricAPI.shortcuts.createAdlsGen2Shortcut(
   workspaceId,
   lakehouseId,
-  'external_data',
-  '/Files/external_data',
+  "external_data",
+  "/Files/external_data",
   adlsConnectionId,
-  '/container/folder'
+  "/container/folder",
 );
 ```
 
@@ -326,7 +346,7 @@ const result = await fabricAPI.operations.trackProgress(
   operationId,
   (progress, status) => {
     console.log(`Operation ${status}: ${progress}% complete`);
-  }
+  },
 );
 
 // Wait for multiple operations
@@ -343,7 +363,10 @@ const capacities = await fabricAPI.capacities.getAllCapacities();
 const activeCapacities = await fabricAPI.capacities.getActiveCapacities();
 
 // Enable workload on capacity
-await fabricAPI.capacities.enableCapacityWorkload(capacityId, 'DataEngineering');
+await fabricAPI.capacities.enableCapacityWorkload(
+  capacityId,
+  "DataEngineering",
+);
 
 // Assign workspace to capacity
 await fabricAPI.capacities.assignWorkspaceToCapacity(capacityId, workspaceId);
@@ -356,16 +379,16 @@ await fabricAPI.capacities.assignWorkspaceToCapacity(capacityId, workspaceId);
 You can update authentication configuration at runtime for individual controllers:
 
 ```typescript
-import { FabricPlatformClient } from './controller';
+import { FabricPlatformClient } from "./controller";
 
 // Create controller with user token
 const workspaceController = new WorkspaceController(workloadClient);
 
 // Switch to service principal authentication
 const authConfig = FabricPlatformClient.createServicePrincipalAuth(
-  'client-id',
-  'client-secret',
-  'tenant-id'
+  "client-id",
+  "client-secret",
+  "tenant-id",
 );
 
 workspaceController.updateAuthenticationConfig(authConfig);
@@ -379,16 +402,16 @@ const workspaces = await workspaceController.getAllWorkspaces();
 ```typescript
 // Check authentication method
 if (controller.isServicePrincipalAuth()) {
-  console.log('Using service principal authentication');
+  console.log("Using service principal authentication");
 } else if (controller.isUserTokenAuth()) {
-  console.log('Using user token authentication');
+  console.log("Using user token authentication");
 }
 ```
 
 ### Custom OAuth Scopes
 
 ```typescript
-import { SCOPE_PAIRS, FABRIC_BASE_SCOPES } from './controller';
+import { SCOPE_PAIRS, FABRIC_BASE_SCOPES } from "./controller";
 
 // Use predefined scope pairs for method-based selection
 const itemController = new ItemController(workloadClient, SCOPE_PAIRS.ITEM);
@@ -397,8 +420,8 @@ const itemController = new ItemController(workloadClient, SCOPE_PAIRS.ITEM);
 const customScopes = [
   FABRIC_BASE_SCOPES.ITEM_READWRITE,
   FABRIC_BASE_SCOPES.LAKEHOUSE_EXECUTE,
-  FABRIC_BASE_SCOPES.CODE_ACCESS_STORAGE
-].join(' ');
+  FABRIC_BASE_SCOPES.CODE_ACCESS_STORAGE,
+].join(" ");
 
 const customController = new SparkLivyController(workloadClient, customScopes);
 ```
@@ -406,7 +429,7 @@ const customController = new SparkLivyController(workloadClient, customScopes);
 ### Controlling Scope Selection Behavior
 
 ```typescript
-import { ItemClient, SCOPE_PAIRS } from './controller';
+import { ItemClient, SCOPE_PAIRS } from "./controller";
 
 // Create client with method-based scope selection (default behavior)
 const itemClient = new ItemClient(workloadClient); // Uses SCOPE_PAIRS.ITEM
@@ -430,11 +453,11 @@ try {
   const workspace = await fabricAPI.workspaces.getWorkspace(workspaceId);
 } catch (error) {
   if (error.status === 404) {
-    console.log('Workspace not found');
+    console.log("Workspace not found");
   } else if (error.status === 403) {
-    console.log('Access denied');
+    console.log("Access denied");
   } else {
-    console.error('API Error:', error.message);
+    console.error("API Error:", error.message);
   }
 }
 ```
@@ -461,9 +484,10 @@ do {
 All API responses are strongly typed:
 
 ```typescript
-import { Workspace, Item, Capacity } from './controller';
+import { Workspace, Item, Capacity } from "./controller";
 
-const workspace: Workspace = await fabricAPI.workspaces.getWorkspace(workspaceId);
+const workspace: Workspace =
+  await fabricAPI.workspaces.getWorkspace(workspaceId);
 const items: Item[] = await fabricAPI.items.getAllItems(workspaceId);
 const capacity: Capacity = await fabricAPI.capacities.getCapacity(capacityId);
 ```
@@ -488,9 +512,9 @@ When adding new functionality that requires additional permissions:
 2. Create or update controller-specific scope combinations in `CONTROLLER_SCOPES`
 3. Use the centralized scopes in your controller constructor
 4. Document the required permissions in your controller's JSDoc comments
-3. Add the controller to `FabricPlatformAPIClient.ts`
-4. Export from `index.ts`
-5. Update this README with examples
+5. Add the controller to `FabricPlatformAPIClient.ts`
+6. Export from `index.ts`
+7. Update this README with examples
 
 ## API Reference
 

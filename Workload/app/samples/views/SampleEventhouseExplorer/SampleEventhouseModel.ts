@@ -1,11 +1,11 @@
 import { Item } from "../../../clients/FabricPlatformTypes";
 
-/* 
+/*
  * Represents a reference to a fabric item.
- * This interface extends ItemLikeV2 to include additional metadata.    
+ * This interface extends ItemLikeV2 to include additional metadata.
  */
 export interface EventhouseItemMetadata extends Item {
-    properties: EventhouseItemPropertiesMetadata;
+  properties: EventhouseItemPropertiesMetadata;
 }
 
 /**
@@ -13,7 +13,7 @@ export interface EventhouseItemMetadata extends Item {
  * This interface extends GenericItem and includes properties for item type, display name, description, and metadata.
  */
 export interface EventhouseItemPropertiesMetadata {
-    queryServiceUri: string;
-    ingestionServiceUri: string;
-    databasesItemIds: string[]
+  queryServiceUri: string;
+  ingestionServiceUri: string;
+  databasesItemIds: string[];
 }

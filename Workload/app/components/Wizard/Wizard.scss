@@ -53,8 +53,8 @@
   // Left panel - Steps navigation
   &__steps-panel {
     width: 180px;
-    background-color: #FAFAFA;
-    border-right: 1px solid #E1DFDD;
+    background-color: #fafafa;
+    border-right: 1px solid #e1dfdd;
     padding: 12px;
     display: flex;
     flex-direction: column;
@@ -69,12 +69,12 @@
     align-items: flex-start;
     gap: 12px;
     max-width: 280px;
-    
+
     &--clickable {
       cursor: pointer;
       opacity: 1;
     }
-    
+
     &--disabled {
       cursor: default;
       opacity: 0.6;
@@ -91,15 +91,15 @@
     justify-content: center;
     flex-shrink: 0;
     margin-top: 2px;
-    
+
     // Step states
     &--completed,
     &--current {
       background-color: #018574;
     }
-    
+
     &--upcoming {
-      background-color: #E1DFDD;
+      background-color: #e1dfdd;
     }
   }
 
@@ -116,12 +116,12 @@
   // Step number text
   &__step-number {
     line-height: 1;
-    
+
     &--completed,
     &--current {
       color: white;
     }
-    
+
     &--upcoming {
       color: #616161;
     }
@@ -143,12 +143,12 @@
     margin-bottom: 4px;
     width: 100%;
     word-wrap: break-word;
-    
+
     &--current {
       color: #018574;
       font-weight: 600;
     }
-    
+
     &--normal {
       color: #323130;
       font-weight: 500;
@@ -171,13 +171,13 @@
     margin-left: 11px;
     margin-top: -20px;
     margin-bottom: 0;
-    
+
     &--completed {
-      background-color: #107C10;
+      background-color: #107c10;
     }
-    
+
     &--upcoming {
-      background-color: #E1DFDD;
+      background-color: #e1dfdd;
     }
   }
 
@@ -231,23 +231,23 @@
 @media (max-width: 768px) {
   .wizard-control {
     min-width: 100%; // Fill available width on mobile
-    
+
     &__steps-panel {
       width: 140px;
       padding: 8px;
     }
-    
+
     &__step {
       gap: 8px;
     }
-    
+
     &__content-panel {
       padding: 8px;
     }
 
     &__navigation {
       padding: 8px 12px;
-      
+
       &-right {
         gap: 8px;
       }
@@ -261,11 +261,11 @@
     &__steps-panel {
       border-right: 2px solid;
     }
-    
+
     &__step-circle {
       border: 2px solid;
     }
-    
+
     &__footer {
       border-top: 2px solid;
     }
@@ -283,13 +283,13 @@
 // Animation for step transitions
 .wizard-control__content-panel {
   position: relative;
-  
+
   // Fade transition for step content
   & > * {
     opacity: 1;
     transition: opacity 0.25s ease;
   }
-  
+
   &.transitioning > * {
     opacity: 0;
   }
@@ -299,11 +299,11 @@
 .wizard-control__step--loading {
   .wizard-control__step-circle {
     background: transparent;
-    border: 2px solid #E1DFDD;
+    border: 2px solid #e1dfdd;
     position: relative;
-    
+
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       width: 16px;
       height: 16px;
@@ -316,6 +316,10 @@
 }
 
 @keyframes wizard-spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

@@ -8,9 +8,9 @@ interface UIComponentsState {
 }
 
 const initialState: UIComponentsState = {
-  sampleInput: '',
+  sampleInput: "",
   checkboxChecked: false,
-  selectedRadio: 'option1',
+  selectedRadio: "option1",
   switchChecked: false,
 };
 
@@ -33,5 +33,10 @@ export const uiComponentsSlice = createSlice({
   },
 });
 
-export const { setSampleInput, setCheckboxChecked, setSelectedRadio, setSwitchChecked } = uiComponentsSlice.actions;
+export const {
+  setSampleInput,
+  setCheckboxChecked,
+  setSelectedRadio,
+  setSwitchChecked,
+} = uiComponentsSlice.actions;
 export default uiComponentsSlice.reducer;

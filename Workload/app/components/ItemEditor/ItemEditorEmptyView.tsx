@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 import { Stack, IStackTokens } from "@fluentui/react";
 import { Text, Button } from "@fluentui/react-components";
 import { ItemEditorDefaultView } from "./ItemEditorDefaultView";
-import "./ItemEditor.scss"
+import "./ItemEditor.scss";
 
 /**
  * Task/Step interface for onboarding actions
@@ -44,14 +44,14 @@ export interface ItemEditorEmptyViewProps {
 
 /**
  * ItemEditorEmptyView Component
- * 
+ *
  * A reusable empty state component following Microsoft Fabric UX System guidelines.
  * Provides a consistent onboarding experience with customizable tasks.
- * 
+ *
  * **Built on ItemEditorView**: This component uses ItemEditorView internally,
  * displaying the empty state content in the center panel. This ensures consistent
  * layout and styling with other view components.
- * 
+ *
  * ## Design Principles
  * - Clear visual hierarchy with title, description, and actions
  * - Optional illustration to reduce cognitive load
@@ -59,7 +59,7 @@ export interface ItemEditorEmptyViewProps {
  * - Responsive design with proper spacing tokens
  * - Accessibility-first with proper ARIA labels and semantic HTML
  * - Consistent layout using ItemEditorView architecture
- * 
+ *
  * ## Usage Example
  *
  * ```tsx
@@ -80,7 +80,7 @@ export interface ItemEditorEmptyViewProps {
  *     appearance: 'secondary'
  *   }
  * ];
- * 
+ *
  * <ItemEditorEmptyView
  *   title="Welcome to MyItem!"
  *   description="Get started by completing the tasks below"
@@ -89,14 +89,14 @@ export interface ItemEditorEmptyViewProps {
  *   tasks={tasks}
  * />
  * ```
- * 
+ *
  * ## Fabric UX Compliance
  * - Uses Fabric design tokens for spacing, colors, typography
  * - Minimum 32px touch targets for all buttons
  * - Proper color contrast (WCAG 2.1 AA)
  * - Responsive layout with max-width constraint
  * - Semantic HTML structure
- * 
+ *
  * @see {@link https://react.fluentui.dev/} Fluent UI v9 Documentation
  * @see {@link ../../../docs/components/ItemEditor/ItemEditorEmptyView.md} - Complete ItemEditorEmptyView documentation
  * @see {@link ../../../docs/components/ItemEditor.md} - ItemEditor integration patterns
@@ -109,24 +109,23 @@ export function ItemEditorEmptyView({
   tasks = [],
   customContent,
   className = "",
-  maxWidth = 600
+  maxWidth = 600,
 }: ItemEditorEmptyViewProps) {
-  
   // Stack tokens for consistent spacing using Fabric design tokens
   const containerTokens: IStackTokens = { childrenGap: 24 };
   const headerTokens: IStackTokens = { childrenGap: 8 };
 
   // Build the empty state content
   const emptyStateContent = (
-    <Stack 
+    <Stack
       className={`item-editor-view-empty ${className}`.trim()}
-      horizontalAlign="center" 
+      horizontalAlign="center"
       role="main"
       aria-label="Empty state"
     >
-      <Stack 
-        className="empty-state-content" 
-        tokens={containerTokens} 
+      <Stack
+        className="empty-state-content"
+        tokens={containerTokens}
         horizontalAlign="center"
         style={{ maxWidth: `${maxWidth}px` }}
       >
@@ -143,35 +142,33 @@ export function ItemEditorEmptyView({
         )}
 
         {/* Text Content Section */}
-        <Stack 
-          className="empty-state-text-container" 
-          tokens={headerTokens} 
+        <Stack
+          className="empty-state-text-container"
+          tokens={headerTokens}
           horizontalAlign="center"
         >
           <div className="empty-state-header">
             <h2>{title}</h2>
-            <Text className="empty-state-description">
-              {description}
-            </Text>
+            <Text className="empty-state-description">{description}</Text>
           </div>
         </Stack>
 
         {/* Tasks/Actions Section or Custom Content */}
         {customContent ? (
-          <Stack.Item>
-            {customContent}
-          </Stack.Item>
+          <Stack.Item>{customContent}</Stack.Item>
         ) : tasks.length === 1 ? (
           // Single task - use button pattern
           <Stack.Item>
             <Button
               appearance="primary"
               size="large"
-              icon={tasks[0].icon && (
-                React.isValidElement(tasks[0].icon) 
-                  ? tasks[0].icon 
-                  : (tasks[0].icon as { children: React.ReactElement })?.children
-              )}
+              icon={
+                tasks[0].icon &&
+                (React.isValidElement(tasks[0].icon)
+                  ? tasks[0].icon
+                  : (tasks[0].icon as { children: React.ReactElement })
+                      ?.children)
+              }
               onClick={tasks[0].onClick}
             >
               {tasks[0].label}
@@ -181,7 +178,7 @@ export function ItemEditorEmptyView({
           // Multiple tasks - use tile card layout
           <div className="default-view-inner-container" role="list">
             {tasks.map((task, index) => (
-              <div 
+              <div
                 key={task.id}
                 className="tile-card-body"
                 id={`${task.id}-tile-card`}
@@ -191,7 +188,7 @@ export function ItemEditorEmptyView({
                 role="listitem"
                 onClick={task.onClick}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
+                  if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
                     task.onClick();
                   }
@@ -199,18 +196,16 @@ export function ItemEditorEmptyView({
               >
                 {/* Icon section with green highlight background */}
                 <div className="tile-card-children">
-                  {task.icon && (
-                    React.isValidElement(task.icon) 
-                      ? task.icon 
-                      : (task.icon as { children: React.ReactElement })?.children
-                  )}
+                  {task.icon &&
+                    (React.isValidElement(task.icon)
+                      ? task.icon
+                      : (task.icon as { children: React.ReactElement })
+                          ?.children)}
                 </div>
-                
+
                 {/* Content section */}
                 <div className="tile-card-content">
-                  <div className="tile-card-title">
-                    {task.label}
-                  </div>
+                  <div className="tile-card-title">{task.label}</div>
                   {task.description && (
                     <div className="tile-card-description">
                       {task.description}
@@ -229,7 +224,7 @@ export function ItemEditorEmptyView({
   return (
     <ItemEditorDefaultView
       center={{
-        content: emptyStateContent
+        content: emptyStateContent,
       }}
     />
   );

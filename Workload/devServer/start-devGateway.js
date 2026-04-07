@@ -6,7 +6,10 @@ const path = require("path");
 const execAsync = util.promisify(exec);
 
 // Update path to point to scripts from project root
-const startDevGatewayScript = path.resolve(__dirname, "../../scripts/Run/StartDevGateway.ps1");
+const startDevGatewayScript = path.resolve(
+  __dirname,
+  "../../scripts/Run/StartDevGateway.ps1",
+);
 
 /**
  * Starts the Dev Gateway using the PowerShell script
@@ -16,32 +19,32 @@ const startDevGatewayScript = path.resolve(__dirname, "../../scripts/Run/StartDe
 async function startDevGateway(interactiveLogin = true) {
   try {
     console.log("🚀 Starting Fabric Dev Gateway...");
-    
+
     // Follow the same pattern as build-manifest.js
     var startDevGatewayCmd = "";
     const operatingSystem = os.platform();
-    if (operatingSystem === 'win32') {
+    if (operatingSystem === "win32") {
       startDevGatewayCmd = startDevGatewayScript;
     } else {
       startDevGatewayCmd = `pwsh ${startDevGatewayScript}`;
     }
 
     console.log(`🔧 Executing: pwsh ${startDevGatewayScript}`);
-    
+
     // Execute the PowerShell script using pwsh (like build-manifest.js does)
     // Note: We don't use execAsync here because the Dev Gateway is a long-running process
     const childProcess = exec(`pwsh ${startDevGatewayScript}`);
-    
+
     // Pipe the output to console in real-time
-    childProcess.stdout.on('data', (data) => {
+    childProcess.stdout.on("data", (data) => {
       process.stdout.write(data);
     });
-    
-    childProcess.stderr.on('data', (data) => {
+
+    childProcess.stderr.on("data", (data) => {
       process.stderr.write(data);
     });
-    
-    childProcess.on('close', (code) => {
+
+    childProcess.on("close", (code) => {
       if (code === 0) {
         console.log("✅ Dev Gateway process completed successfully.");
       } else {
@@ -49,23 +52,22 @@ async function startDevGateway(interactiveLogin = true) {
         process.exit(code);
       }
     });
-    
-    childProcess.on('error', (error) => {
+
+    childProcess.on("error", (error) => {
       console.error(`❌ Error starting Dev Gateway: ${error.message}`);
       process.exit(1);
     });
-    
+
     // Handle process termination gracefully
-    process.on('SIGINT', () => {
+    process.on("SIGINT", () => {
       console.log("\n🛑 Received SIGINT, terminating Dev Gateway...");
-      childProcess.kill('SIGINT');
+      childProcess.kill("SIGINT");
     });
-    
-    process.on('SIGTERM', () => {
+
+    process.on("SIGTERM", () => {
       console.log("\n🛑 Received SIGTERM, terminating Dev Gateway...");
-      childProcess.kill('SIGTERM');
+      childProcess.kill("SIGTERM");
     });
-    
   } catch (error) {
     console.error(`❌ Error starting Dev Gateway: ${error.message}`);
     process.exit(1);
@@ -74,14 +76,14 @@ async function startDevGateway(interactiveLogin = true) {
 
 // Export the function for use in other modules
 module.exports = {
-  startDevGateway
+  startDevGateway,
 };
 
 // Execute when run directly
 if (require.main === module) {
   // Parse command line arguments
   const args = process.argv.slice(2);
-  const interactiveLogin = !args.includes('--no-interactive');
-  
+  const interactiveLogin = !args.includes("--no-interactive");
+
   startDevGateway(interactiveLogin);
 }

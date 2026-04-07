@@ -11,19 +11,19 @@ import { CloseMode, WorkloadClientAPI } from "@ms-fabric/workload-client";
  * @param {WorkloadClientAPI} workloadClient - An instance of the WorkloadClientAPI.
  */
 export async function callPanelOpen(
-    workloadClient: WorkloadClientAPI,
-    workloadName: string,
-    path: string,
-    isLightDismiss: boolean) {
-
-    await workloadClient.panel.open({
-        workloadName,
-        route: { path },
-        options: {
-            width: window.innerWidth / 3,
-            isLightDismiss
-        }
-    });
+  workloadClient: WorkloadClientAPI,
+  workloadName: string,
+  path: string,
+  isLightDismiss: boolean,
+) {
+  await workloadClient.panel.open({
+    workloadName,
+    route: { path },
+    options: {
+      width: window.innerWidth / 3,
+      isLightDismiss,
+    },
+  });
 }
 
 /**
@@ -32,5 +32,5 @@ export async function callPanelOpen(
  * @param {WorkloadClientAPI} workloadClient - An instance of the WorkloadClientAPI.
  */
 export async function callPanelClose(workloadClient: WorkloadClientAPI) {
-    await workloadClient.panel.close({ mode: CloseMode.PopOne });
+  await workloadClient.panel.close({ mode: CloseMode.PopOne });
 }

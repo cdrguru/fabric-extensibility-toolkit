@@ -1,16 +1,19 @@
-import React from 'react';
-import { Button } from '@fluentui/react-components';
-import { PanelRightExpand20Regular } from '@fluentui/react-icons';
+import React from "react";
+import { Button } from "@fluentui/react-components";
+import { PanelRightExpand20Regular } from "@fluentui/react-icons";
 import { callActionExecute } from "../../../controller/ActionController";
 import "../../Playground.scss";
-import { TabContentProps } from '../ClientSDKPlaygroundModel';
-
+import { TabContentProps } from "../ClientSDKPlaygroundModel";
 
 export function ActionExample(props: TabContentProps) {
   const { sampleWorkloadName, workloadClient } = props;
 
   async function onCallExecuteAction() {
-    callActionExecute(workloadClient, "playground.sampleAction", sampleWorkloadName);
+    callActionExecute(
+      workloadClient,
+      "playground.sampleAction",
+      sampleWorkloadName,
+    );
   }
 
   return (
@@ -24,4 +27,4 @@ export function ActionExample(props: TabContentProps) {
       </Button>
     </div>
   );
-};
+}

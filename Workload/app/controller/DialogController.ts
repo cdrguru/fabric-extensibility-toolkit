@@ -3,8 +3,12 @@
  * This module provides functions to interact with the WorkloadClientAPI for dialog and notification operations.
  */
 
-import { ActionButton, CloseMode, DialogType, WorkloadClientAPI } from "@ms-fabric/workload-client";
-
+import {
+  ActionButton,
+  CloseMode,
+  DialogType,
+  WorkloadClientAPI,
+} from "@ms-fabric/workload-client";
 
 /**
  * Calls the 'dialog.open' function from the WorkloadClientAPI to open a dialog.
@@ -15,28 +19,28 @@ import { ActionButton, CloseMode, DialogType, WorkloadClientAPI } from "@ms-fabr
  * @param {number} height - The height of the dialog.
  * @param {boolean} hasCloseButton - Whether the dialog should have a close button.
  * @param {WorkloadClientAPI} workloadClient - An instance of the WorkloadClientAPI.
- * 
+ *
  * @returns
  * @param {OpenUIResult} result of the dialog
  */
 export async function callDialogOpen(
-    workloadClient: WorkloadClientAPI,
-    workloadName: string,
-    path: string,
-    width: number,
-    height: number,
-    hasCloseButton: boolean) {
-
-    return await workloadClient.dialog.open({
-        dialogType: DialogType.IFrame,
-        route: { path },  // Specify the path within the workload and queryParams
-        workloadName,
-        options: {
-            width,
-            height,
-            hasCloseButton
-        }
-    });
+  workloadClient: WorkloadClientAPI,
+  workloadName: string,
+  path: string,
+  width: number,
+  height: number,
+  hasCloseButton: boolean,
+) {
+  return await workloadClient.dialog.open({
+    dialogType: DialogType.IFrame,
+    route: { path }, // Specify the path within the workload and queryParams
+    workloadName,
+    options: {
+      width,
+      height,
+      hasCloseButton,
+    },
+  });
 }
 
 /**
@@ -49,28 +53,32 @@ export async function callDialogOpen(
  * @returns {string} - Name of the clicked button
  */
 export async function callDialogOpenMsgBox(
-    workloadClient: WorkloadClientAPI,
-    title: string,
-    content: string,
-    actionButtonsNames: string[],
-    link?: string): Promise<string> {
-
-    // Create an array of ActionButton objects based on the provided action button names
-    const actionButtons: ActionButton[] = actionButtonsNames.map(name => ({ name, label: name }));
-    const result = await workloadClient.dialog.open({
-        dialogType: DialogType.MessageBox,
-        messageBoxOptions: {
-            title,
-            content,
-            link: link ? {
-                    url: link,
-                    label: link
-                }
-            : undefined,
-            actionButtons
-        }
-    });
-    return result.value?.clickedButton;
+  workloadClient: WorkloadClientAPI,
+  title: string,
+  content: string,
+  actionButtonsNames: string[],
+  link?: string,
+): Promise<string> {
+  // Create an array of ActionButton objects based on the provided action button names
+  const actionButtons: ActionButton[] = actionButtonsNames.map((name) => ({
+    name,
+    label: name,
+  }));
+  const result = await workloadClient.dialog.open({
+    dialogType: DialogType.MessageBox,
+    messageBoxOptions: {
+      title,
+      content,
+      link: link
+        ? {
+            url: link,
+            label: link,
+          }
+        : undefined,
+      actionButtons,
+    },
+  });
+  return result.value?.clickedButton;
 }
 
 /**
@@ -80,10 +88,9 @@ export async function callDialogOpenMsgBox(
  * @param {CloseMode} mode - (Optional) The mode specifying how the dialog should be closed.
  */
 export async function callDialogClose(
-    workloadClient: WorkloadClientAPI,
-    mode?: CloseMode,
-    data?: unknown) {
-
-    await workloadClient.dialog.close({ mode, data });
+  workloadClient: WorkloadClientAPI,
+  mode?: CloseMode,
+  data?: unknown,
+) {
+  await workloadClient.dialog.close({ mode, data });
 }
-

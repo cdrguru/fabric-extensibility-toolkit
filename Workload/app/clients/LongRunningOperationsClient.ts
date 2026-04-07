@@ -5,23 +5,24 @@ import {
   OperationState,
   ErrorResponse,
   AuthenticationConfig,
-  AsyncOperationIndicator
+  AsyncOperationIndicator,
 } from "./FabricPlatformTypes";
 
 /**
  * API wrapper for Long Running Operations
  * Provides methods for tracking and managing long-running operations
- * 
+ *
  * Based on the official Fabric REST API:
  * https://learn.microsoft.com/en-us/rest/api/fabric/core/long-running-operations
- * 
+ *
  * Supported operations:
  * - Get Operation State: GET /v1/operations/{operationId}
  * - Get Operation Result: GET /v1/operations/{operationId}/result
  */
 export class LongRunningOperationsClient extends FabricPlatformClient {
-  
-  constructor(workloadClientOrAuthConfig?: WorkloadClientAPI | AuthenticationConfig) {
+  constructor(
+    workloadClientOrAuthConfig?: WorkloadClientAPI | AuthenticationConfig,
+  ) {
     // Use scope pairs for method-based scope selection
     super(workloadClientOrAuthConfig, SCOPE_PAIRS.ITEM); // Operations are typically item-related
   }
@@ -32,7 +33,7 @@ export class LongRunningOperationsClient extends FabricPlatformClient {
 
   /**
    * Gets the current state of a long-running operation
-   * 
+   *
    * Official API: GET /v1/operations/{operationId}
    * @param operationId The operation ID (UUID)
    * @returns Promise<OperationState>
@@ -44,12 +45,14 @@ export class LongRunningOperationsClient extends FabricPlatformClient {
   /**
    * Gets the result of a long-running operation
    * Should only be called after the operation status is 'Succeeded'
-   * 
+   *
    * Official API: GET /v1/operations/{operationId}/result
    * @param operationId The operation ID (UUID)
    * @returns Promise<T> The operation result (type varies by operation)
    */
-  async getOperationResult<T = any>(asyncIndicator: AsyncOperationIndicator): Promise<T> {
+  async getOperationResult<T = any>(
+    asyncIndicator: AsyncOperationIndicator,
+  ): Promise<T> {
     return this.get<T>(`/operations/${asyncIndicator.operationId}/result`);
   }
 
@@ -67,22 +70,24 @@ export class LongRunningOperationsClient extends FabricPlatformClient {
   async pollUntilComplete(
     asyncIndicator: AsyncOperationIndicator,
     pollingIntervalMs: number = 2000,
-    timeoutMs: number = 300000
+    timeoutMs: number = 300000,
   ): Promise<OperationState> {
     const startTime = Date.now();
-    
+
     while (Date.now() - startTime < timeoutMs) {
       const state = await this.getOperationState(asyncIndicator.operationId);
-      
-      if (state.status === 'Succeeded' || state.status === 'Failed') {
+
+      if (state.status === "Succeeded" || state.status === "Failed") {
         return state;
       }
-      
+
       // Wait before next poll
-      await new Promise(resolve => setTimeout(resolve, pollingIntervalMs));
+      await new Promise((resolve) => setTimeout(resolve, pollingIntervalMs));
     }
-    
-    throw new Error(`Operation ${asyncIndicator.operationId} timed out after ${timeoutMs}ms`);
+
+    throw new Error(
+      `Operation ${asyncIndicator.operationId} timed out after ${timeoutMs}ms`,
+    );
   }
 
   /**
@@ -96,15 +101,22 @@ export class LongRunningOperationsClient extends FabricPlatformClient {
   async waitForSuccessAndGetResult<T = any>(
     asyncIndicator: AsyncOperationIndicator,
     pollingIntervalMs: number = 2000,
-    timeoutMs: number = 300000
+    timeoutMs: number = 300000,
   ): Promise<T> {
-    const finalState = await this.pollUntilComplete(asyncIndicator, pollingIntervalMs, timeoutMs);
+    const finalState = await this.pollUntilComplete(
+      asyncIndicator,
+      pollingIntervalMs,
+      timeoutMs,
+    );
 
-    if (finalState.status === 'Failed') {
-      const errorMessage = finalState.error?.error?.message || 'Operation failed';
-      throw new Error(`Operation ${asyncIndicator.operationId} failed: ${errorMessage}`);
+    if (finalState.status === "Failed") {
+      const errorMessage =
+        finalState.error?.error?.message || "Operation failed";
+      throw new Error(
+        `Operation ${asyncIndicator.operationId} failed: ${errorMessage}`,
+      );
     }
-    
+
     // Get the operation result
     return this.getOperationResult<T>(asyncIndicator);
   }
@@ -120,15 +132,22 @@ export class LongRunningOperationsClient extends FabricPlatformClient {
   async waitForSuccess(
     asyncIndicator: AsyncOperationIndicator,
     pollingIntervalMs: number = 2000,
-    timeoutMs: number = 300000
+    timeoutMs: number = 300000,
   ): Promise<OperationState> {
-    const finalState = await this.pollUntilComplete(asyncIndicator, pollingIntervalMs, timeoutMs);
+    const finalState = await this.pollUntilComplete(
+      asyncIndicator,
+      pollingIntervalMs,
+      timeoutMs,
+    );
 
-    if (finalState.status === 'Failed') {
-      const errorMessage = finalState.error?.error?.message || 'Operation failed';
-      throw new Error(`Operation ${asyncIndicator.operationId} failed: ${errorMessage}`);
+    if (finalState.status === "Failed") {
+      const errorMessage =
+        finalState.error?.error?.message || "Operation failed";
+      throw new Error(
+        `Operation ${asyncIndicator.operationId} failed: ${errorMessage}`,
+      );
     }
-    
+
     return finalState;
   }
 
@@ -140,7 +159,7 @@ export class LongRunningOperationsClient extends FabricPlatformClient {
   async isRunning(operationId: string): Promise<boolean> {
     try {
       const state = await this.getOperationState(operationId);
-      return state.status === 'Running' || state.status === 'NotStarted';
+      return state.status === "Running" || state.status === "NotStarted";
     } catch (error) {
       // If we can't get the state, assume it's not running
       return false;
@@ -155,7 +174,7 @@ export class LongRunningOperationsClient extends FabricPlatformClient {
   async isComplete(operationId: string): Promise<boolean> {
     try {
       const state = await this.getOperationState(operationId);
-      return state.status === 'Succeeded' || state.status === 'Failed';
+      return state.status === "Succeeded" || state.status === "Failed";
     } catch (error) {
       // If we can't get the state, assume it's complete (possibly deleted)
       return true;
@@ -170,7 +189,7 @@ export class LongRunningOperationsClient extends FabricPlatformClient {
   async hasSucceeded(operationId: string): Promise<boolean> {
     try {
       const state = await this.getOperationState(operationId);
-      return state.status === 'Succeeded';
+      return state.status === "Succeeded";
     } catch (error) {
       return false;
     }
@@ -184,7 +203,7 @@ export class LongRunningOperationsClient extends FabricPlatformClient {
   async hasFailed(operationId: string): Promise<boolean> {
     try {
       const state = await this.getOperationState(operationId);
-      return state.status === 'Failed';
+      return state.status === "Failed";
     } catch (error) {
       return false;
     }

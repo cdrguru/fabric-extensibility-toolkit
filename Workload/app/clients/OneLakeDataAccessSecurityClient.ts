@@ -1,6 +1,6 @@
 import { WorkloadClientAPI } from "@ms-fabric/workload-client";
-import { FabricPlatformClient } from './FabricPlatformClient';
-import { SCOPE_PAIRS } from './FabricPlatformScopes';
+import { FabricPlatformClient } from "./FabricPlatformClient";
+import { SCOPE_PAIRS } from "./FabricPlatformScopes";
 import {
   DataAccessRole,
   DataAccessRoles,
@@ -11,20 +11,20 @@ import {
   AttributeName,
   Effect,
   ItemAccess,
-  ObjectType
-} from './FabricPlatformTypes';
+  ObjectType,
+} from "./FabricPlatformTypes";
 
 /**
  * Client for interacting with OneLake Data Access Security APIs
  * OneLake Data Access Security API is in Preview and allows managing data access roles for OneLake items.
- * 
+ *
  * Based on the official Fabric REST API:
  * https://learn.microsoft.com/en-us/rest/api/fabric/core/onelake-data-access-security
- * 
+ *
  * API Features:
  * - List Data Access Roles: Get all data access roles for an item (OneLake.Read.All scope)
  * - Create Or Update Data Access Roles: Create or update data access roles (OneLake.ReadWrite.All scope)
- * 
+ *
  * Data Access Roles define permissions and scopes for data access in OneLake items.
  * They control what actions users or groups can perform on specific paths within the data.
  */
@@ -40,7 +40,11 @@ export class OneLakeDataAccessSecurityClient extends FabricPlatformClient {
    * @param continuationToken Optional token for retrieving the next page of results
    * @returns Promise resolving to data access roles list
    */
-  async listDataAccessRoles(workspaceId: string, itemId: string, continuationToken?: string): Promise<DataAccessRoles> {
+  async listDataAccessRoles(
+    workspaceId: string,
+    itemId: string,
+    continuationToken?: string,
+  ): Promise<DataAccessRoles> {
     let endpoint = `/workspaces/${workspaceId}/items/${itemId}/dataAccessRoles`;
     if (continuationToken) {
       endpoint += `?continuationToken=${encodeURIComponent(continuationToken)}`;
@@ -56,12 +60,20 @@ export class OneLakeDataAccessSecurityClient extends FabricPlatformClient {
    * @param maxResults Optional maximum number of roles to retrieve (default: no limit)
    * @returns Promise resolving to array of all data access roles
    */
-  async getAllDataAccessRoles(workspaceId: string, itemId: string, maxResults?: number): Promise<DataAccessRole[]> {
+  async getAllDataAccessRoles(
+    workspaceId: string,
+    itemId: string,
+    maxResults?: number,
+  ): Promise<DataAccessRole[]> {
     const allRoles: DataAccessRole[] = [];
     let continuationToken: string | undefined;
 
     do {
-      const response = await this.listDataAccessRoles(workspaceId, itemId, continuationToken);
+      const response = await this.listDataAccessRoles(
+        workspaceId,
+        itemId,
+        continuationToken,
+      );
       allRoles.push(...response.value);
 
       if (maxResults && allRoles.length >= maxResults) {
@@ -90,33 +102,33 @@ export class OneLakeDataAccessSecurityClient extends FabricPlatformClient {
       dryRun?: boolean;
       ifMatch?: string;
       ifNoneMatch?: string;
-    }
+    },
   ): Promise<void> {
     let endpoint = `/workspaces/${workspaceId}/items/${itemId}/dataAccessRoles`;
-    
+
     if (options?.dryRun) {
-      endpoint += '?dryRun=true';
+      endpoint += "?dryRun=true";
     }
 
     const headers: { [key: string]: string } = {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json",
     };
-    
+
     if (options?.ifMatch) {
-      headers['If-Match'] = `"${options.ifMatch}"`;
+      headers["If-Match"] = `"${options.ifMatch}"`;
     }
     if (options?.ifNoneMatch) {
-      headers['If-None-Match'] = `"${options.ifNoneMatch}"`;
+      headers["If-None-Match"] = `"${options.ifNoneMatch}"`;
     }
 
     const request: CreateOrUpdateDataAccessRolesRequest = {
-      value: roles
+      value: roles,
     };
 
     await this.makeRequest<void>(endpoint, {
-      method: 'PUT',
+      method: "PUT",
       headers,
-      body: JSON.stringify(request)
+      body: JSON.stringify(request),
     });
   }
 
@@ -127,8 +139,14 @@ export class OneLakeDataAccessSecurityClient extends FabricPlatformClient {
    * @param roles Array of data access roles to test
    * @returns Promise resolving when dry run is complete
    */
-  async dryRunDataAccessRoles(workspaceId: string, itemId: string, roles: DataAccessRole[]): Promise<void> {
-    return this.createOrUpdateDataAccessRoles(workspaceId, itemId, roles, { dryRun: true });
+  async dryRunDataAccessRoles(
+    workspaceId: string,
+    itemId: string,
+    roles: DataAccessRole[],
+  ): Promise<void> {
+    return this.createOrUpdateDataAccessRoles(workspaceId, itemId, roles, {
+      dryRun: true,
+    });
   }
 
   /**
@@ -138,26 +156,30 @@ export class OneLakeDataAccessSecurityClient extends FabricPlatformClient {
    * @param members The members to assign to this role
    * @returns DataAccessRole object
    */
-  createReadRole(name: string, paths: string[], members: Members): DataAccessRole {
+  createReadRole(
+    name: string,
+    paths: string[],
+    members: Members,
+  ): DataAccessRole {
     const pathPermission: PermissionScope = {
-      attributeName: 'Path' as AttributeName,
-      attributeValueIncludedIn: paths
+      attributeName: "Path" as AttributeName,
+      attributeValueIncludedIn: paths,
     };
 
     const actionPermission: PermissionScope = {
-      attributeName: 'Action' as AttributeName,
-      attributeValueIncludedIn: ['Read']
+      attributeName: "Action" as AttributeName,
+      attributeValueIncludedIn: ["Read"],
     };
 
     const decisionRule: DecisionRule = {
-      effect: 'Permit' as Effect,
-      permission: [pathPermission, actionPermission]
+      effect: "Permit" as Effect,
+      permission: [pathPermission, actionPermission],
     };
 
     return {
       name,
       decisionRules: [decisionRule],
-      members
+      members,
     };
   }
 
@@ -169,26 +191,31 @@ export class OneLakeDataAccessSecurityClient extends FabricPlatformClient {
    * @param members The members to assign to this role
    * @returns DataAccessRole object
    */
-  createCustomRole(name: string, paths: string[], actions: string[], members: Members): DataAccessRole {
+  createCustomRole(
+    name: string,
+    paths: string[],
+    actions: string[],
+    members: Members,
+  ): DataAccessRole {
     const pathPermission: PermissionScope = {
-      attributeName: 'Path' as AttributeName,
-      attributeValueIncludedIn: paths
+      attributeName: "Path" as AttributeName,
+      attributeValueIncludedIn: paths,
     };
 
     const actionPermission: PermissionScope = {
-      attributeName: 'Action' as AttributeName,
-      attributeValueIncludedIn: actions
+      attributeName: "Action" as AttributeName,
+      attributeValueIncludedIn: actions,
     };
 
     const decisionRule: DecisionRule = {
-      effect: 'Permit' as Effect,
-      permission: [pathPermission, actionPermission]
+      effect: "Permit" as Effect,
+      permission: [pathPermission, actionPermission],
     };
 
     return {
       name,
       decisionRules: [decisionRule],
-      members
+      members,
     };
   }
 
@@ -199,9 +226,13 @@ export class OneLakeDataAccessSecurityClient extends FabricPlatformClient {
    * @param roleName The name of the role to find
    * @returns Promise resolving to the role if found, undefined otherwise
    */
-  async findDataAccessRoleByName(workspaceId: string, itemId: string, roleName: string): Promise<DataAccessRole | undefined> {
+  async findDataAccessRoleByName(
+    workspaceId: string,
+    itemId: string,
+    roleName: string,
+  ): Promise<DataAccessRole | undefined> {
     const allRoles = await this.getAllDataAccessRoles(workspaceId, itemId);
-    return allRoles.find(role => role.name === roleName);
+    return allRoles.find((role) => role.name === roleName);
   }
 
   /**
@@ -211,12 +242,19 @@ export class OneLakeDataAccessSecurityClient extends FabricPlatformClient {
    * @param objectId The Microsoft Entra object ID to search for
    * @returns Promise resolving to roles that contain the specified member
    */
-  async getRolesForMember(workspaceId: string, itemId: string, objectId: string): Promise<DataAccessRole[]> {
+  async getRolesForMember(
+    workspaceId: string,
+    itemId: string,
+    objectId: string,
+  ): Promise<DataAccessRole[]> {
     const allRoles = await this.getAllDataAccessRoles(workspaceId, itemId);
-    
-    return allRoles.filter(role => {
-      return role.members.microsoftEntraMembers?.some(member => member.objectId === objectId) ||
-             false; // Could extend to check fabricItemMembers if needed
+
+    return allRoles.filter((role) => {
+      return (
+        role.members.microsoftEntraMembers?.some(
+          (member) => member.objectId === objectId,
+        ) || false
+      ); // Could extend to check fabricItemMembers if needed
     });
   }
 
@@ -227,17 +265,25 @@ export class OneLakeDataAccessSecurityClient extends FabricPlatformClient {
    * @param targetPath The path to check access for
    * @returns Promise resolving to roles that grant access to the specified path
    */
-  async getRolesForPath(workspaceId: string, itemId: string, targetPath: string): Promise<DataAccessRole[]> {
+  async getRolesForPath(
+    workspaceId: string,
+    itemId: string,
+    targetPath: string,
+  ): Promise<DataAccessRole[]> {
     const allRoles = await this.getAllDataAccessRoles(workspaceId, itemId);
-    
-    return allRoles.filter(role => {
-      return role.decisionRules.some(rule => {
-        const pathPermission = rule.permission.find(p => p.attributeName === 'Path');
+
+    return allRoles.filter((role) => {
+      return role.decisionRules.some((rule) => {
+        const pathPermission = rule.permission.find(
+          (p) => p.attributeName === "Path",
+        );
         if (!pathPermission) return false;
-        
-        return pathPermission.attributeValueIncludedIn.some(path => {
+
+        return pathPermission.attributeValueIncludedIn.some((path) => {
           // Simple path matching - could be enhanced with wildcard support
-          return path === '*' || path === targetPath || targetPath.startsWith(path);
+          return (
+            path === "*" || path === targetPath || targetPath.startsWith(path)
+          );
         });
       });
     });
@@ -248,17 +294,19 @@ export class OneLakeDataAccessSecurityClient extends FabricPlatformClient {
    * @param entries Array of member entries with object ID, type, and tenant ID
    * @returns Members object
    */
-  createEntraMembers(entries: Array<{
-    objectId: string;
-    objectType: ObjectType;
-    tenantId: string;
-  }>): Members {
+  createEntraMembers(
+    entries: Array<{
+      objectId: string;
+      objectType: ObjectType;
+      tenantId: string;
+    }>,
+  ): Members {
     return {
-      microsoftEntraMembers: entries.map(entry => ({
+      microsoftEntraMembers: entries.map((entry) => ({
         objectId: entry.objectId,
         objectType: entry.objectType,
-        tenantId: entry.tenantId
-      }))
+        tenantId: entry.tenantId,
+      })),
     };
   }
 
@@ -267,15 +315,17 @@ export class OneLakeDataAccessSecurityClient extends FabricPlatformClient {
    * @param entries Array of Fabric item member entries
    * @returns Members object
    */
-  createFabricItemMembers(entries: Array<{
-    itemAccess: ItemAccess[];
-    sourcePath: string;
-  }>): Members {
+  createFabricItemMembers(
+    entries: Array<{
+      itemAccess: ItemAccess[];
+      sourcePath: string;
+    }>,
+  ): Members {
     return {
-      fabricItemMembers: entries.map(entry => ({
+      fabricItemMembers: entries.map((entry) => ({
         itemAccess: entry.itemAccess,
-        sourcePath: entry.sourcePath
-      }))
+        sourcePath: entry.sourcePath,
+      })),
     };
   }
 
@@ -285,7 +335,7 @@ export class OneLakeDataAccessSecurityClient extends FabricPlatformClient {
    * @returns DataAccessRole object for default reader
    */
   createDefaultReaderRole(members: Members): DataAccessRole {
-    return this.createReadRole('DefaultReader', ['*'], members);
+    return this.createReadRole("DefaultReader", ["*"], members);
   }
 
   /**
@@ -295,7 +345,11 @@ export class OneLakeDataAccessSecurityClient extends FabricPlatformClient {
    * @returns DataAccessRole object for table reader
    */
   createTableReaderRole(tableName: string, members: Members): DataAccessRole {
-    return this.createReadRole(`${tableName}Reader`, [`/Tables/${tableName}`], members);
+    return this.createReadRole(
+      `${tableName}Reader`,
+      [`/Tables/${tableName}`],
+      members,
+    );
   }
 
   /**
@@ -305,10 +359,11 @@ export class OneLakeDataAccessSecurityClient extends FabricPlatformClient {
    * @returns DataAccessRole object for folder reader
    */
   createFolderReaderRole(folderPath: string, members: Members): DataAccessRole {
-    const paths = [
-      `/${folderPath}`,
-      `/${folderPath}/*`
-    ];
-    return this.createReadRole(`${folderPath.replace(/[\/\\]/g, '_')}Reader`, paths, members);
+    const paths = [`/${folderPath}`, `/${folderPath}/*`];
+    return this.createReadRole(
+      `${folderPath.replace(/[\/\\]/g, "_")}Reader`,
+      paths,
+      members,
+    );
   }
 }

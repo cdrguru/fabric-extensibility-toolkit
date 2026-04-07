@@ -12,7 +12,7 @@ export interface ServicePrincipalConfig {
 }
 
 export interface AuthenticationConfig {
-  type: 'UserToken' | 'ServicePrincipal';
+  type: "UserToken" | "ServicePrincipal";
   servicePrincipal?: ServicePrincipalConfig;
   customToken?: string; // For pre-acquired tokens
 }
@@ -28,13 +28,17 @@ export interface Principal {
   userDetails?: UserDetails;
 }
 
-export type PrincipalType = 'User' | 'ServicePrincipal' | 'Group' | 'ServicePrincipalProfile';
+export type PrincipalType =
+  | "User"
+  | "ServicePrincipal"
+  | "Group"
+  | "ServicePrincipalProfile";
 
 export interface GroupDetails {
   groupType: GroupType;
 }
 
-export type GroupType = 'Unknown' | 'SecurityGroup' | 'DistributionList';
+export type GroupType = "Unknown" | "SecurityGroup" | "DistributionList";
 
 export interface ServicePrincipalDetails {
   aadAppId: string;
@@ -81,8 +85,8 @@ export interface UpdateWorkspaceRequest {
   description?: string;
 }
 
-export type WorkspaceType = 'Personal' | 'Workspace';
-export type CapacityAssignmentProgress = 'Completed' | 'Failed' | 'InProgress';
+export type WorkspaceType = "Personal" | "Workspace";
+export type CapacityAssignmentProgress = "Completed" | "Failed" | "InProgress";
 
 export interface WorkspaceIdentity {
   applicationId: string;
@@ -110,7 +114,7 @@ export interface UpdateWorkspaceRoleAssignmentRequest {
   role: WorkspaceRole;
 }
 
-export type WorkspaceRole = 'Admin' | 'Member' | 'Contributor' | 'Viewer';
+export type WorkspaceRole = "Admin" | "Member" | "Contributor" | "Viewer";
 
 // Capacity types
 export interface Capacity {
@@ -122,14 +126,19 @@ export interface Capacity {
   admins?: string[];
 }
 
-export type CapacityState = 'Active' | 'Inactive' | 'Provisioning' | 'Suspended' | 'Paused';
+export type CapacityState =
+  | "Active"
+  | "Inactive"
+  | "Provisioning"
+  | "Suspended"
+  | "Paused";
 
 export interface CapacityWorkload {
   name: string;
   state: WorkloadState;
 }
 
-export type WorkloadState = 'Enabled' | 'Disabled' | 'Unsupported';
+export type WorkloadState = "Enabled" | "Disabled" | "Unsupported";
 
 export interface AssignWorkspaceToCapacityRequest {
   workspaceId: string;
@@ -175,7 +184,7 @@ export interface ItemDefinitionPart {
   payloadType: PayloadType;
 }
 
-export type PayloadType = 'InlineBase64' | 'InlineJson';
+export type PayloadType = "InlineBase64" | "InlineJson";
 
 export interface ItemDefinitionResponse {
   definition: ItemDefinition;
@@ -189,7 +198,7 @@ export interface UpdateItemDefinitionRequest {
 export interface Folder {
   id: string;
   displayName: string;
-  type: 'Folder';
+  type: "Folder";
   workspaceId: string;
   parentFolderId?: string;
 }
@@ -223,25 +232,32 @@ export interface ScheduleConfig {
   localTimeZoneId: string;
 }
 
-export type ScheduleType = 'Cron' | 'Daily' | 'Weekly';
+export type ScheduleType = "Cron" | "Daily" | "Weekly";
 
 export interface CronScheduleConfig extends ScheduleConfig {
-  type: 'Cron';
+  type: "Cron";
   interval: number;
 }
 
 export interface DailyScheduleConfig extends ScheduleConfig {
-  type: 'Daily';
+  type: "Daily";
   times: string[];
 }
 
 export interface WeeklyScheduleConfig extends ScheduleConfig {
-  type: 'Weekly';
+  type: "Weekly";
   times: string[];
   weekdays: DayOfWeek[];
 }
 
-export type DayOfWeek = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
+export type DayOfWeek =
+  | "Monday"
+  | "Tuesday"
+  | "Wednesday"
+  | "Thursday"
+  | "Friday"
+  | "Saturday"
+  | "Sunday";
 
 export interface CreateScheduleRequest {
   enabled: boolean;
@@ -265,8 +281,14 @@ export interface ItemJobInstance {
   failureReason?: ErrorResponse;
 }
 
-export type InvokeType = 'Scheduled' | 'Manual';
-export type JobStatus = 'NotStarted' | 'InProgress' | 'Completed' | 'Failed' | 'Cancelled' | 'Deduped';
+export type InvokeType = "Scheduled" | "Manual";
+export type JobStatus =
+  | "NotStarted"
+  | "InProgress"
+  | "Completed"
+  | "Failed"
+  | "Cancelled"
+  | "Deduped";
 
 export interface RunOnDemandItemJobRequest {
   executionData?: Record<string, unknown>;
@@ -281,23 +303,27 @@ export interface OperationState {
   error?: ErrorResponse;
 }
 
-export type LongRunningOperationStatus = 'Undefined' | 'NotStarted' | 'Running' | 'Succeeded' | 'Failed';
+export type LongRunningOperationStatus =
+  | "Undefined"
+  | "NotStarted"
+  | "Running"
+  | "Succeeded"
+  | "Failed";
 
 export interface OneLakeStoragePathMetadata {
-    contentLength: number;
-    lastModified: string;
-    creationTime: string;
-    permissions: string;
-    name: string;
-    isShortcut?: boolean;
-    accountType?: string;
-    isDirectory?: boolean;
+  contentLength: number;
+  lastModified: string;
+  creationTime: string;
+  permissions: string;
+  name: string;
+  isShortcut?: boolean;
+  accountType?: string;
+  isDirectory?: boolean;
 }
 
 export interface OneLakeStorageContainerMetadata {
   paths: OneLakeStoragePathMetadata[];
 }
-
 
 // OneLake Shortcuts types
 export interface Shortcut {
@@ -311,7 +337,7 @@ export enum ShortcutConflictPolicy {
   Abort = "Abort",
   GenerateUniqueName = "GenerateUniqueName",
   CreateOrOverwrite = "CreateOrOverwrite",
-  OverwriteOnly = "OverwriteOnly"
+  OverwriteOnly = "OverwriteOnly",
 }
 
 export interface CreateShortcutRequest {
@@ -340,7 +366,15 @@ export interface Target {
   azureBlobStorage?: AzureBlobStorageTarget;
 }
 
-export type TargetType = 'OneLake' | 'AmazonS3' | 'AdlsGen2' | 'GoogleCloudStorage' | 'S3Compatible' | 'Dataverse' | 'ExternalDataShare' | 'AzureBlobStorage';
+export type TargetType =
+  | "OneLake"
+  | "AmazonS3"
+  | "AdlsGen2"
+  | "GoogleCloudStorage"
+  | "S3Compatible"
+  | "Dataverse"
+  | "ExternalDataShare"
+  | "AzureBlobStorage";
 
 export interface CreatableShortcutTarget {
   oneLake?: OneLakeTarget;
@@ -405,10 +439,10 @@ export interface Transform {
   type: TransformType;
 }
 
-export type TransformType = 'csvToDelta';
+export type TransformType = "csvToDelta";
 
 export interface CsvToDeltaTransform extends Transform {
-  type: 'csvToDelta';
+  type: "csvToDelta";
   properties: CsvToDeltaTransformProperties;
 }
 
@@ -431,14 +465,14 @@ export interface DecisionRule {
   permission: PermissionScope[];
 }
 
-export type Effect = 'Permit';
+export type Effect = "Permit";
 
 export interface PermissionScope {
   attributeName: AttributeName;
   attributeValueIncludedIn: string[];
 }
 
-export type AttributeName = 'Path' | 'Action';
+export type AttributeName = "Path" | "Action";
 
 export interface Members {
   fabricItemMembers?: FabricItemMember[];
@@ -451,14 +485,24 @@ export interface MicrosoftEntraMember {
   objectType?: ObjectType;
 }
 
-export type ObjectType = 'Group' | 'User' | 'ServicePrincipal' | 'ManagedIdentity';
+export type ObjectType =
+  | "Group"
+  | "User"
+  | "ServicePrincipal"
+  | "ManagedIdentity";
 
 export interface FabricItemMember {
   itemAccess: ItemAccess[];
   sourcePath: string;
 }
 
-export type ItemAccess = 'Read' | 'Write' | 'Reshare' | 'Explore' | 'Execute' | 'ReadAll';
+export type ItemAccess =
+  | "Read"
+  | "Write"
+  | "Reshare"
+  | "Explore"
+  | "Execute"
+  | "ReadAll";
 
 export interface CreateOrUpdateDataAccessRolesRequest {
   value: DataAccessRole[];
@@ -484,250 +528,252 @@ export interface AsyncOperationIndicator {
   retryAfter?: number;
 }
 
-
 // Enum for batch job states
 export enum BatchState {
-    STARTING = "starting",
-    RUNNING = "running",
-    DEAD = "dead",
-    SUCCESS = "success",
-    KILLED = "killed",
-    ERROR = "error",
-    NOT_STARTED = "not_started",
-    SUBMITTING = "submitting",
-    NOT_SUBMITTED = "not_submitted"
+  STARTING = "starting",
+  RUNNING = "running",
+  DEAD = "dead",
+  SUCCESS = "success",
+  KILLED = "killed",
+  ERROR = "error",
+  NOT_STARTED = "not_started",
+  SUBMITTING = "submitting",
+  NOT_SUBMITTED = "not_submitted",
 }
 
 // Enum for session states
 export enum SessionState {
-    STARTING = "starting",
-    RUNNING = "running",
-    IDLE = "idle",
-    DEAD = "dead",
-    SUCCESS = "success",
-    KILLED = "killed",
-    ERROR = "error", 
-    SHUTTING_DOWN = "shutting_down",
-    BUSY = "busy",
-    RECOVERING = "recovering",
-    NOT_STARTED = "not_started",
-    SUBMITTING = "submitting",
-    NOT_SUBMITTED = "not_submitted"
+  STARTING = "starting",
+  RUNNING = "running",
+  IDLE = "idle",
+  DEAD = "dead",
+  SUCCESS = "success",
+  KILLED = "killed",
+  ERROR = "error",
+  SHUTTING_DOWN = "shutting_down",
+  BUSY = "busy",
+  RECOVERING = "recovering",
+  NOT_STARTED = "not_started",
+  SUBMITTING = "submitting",
+  NOT_SUBMITTED = "not_submitted",
 }
 
 // Enum for job types
 export enum JobType {
-    SPARK_BATCH = "SparkBatch",
-    SPARK_SESSION = "SparkSession",
-    SCOPE_BATCH = "ScopeBatch",
-    JUPYTER_ENVIRONMENT = "JupyterEnvironment"
+  SPARK_BATCH = "SparkBatch",
+  SPARK_SESSION = "SparkSession",
+  SCOPE_BATCH = "ScopeBatch",
+  JUPYTER_ENVIRONMENT = "JupyterEnvironment",
 }
 
 // Enum for job results
 export enum JobResult {
-    UNCERTAIN = "Uncertain",
-    SUCCEEDED = "Succeeded",
-    FAILED = "Failed",
-    CANCELLED = "Cancelled"
+  UNCERTAIN = "Uncertain",
+  SUCCEEDED = "Succeeded",
+  FAILED = "Failed",
+  CANCELLED = "Cancelled",
 }
 
 // Enum for error sources
 export enum ErrorSource {
-    SYSTEM = "System",
-    USER = "User",
-    UNKNOWN = "Unknown",
-    DEPENDENCY = "Dependency"
+  SYSTEM = "System",
+  USER = "User",
+  UNKNOWN = "Unknown",
+  DEPENDENCY = "Dependency",
 }
 
 // Interfaces for batch operations
 export interface BatchRequest {
-    name?: string;
-    file?: string;
-    proxyUser?: string;
-    className?: string;
-    args?: string[];
-    jars?: string[];
-    pyFiles?: string[];
-    files?: string[];
-    driverMemory?: string;
-    driverCores?: number;
-    executorMemory?: string;
-    executorCores?: number;
-    numExecutors?: number;
-    archives?: string[];
-    queue?: string;
-    conf?: { [key: string]: string };
-    maxRetries?: number;
-    tags?: { [key: string]: string };
+  name?: string;
+  file?: string;
+  proxyUser?: string;
+  className?: string;
+  args?: string[];
+  jars?: string[];
+  pyFiles?: string[];
+  files?: string[];
+  driverMemory?: string;
+  driverCores?: number;
+  executorMemory?: string;
+  executorCores?: number;
+  numExecutors?: number;
+  archives?: string[];
+  queue?: string;
+  conf?: { [key: string]: string };
+  maxRetries?: number;
+  tags?: { [key: string]: string };
 }
 
 export interface BatchStateInformation {
-    id?: string;
-    appId?: string;
-    name?: string;
-    workspaceId?: string;
-    submitterId?: string;
-    submitterName?: string;
-    artifactId?: string;
-    cancellationReason?: string;
-    result?: JobResult;
-    submittedAt?: string;
-    startedAt?: string;
-    endedAt?: string;
-    errorSource?: ErrorSource;
-    errorCode?: string;
-    tags?: { [key: string]: string };
-    schedulerState?: string;
-    pluginState?: string;
-    livyState?: string;
-    isJobTimedOut?: boolean;
+  id?: string;
+  appId?: string;
+  name?: string;
+  workspaceId?: string;
+  submitterId?: string;
+  submitterName?: string;
+  artifactId?: string;
+  cancellationReason?: string;
+  result?: JobResult;
+  submittedAt?: string;
+  startedAt?: string;
+  endedAt?: string;
+  errorSource?: ErrorSource;
+  errorCode?: string;
+  tags?: { [key: string]: string };
+  schedulerState?: string;
+  pluginState?: string;
+  livyState?: string;
+  isJobTimedOut?: boolean;
 }
 
 export interface BatchStateInfo {
-    state?: string;
-    errorMessage?: string;
+  state?: string;
+  errorMessage?: string;
 }
 
 export interface ErrorInformation {
-    message?: string;
-    errorCode?: string;
-    source?: ErrorSource;
+  message?: string;
+  errorCode?: string;
+  source?: ErrorSource;
 }
 
 export interface SparkServicePluginInformation {
-    state?: string;
+  state?: string;
 }
 
 export interface SchedulerInformation {
-    state?: string;
+  state?: string;
 }
 
 export interface BatchResponse {
-    livyInfo?: BatchStateInformation;
-    fabricBatchStateInfo?: BatchStateInfo;
-    name?: string;
-    id?: string;
-    appId?: string;
-    appInfo?: { [key: string]: string };
-    artifactId?: string;
-    errorInfo?: ErrorInformation[];
-    jobType?: JobType;
-    submitterId?: string;
-    submitterName?: string;
-    log?: string[];
-    pluginInfo?: SparkServicePluginInformation;
-    schedulerInfo?: SchedulerInformation;
-    state?: BatchState;
-    tags?: { [key: string]: string };
-    result?: JobResult;
-    cancellationReason?: string;
+  livyInfo?: BatchStateInformation;
+  fabricBatchStateInfo?: BatchStateInfo;
+  name?: string;
+  id?: string;
+  appId?: string;
+  appInfo?: { [key: string]: string };
+  artifactId?: string;
+  errorInfo?: ErrorInformation[];
+  jobType?: JobType;
+  submitterId?: string;
+  submitterName?: string;
+  log?: string[];
+  pluginInfo?: SparkServicePluginInformation;
+  schedulerInfo?: SchedulerInformation;
+  state?: BatchState;
+  tags?: { [key: string]: string };
+  result?: JobResult;
+  cancellationReason?: string;
 }
 
 // Interfaces for session operations
 export interface SessionRequest {
-    name?: string;
-    kind?: string; // e.g., "pyspark", "sparksql", "sparkR"
-    proxyUser?: string;
-    jars?: string[];
-    pyFiles?: string[];
-    files?: string[];
-    driverMemory?: string;
-    driverCores?: number;
-    executorMemory?: string;
-    executorCores?: number;
-    numExecutors?: number;
-    archives?: string[];
-    queue?: string;
-    conf?: { [key: string]: string };
-    heartbeatTimeoutInSeconds?: number;
-    tags?: { [key: string]: string };
+  name?: string;
+  kind?: string; // e.g., "pyspark", "sparksql", "sparkR"
+  proxyUser?: string;
+  jars?: string[];
+  pyFiles?: string[];
+  files?: string[];
+  driverMemory?: string;
+  driverCores?: number;
+  executorMemory?: string;
+  executorCores?: number;
+  numExecutors?: number;
+  archives?: string[];
+  queue?: string;
+  conf?: { [key: string]: string };
+  heartbeatTimeoutInSeconds?: number;
+  tags?: { [key: string]: string };
 }
 
 export interface LivySessionStateInformation {
-    id?: string;
-    appId?: string;
-    name?: string;
-    workspaceId?: string;
-    submitterId?: string;
-    submitterName?: string;
-    artifactId?: string;
-    cancellationReason?: string;
-    result?: JobResult;
-    submittedAt?: string;
-    startedAt?: string;
-    endedAt?: string;
-    errorSource?: ErrorSource;
-    errorCode?: string;
-    tags?: { [key: string]: string };
-    schedulerState?: string;
-    pluginState?: string;
-    livyState?: string;
-    isJobTimedOut?: boolean;
+  id?: string;
+  appId?: string;
+  name?: string;
+  workspaceId?: string;
+  submitterId?: string;
+  submitterName?: string;
+  artifactId?: string;
+  cancellationReason?: string;
+  result?: JobResult;
+  submittedAt?: string;
+  startedAt?: string;
+  endedAt?: string;
+  errorSource?: ErrorSource;
+  errorCode?: string;
+  tags?: { [key: string]: string };
+  schedulerState?: string;
+  pluginState?: string;
+  livyState?: string;
+  isJobTimedOut?: boolean;
 }
 
 export interface SessionStateInfo {
-    state?: string;
-    errorMessage?: string;
+  state?: string;
+  errorMessage?: string;
 }
 
 export interface SessionResponse {
-    fabricSessionStateInfo?: SessionStateInfo;
-    livyInfo?: LivySessionStateInformation;
-    name?: string;
-    id?: string;
-    appId?: string;
-    appInfo?: { [key: string]: string };
-    artifactId?: string;
-    errorInfo?: ErrorInformation[];
-    jobType?: JobType;
-    submitterId?: string;
-    submitterName?: string;
-    log?: string[];
-    pluginInfo?: SparkServicePluginInformation;
-    schedulerInfo?: SchedulerInformation;
-    state?: SessionState;
-    tags?: { [key: string]: string };
-    result?: JobResult;
-    cancellationReason?: string;
+  fabricSessionStateInfo?: SessionStateInfo;
+  livyInfo?: LivySessionStateInformation;
+  name?: string;
+  id?: string;
+  appId?: string;
+  appInfo?: { [key: string]: string };
+  artifactId?: string;
+  errorInfo?: ErrorInformation[];
+  jobType?: JobType;
+  submitterId?: string;
+  submitterName?: string;
+  log?: string[];
+  pluginInfo?: SparkServicePluginInformation;
+  schedulerInfo?: SchedulerInformation;
+  state?: SessionState;
+  tags?: { [key: string]: string };
+  result?: JobResult;
+  cancellationReason?: string;
 }
 
 // Interfaces for statement operations
 export interface StatementRequest {
-    code: string;
-    kind?: string;
+  code: string;
+  kind?: string;
 }
 
 export interface StatementOutput {
-    status: string;
-    execution_count: number;
-    data?: any;
+  status: string;
+  execution_count: number;
+  data?: any;
 }
 
 export interface StatementResponse {
-    id: number;
-    code: string;
-    state: string;
-    output?: StatementOutput;
-    progress?: number;
-    started?: number;
-    completed?: number;
+  id: number;
+  code: string;
+  state: string;
+  output?: StatementOutput;
+  progress?: number;
+  started?: number;
+  completed?: number;
 }
 
 // Connection types
 export interface Connection {
   id: string;
   displayName: string;
-  connectivityType: 'ShareableCloud' | 'OnPremisesGateway' | 'VirtualNetworkGateway';
+  connectivityType:
+    | "ShareableCloud"
+    | "OnPremisesGateway"
+    | "VirtualNetworkGateway";
   connectionDetails: {
     type: string;
     path: string;
     [key: string]: any; // Allow additional properties
   };
-  privacyLevel: 'None' | 'Private' | 'Organizational' | 'Public';
+  privacyLevel: "None" | "Private" | "Organizational" | "Public";
   credentialDetails: {
     credentialType: string;
-    singleSignOnType: 'None' | 'OAuth2' | 'Windows';
-    connectionEncryption: 'NotEncrypted' | 'Encrypted';
+    singleSignOnType: "None" | "OAuth2" | "Windows";
+    connectionEncryption: "NotEncrypted" | "Encrypted";
     skipTestConnection: boolean;
     [key: string]: any; // Allow additional credential properties
   };
@@ -749,17 +795,20 @@ export interface Connection {
 
 export interface CreateConnectionRequest {
   displayName: string;
-  connectivityType: 'ShareableCloud' | 'OnPremisesGateway' | 'VirtualNetworkGateway';
+  connectivityType:
+    | "ShareableCloud"
+    | "OnPremisesGateway"
+    | "VirtualNetworkGateway";
   connectionDetails: {
     type: string;
     path: string;
     [key: string]: any;
   };
-  privacyLevel: 'None' | 'Private' | 'Organizational' | 'Public';
+  privacyLevel: "None" | "Private" | "Organizational" | "Public";
   credentialDetails: {
     credentialType: string;
-    singleSignOnType: 'None' | 'OAuth2' | 'Windows';
-    connectionEncryption: 'NotEncrypted' | 'Encrypted';
+    singleSignOnType: "None" | "OAuth2" | "Windows";
+    connectionEncryption: "NotEncrypted" | "Encrypted";
     skipTestConnection: boolean;
     [key: string]: any;
   };
@@ -769,17 +818,20 @@ export interface CreateConnectionRequest {
 
 export interface UpdateConnectionRequest {
   displayName?: string;
-  connectivityType?: 'ShareableCloud' | 'OnPremisesGateway' | 'VirtualNetworkGateway';
+  connectivityType?:
+    | "ShareableCloud"
+    | "OnPremisesGateway"
+    | "VirtualNetworkGateway";
   connectionDetails?: {
     type?: string;
     path?: string;
     [key: string]: any;
   };
-  privacyLevel?: 'None' | 'Private' | 'Organizational' | 'Public';
+  privacyLevel?: "None" | "Private" | "Organizational" | "Public";
   credentialDetails?: {
     credentialType?: string;
-    singleSignOnType?: 'None' | 'OAuth2' | 'Windows';
-    connectionEncryption?: 'NotEncrypted' | 'Encrypted';
+    singleSignOnType?: "None" | "OAuth2" | "Windows";
+    connectionEncryption?: "NotEncrypted" | "Encrypted";
     skipTestConnection?: boolean;
     [key: string]: any;
   };
@@ -825,7 +877,11 @@ export interface ExternalDataShareRecipient {
 /**
  * The status of a given external data share
  */
-export type ExternalDataShareStatus = 'Pending' | 'Active' | 'Revoked' | 'InvitationExpired';
+export type ExternalDataShareStatus =
+  | "Pending"
+  | "Active"
+  | "Revoked"
+  | "InvitationExpired";
 
 /**
  * Request to create an External Data Share
@@ -855,7 +911,7 @@ export interface ExternalDataSharePathDetails {
 /**
  * The type of a path in an external data share
  */
-export type ExternalDataSharePathType = 'Folder' | 'Table';
+export type ExternalDataSharePathType = "Folder" | "Table";
 
 /**
  * External data share's provider tenant details
@@ -882,7 +938,7 @@ export interface AcceptExternalDataShareInvitationRequest {
 export interface ShortcutCreationPayload {
   createShortcutRequests: CreateExternalDataShareShortcutRequest[];
   path: string;
-  payloadType: 'ShortcutCreation';
+  payloadType: "ShortcutCreation";
 }
 
 /**
@@ -944,9 +1000,15 @@ export interface DataAccessRoles {
 }
 
 // Gateway Types
-export type GatewayType = 'OnPremises' | 'OnPremisesPersonal' | 'VirtualNetwork';
-export type LoadBalancingSetting = 'Failover' | 'DistributeEvenly';
-export type GatewayRole = 'Admin' | 'ConnectionCreatorWithResharing' | 'ConnectionCreator';
+export type GatewayType =
+  | "OnPremises"
+  | "OnPremisesPersonal"
+  | "VirtualNetwork";
+export type LoadBalancingSetting = "Failover" | "DistributeEvenly";
+export type GatewayRole =
+  | "Admin"
+  | "ConnectionCreatorWithResharing"
+  | "ConnectionCreator";
 
 export interface PublicKey {
   exponent: string;
@@ -967,7 +1029,7 @@ export interface BaseGateway {
 }
 
 export interface OnPremisesGateway extends BaseGateway {
-  type: 'OnPremises';
+  type: "OnPremises";
   displayName: string;
   publicKey: PublicKey;
   version: string;
@@ -978,13 +1040,13 @@ export interface OnPremisesGateway extends BaseGateway {
 }
 
 export interface OnPremisesGatewayPersonal extends BaseGateway {
-  type: 'OnPremisesPersonal';
+  type: "OnPremisesPersonal";
   publicKey: PublicKey;
   version: string;
 }
 
 export interface VirtualNetworkGateway extends BaseGateway {
-  type: 'VirtualNetwork';
+  type: "VirtualNetwork";
   displayName: string;
   capacityId: string;
   virtualNetworkAzureResource: VirtualNetworkAzureResource;
@@ -993,7 +1055,10 @@ export interface VirtualNetworkGateway extends BaseGateway {
 }
 
 // Union type for all gateway types
-export type Gateway = OnPremisesGateway | OnPremisesGatewayPersonal | VirtualNetworkGateway;
+export type Gateway =
+  | OnPremisesGateway
+  | OnPremisesGatewayPersonal
+  | VirtualNetworkGateway;
 
 // Gateway responses
 export interface ListGatewaysResponse {
@@ -1032,7 +1097,7 @@ export interface GatewayRoleAssignments {
 
 // Gateway creation requests
 export interface CreateVirtualNetworkGatewayRequest {
-  type: 'VirtualNetwork';
+  type: "VirtualNetwork";
   displayName: string;
   capacityId: string;
   virtualNetworkAzureResource: VirtualNetworkAzureResource;
@@ -1070,4 +1135,3 @@ export interface AddGatewayRoleAssignmentRequest {
 export interface UpdateGatewayRoleAssignmentRequest {
   role: GatewayRole;
 }
-

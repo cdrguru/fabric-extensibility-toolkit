@@ -1,13 +1,13 @@
 import React from "react";
-import { PageProps } from '../../App';
-import { 
-  Ribbon, 
+import { PageProps } from "../../App";
+import {
+  Ribbon,
   RibbonAction,
   RibbonActionButton,
   createSaveAction,
-  createSettingsAction
-} from '../../components/ItemEditor';
-import { ViewContext } from '../../components';
+  createSettingsAction,
+} from "../../components/ItemEditor";
+import { ViewContext } from "../../components";
 
 /**
  * Props interface for the HelloWorld Ribbon component
@@ -21,10 +21,10 @@ export interface HelloWorldItemRibbonProps extends PageProps {
 
 /**
  * HelloWorldItemRibbon - Demonstrates the recommended ribbon pattern
- * 
+ *
  * This demonstrates the recommended pattern for creating consistent ribbons
  * across all item editors in the Fabric Extensibility Toolkit.
- * 
+ *
  * Key Features:
  * - Uses Ribbon with clean API pattern
  * - Uses action factories with automatic internationalization
@@ -36,17 +36,14 @@ export interface HelloWorldItemRibbonProps extends PageProps {
  */
 export function HelloWorldItemRibbon(props: HelloWorldItemRibbonProps) {
   const { viewContext } = props;
-  
+
   // Use the action factories for automatic translation and consistent styling
   const saveAction = createSaveAction(
     props.saveItemCallback,
-    !props.isSaveButtonEnabled
+    !props.isSaveButtonEnabled,
   );
-  
-  const settingsAction = createSettingsAction(
-    props.openSettingsCallback
-  );
-  
+
+  const settingsAction = createSettingsAction(props.openSettingsCallback);
 
   const ribbonActions: RibbonActionButton[] = [
     // Uncoment when you want to see how the action looks
@@ -62,7 +59,7 @@ export function HelloWorldItemRibbon(props: HelloWorldItemRibbonProps) {
       testId: 'ribbon-share-btn',
       tooltip: t("ItemEditor_Ribbon_Share_Tooltip", "Share this item with others")
     }*/
-  ]
+  ];
 
   // Define home toolbar actions - these appear on the mandatory Home toolbar
   const homeToolbarActions: RibbonAction[] = [
@@ -82,24 +79,25 @@ export function HelloWorldItemRibbon(props: HelloWorldItemRibbonProps) {
     }*/
   ];
 
-  
   return (
-    <Ribbon 
-      homeToolbarActions={homeToolbarActions} 
+    <Ribbon
+      homeToolbarActions={homeToolbarActions}
       // ADDITIONAL TOOLBAR EXAMPLE
       // This demonstrates how you can add an addtional toolbar
-      additionalToolbars={[
-        //Uncomment when you want to see how a 2nd toolbar looks
-        /*{
+      additionalToolbars={
+        [
+          //Uncomment when you want to see how a 2nd toolbar looks
+          /*{
           key: 'edit',
           label: "Edit",
           actions: [
                     settingsAction
                   ]
         }*/
-      ]}
+        ]
+      }
       rightActionButtons={ribbonActions} // Added sample share action
-      viewContext={viewContext} 
+      viewContext={viewContext}
     />
   );
 }

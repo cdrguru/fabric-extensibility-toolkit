@@ -6,37 +6,50 @@ import { SCOPE_PAIRS } from "./FabricPlatformScopes";
 /**
  * Node family types for Spark pools
  */
-export type NodeFamily = 'MemoryOptimized';
+export type NodeFamily = "MemoryOptimized";
 
 /**
  * Node size types for Spark pools
  */
-export type NodeSize = 'Small' | 'Medium' | 'Large' | 'XLarge' | 'XXLarge';
+export type NodeSize = "Small" | "Medium" | "Large" | "XLarge" | "XXLarge";
 
 /**
  * Custom pool types
  */
-export type CustomPoolType = 'Workspace' | 'Capacity';
+export type CustomPoolType = "Workspace" | "Capacity";
 
 /**
  * Livy Session States
  */
-export type LivySessionState = 'InProgress' | 'Cancelled' | 'NotStarted' | 'Succeeded' | 'Failed' | 'Unknown';
+export type LivySessionState =
+  | "InProgress"
+  | "Cancelled"
+  | "NotStarted"
+  | "Succeeded"
+  | "Failed"
+  | "Unknown";
 
 /**
  * Livy Session Origins
  */
-export type LivySessionOrigin = 'SubmittedJob' | 'PendingJob';
+export type LivySessionOrigin = "SubmittedJob" | "PendingJob";
 
 /**
  * Livy Session Item Types
  */
-export type LivySessionItemType = 'Lakehouse' | 'SparkJobDefinition' | 'Notebook';
+export type LivySessionItemType =
+  | "Lakehouse"
+  | "SparkJobDefinition"
+  | "Notebook";
 
 /**
  * Livy Session Job Types
  */
-export type LivySessionJobType = 'Unknown' | 'SparkSession' | 'SparkBatch' | 'JupyterSession';
+export type LivySessionJobType =
+  | "Unknown"
+  | "SparkSession"
+  | "SparkBatch"
+  | "JupyterSession";
 
 /**
  * Automatic log properties
@@ -182,7 +195,7 @@ export interface CustomPools extends PaginatedResponse<CustomPool> {
  */
 export interface Principal {
   id: string;
-  type: 'User' | 'Group' | 'ServicePrincipal' | 'ManagedIdentity';
+  type: "User" | "Group" | "ServicePrincipal" | "ManagedIdentity";
   profile?: {
     displayName?: string;
     email?: string;
@@ -251,19 +264,18 @@ export interface LivySessions extends PaginatedResponse<LivySession> {
 /**
  * Spark Client for Microsoft Fabric
  * Provides comprehensive management of Spark settings, custom pools, and Livy sessions
- * 
+ *
  * Based on the official Fabric REST API:
  * https://learn.microsoft.com/en-us/rest/api/fabric/spark
- * 
+ *
  * Uses method-based scope selection:
  * - GET operations use read-only scopes
  * - POST/PUT/PATCH/DELETE operations use read-write scopes
  */
 export class SparkClient extends FabricPlatformClient {
-
   constructor(
     workloadClientOrAuthConfig?: WorkloadClientAPI | AuthenticationConfig,
-    authConfig?: AuthenticationConfig
+    authConfig?: AuthenticationConfig,
   ) {
     // Use scope pairs for method-based scope selection
     super(workloadClientOrAuthConfig, SCOPE_PAIRS.SPARK_LIVY, authConfig);
@@ -277,7 +289,7 @@ export class SparkClient extends FabricPlatformClient {
    * Get workspace Spark settings
    * @param workspaceId The workspace ID
    * @returns Promise<WorkspaceSparkSettings>
-   * 
+   *
    * @example
    * ```typescript
    * const sparkClient = new SparkClient(workloadClient);
@@ -285,9 +297,11 @@ export class SparkClient extends FabricPlatformClient {
    * console.log('Automatic logging enabled:', settings.automaticLog?.enabled);
    * ```
    */
-  async getWorkspaceSparkSettings(workspaceId: string): Promise<WorkspaceSparkSettings> {
+  async getWorkspaceSparkSettings(
+    workspaceId: string,
+  ): Promise<WorkspaceSparkSettings> {
     if (!workspaceId) {
-      throw new Error('Workspace ID is required');
+      throw new Error("Workspace ID is required");
     }
 
     const endpoint = `/workspaces/${workspaceId}/spark/settings`;
@@ -299,7 +313,7 @@ export class SparkClient extends FabricPlatformClient {
    * @param workspaceId The workspace ID
    * @param settings The settings to update
    * @returns Promise<WorkspaceSparkSettings>
-   * 
+   *
    * @example
    * ```typescript
    * const sparkClient = new SparkClient(workloadClient);
@@ -317,15 +331,15 @@ export class SparkClient extends FabricPlatformClient {
    * ```
    */
   async updateWorkspaceSparkSettings(
-    workspaceId: string, 
-    settings: UpdateWorkspaceSparkSettingsRequest
+    workspaceId: string,
+    settings: UpdateWorkspaceSparkSettingsRequest,
   ): Promise<WorkspaceSparkSettings> {
     if (!workspaceId) {
-      throw new Error('Workspace ID is required');
+      throw new Error("Workspace ID is required");
     }
 
     if (!settings || Object.keys(settings).length === 0) {
-      throw new Error('Settings object cannot be empty');
+      throw new Error("Settings object cannot be empty");
     }
 
     const endpoint = `/workspaces/${workspaceId}/spark/settings`;
@@ -341,7 +355,7 @@ export class SparkClient extends FabricPlatformClient {
    * @param workspaceId The workspace ID
    * @param continuationToken Optional continuation token for pagination
    * @returns Promise<CustomPools>
-   * 
+   *
    * @example
    * ```typescript
    * const sparkClient = new SparkClient(workloadClient);
@@ -349,9 +363,12 @@ export class SparkClient extends FabricPlatformClient {
    * console.log('Found pools:', pools.value.length);
    * ```
    */
-  async listCustomPools(workspaceId: string, continuationToken?: string): Promise<CustomPools> {
+  async listCustomPools(
+    workspaceId: string,
+    continuationToken?: string,
+  ): Promise<CustomPools> {
     if (!workspaceId) {
-      throw new Error('Workspace ID is required');
+      throw new Error("Workspace ID is required");
     }
 
     let endpoint = `/workspaces/${workspaceId}/spark/pools`;
@@ -368,7 +385,9 @@ export class SparkClient extends FabricPlatformClient {
    * @returns Promise<CustomPool[]>
    */
   async getAllCustomPools(workspaceId: string): Promise<CustomPool[]> {
-    return this.getAllPages<CustomPool>(`/workspaces/${workspaceId}/spark/pools`);
+    return this.getAllPages<CustomPool>(
+      `/workspaces/${workspaceId}/spark/pools`,
+    );
   }
 
   /**
@@ -376,7 +395,7 @@ export class SparkClient extends FabricPlatformClient {
    * @param workspaceId The workspace ID
    * @param poolId The custom pool ID
    * @returns Promise<CustomPool>
-   * 
+   *
    * @example
    * ```typescript
    * const sparkClient = new SparkClient(workloadClient);
@@ -385,13 +404,16 @@ export class SparkClient extends FabricPlatformClient {
    * console.log('Node size:', pool.nodeSize);
    * ```
    */
-  async getCustomPool(workspaceId: string, poolId: string): Promise<CustomPool> {
+  async getCustomPool(
+    workspaceId: string,
+    poolId: string,
+  ): Promise<CustomPool> {
     if (!workspaceId) {
-      throw new Error('Workspace ID is required');
+      throw new Error("Workspace ID is required");
     }
 
     if (!poolId) {
-      throw new Error('Pool ID is required');
+      throw new Error("Pool ID is required");
     }
 
     const endpoint = `/workspaces/${workspaceId}/spark/pools/${poolId}`;
@@ -403,7 +425,7 @@ export class SparkClient extends FabricPlatformClient {
    * @param workspaceId The workspace ID
    * @param poolRequest The pool creation request
    * @returns Promise<CustomPool>
-   * 
+   *
    * @example
    * ```typescript
    * const sparkClient = new SparkClient(workloadClient);
@@ -424,34 +446,37 @@ export class SparkClient extends FabricPlatformClient {
    * });
    * ```
    */
-  async createCustomPool(workspaceId: string, poolRequest: CreateCustomPoolRequest): Promise<CustomPool> {
+  async createCustomPool(
+    workspaceId: string,
+    poolRequest: CreateCustomPoolRequest,
+  ): Promise<CustomPool> {
     if (!workspaceId) {
-      throw new Error('Workspace ID is required');
+      throw new Error("Workspace ID is required");
     }
 
     if (!poolRequest) {
-      throw new Error('Pool request is required');
+      throw new Error("Pool request is required");
     }
 
     // Validate required fields
     if (!poolRequest.name || poolRequest.name.trim().length === 0) {
-      throw new Error('Pool name is required');
+      throw new Error("Pool name is required");
     }
 
     if (!poolRequest.nodeFamily) {
-      throw new Error('Node family is required');
+      throw new Error("Node family is required");
     }
 
     if (!poolRequest.nodeSize) {
-      throw new Error('Node size is required');
+      throw new Error("Node size is required");
     }
 
     if (!poolRequest.autoScale) {
-      throw new Error('Auto scale configuration is required');
+      throw new Error("Auto scale configuration is required");
     }
 
     if (!poolRequest.dynamicExecutorAllocation) {
-      throw new Error('Dynamic executor allocation configuration is required');
+      throw new Error("Dynamic executor allocation configuration is required");
     }
 
     const endpoint = `/workspaces/${workspaceId}/spark/pools`;
@@ -464,7 +489,7 @@ export class SparkClient extends FabricPlatformClient {
    * @param poolId The custom pool ID
    * @param poolRequest The pool update request
    * @returns Promise<CustomPool>
-   * 
+   *
    * @example
    * ```typescript
    * const sparkClient = new SparkClient(workloadClient);
@@ -479,20 +504,20 @@ export class SparkClient extends FabricPlatformClient {
    * ```
    */
   async updateCustomPool(
-    workspaceId: string, 
-    poolId: string, 
-    poolRequest: UpdateCustomPoolRequest
+    workspaceId: string,
+    poolId: string,
+    poolRequest: UpdateCustomPoolRequest,
   ): Promise<CustomPool> {
     if (!workspaceId) {
-      throw new Error('Workspace ID is required');
+      throw new Error("Workspace ID is required");
     }
 
     if (!poolId) {
-      throw new Error('Pool ID is required');
+      throw new Error("Pool ID is required");
     }
 
     if (!poolRequest || Object.keys(poolRequest).length === 0) {
-      throw new Error('Pool update request cannot be empty');
+      throw new Error("Pool update request cannot be empty");
     }
 
     const endpoint = `/workspaces/${workspaceId}/spark/pools/${poolId}`;
@@ -504,7 +529,7 @@ export class SparkClient extends FabricPlatformClient {
    * @param workspaceId The workspace ID
    * @param poolId The custom pool ID
    * @returns Promise<void>
-   * 
+   *
    * @example
    * ```typescript
    * const sparkClient = new SparkClient(workloadClient);
@@ -514,11 +539,11 @@ export class SparkClient extends FabricPlatformClient {
    */
   async deleteCustomPool(workspaceId: string, poolId: string): Promise<void> {
     if (!workspaceId) {
-      throw new Error('Workspace ID is required');
+      throw new Error("Workspace ID is required");
     }
 
     if (!poolId) {
-      throw new Error('Pool ID is required');
+      throw new Error("Pool ID is required");
     }
 
     const endpoint = `/workspaces/${workspaceId}/spark/pools/${poolId}`;
@@ -534,7 +559,7 @@ export class SparkClient extends FabricPlatformClient {
    * @param workspaceId The workspace ID
    * @param continuationToken Optional continuation token for pagination
    * @returns Promise<LivySessions>
-   * 
+   *
    * @example
    * ```typescript
    * const sparkClient = new SparkClient(workloadClient);
@@ -544,9 +569,12 @@ export class SparkClient extends FabricPlatformClient {
    * });
    * ```
    */
-  async listLivySessions(workspaceId: string, continuationToken?: string): Promise<LivySessions> {
+  async listLivySessions(
+    workspaceId: string,
+    continuationToken?: string,
+  ): Promise<LivySessions> {
     if (!workspaceId) {
-      throw new Error('Workspace ID is required');
+      throw new Error("Workspace ID is required");
     }
 
     let endpoint = `/workspaces/${workspaceId}/spark/livySessions`;
@@ -563,7 +591,9 @@ export class SparkClient extends FabricPlatformClient {
    * @returns Promise<LivySession[]>
    */
   async getAllLivySessions(workspaceId: string): Promise<LivySession[]> {
-    return this.getAllPages<LivySession>(`/workspaces/${workspaceId}/spark/livySessions`);
+    return this.getAllPages<LivySession>(
+      `/workspaces/${workspaceId}/spark/livySessions`,
+    );
   }
 
   // ============================
@@ -592,7 +622,7 @@ export class SparkClient extends FabricPlatformClient {
     }
 
     // "Starter Pool" is reserved
-    if (name.toLowerCase().trim() === 'starter pool') {
+    if (name.toLowerCase().trim() === "starter pool") {
       return false;
     }
 
@@ -608,15 +638,17 @@ export class SparkClient extends FabricPlatformClient {
     const errors: string[] = [];
 
     if (autoScale.minNodeCount < 1) {
-      errors.push('Minimum node count must be at least 1');
+      errors.push("Minimum node count must be at least 1");
     }
 
     if (autoScale.maxNodeCount < 1) {
-      errors.push('Maximum node count must be at least 1');
+      errors.push("Maximum node count must be at least 1");
     }
 
     if (autoScale.minNodeCount > autoScale.maxNodeCount) {
-      errors.push('Minimum node count cannot be greater than maximum node count');
+      errors.push(
+        "Minimum node count cannot be greater than maximum node count",
+      );
     }
 
     return errors;
@@ -627,19 +659,21 @@ export class SparkClient extends FabricPlatformClient {
    * @param allocation The dynamic executor allocation configuration to validate
    * @returns string[] Array of validation errors (empty if valid)
    */
-  static validateDynamicExecutorAllocation(allocation: DynamicExecutorAllocationProperties): string[] {
+  static validateDynamicExecutorAllocation(
+    allocation: DynamicExecutorAllocationProperties,
+  ): string[] {
     const errors: string[] = [];
 
     if (allocation.minExecutors < 1) {
-      errors.push('Minimum executors must be at least 1');
+      errors.push("Minimum executors must be at least 1");
     }
 
     if (allocation.maxExecutors < 1) {
-      errors.push('Maximum executors must be at least 1');
+      errors.push("Maximum executors must be at least 1");
     }
 
     if (allocation.minExecutors > allocation.maxExecutors) {
-      errors.push('Minimum executors cannot be greater than maximum executors');
+      errors.push("Minimum executors cannot be greater than maximum executors");
     }
 
     return errors;
@@ -652,11 +686,11 @@ export class SparkClient extends FabricPlatformClient {
    */
   static getNodeSizeDisplayName(nodeSize: NodeSize): string {
     const displayNames: Record<NodeSize, string> = {
-      'Small': 'Small (4 cores, 28 GB RAM)',
-      'Medium': 'Medium (8 cores, 56 GB RAM)',
-      'Large': 'Large (16 cores, 112 GB RAM)',
-      'XLarge': 'XLarge (32 cores, 224 GB RAM)',
-      'XXLarge': 'XXLarge (64 cores, 448 GB RAM)'
+      Small: "Small (4 cores, 28 GB RAM)",
+      Medium: "Medium (8 cores, 56 GB RAM)",
+      Large: "Large (16 cores, 112 GB RAM)",
+      XLarge: "XLarge (32 cores, 224 GB RAM)",
+      XXLarge: "XXLarge (64 cores, 448 GB RAM)",
     };
 
     return displayNames[nodeSize] || nodeSize;
@@ -669,12 +703,12 @@ export class SparkClient extends FabricPlatformClient {
    */
   static getLivySessionStateDisplayName(state: LivySessionState): string {
     const displayNames: Record<LivySessionState, string> = {
-      'InProgress': 'In Progress',
-      'Cancelled': 'Cancelled',
-      'NotStarted': 'Not Started',
-      'Succeeded': 'Succeeded',
-      'Failed': 'Failed',
-      'Unknown': 'Unknown'
+      InProgress: "In Progress",
+      Cancelled: "Cancelled",
+      NotStarted: "Not Started",
+      Succeeded: "Succeeded",
+      Failed: "Failed",
+      Unknown: "Unknown",
     };
 
     return displayNames[state] || state;
@@ -701,6 +735,6 @@ export class SparkClient extends FabricPlatformClient {
       parts.push(`${duration.seconds}s`);
     }
 
-    return parts.length > 0 ? parts.join(' ') : '0s';
+    return parts.length > 0 ? parts.join(" ") : "0s";
   }
 }

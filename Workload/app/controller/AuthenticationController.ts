@@ -7,7 +7,10 @@ import { AccessToken, WorkloadClientAPI } from "@ms-fabric/workload-client";
  * @returns {AccessToken}
  */
 export async function callAcquireFrontendAccessToken(
-    workloadClient: WorkloadClientAPI, 
-    scopes: string): Promise<AccessToken> {
-    return workloadClient.auth.acquireFrontendAccessToken({ scopes: scopes?.length ? scopes.split(' ') : [] });
+  workloadClient: WorkloadClientAPI,
+  scopes: string,
+): Promise<AccessToken> {
+  return workloadClient.auth.acquireFrontendAccessToken({
+    scopes: scopes?.length ? scopes.split(" ") : [],
+  });
 }

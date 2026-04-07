@@ -12,33 +12,34 @@ The `Ribbon` component provides a consistent ribbon interface for Microsoft Fabr
 ✅ **ViewContext Integration** - Automatic back button handling for detail views  
 ✅ **Fabric Design System** - Uses official tokens and styling  
 ✅ **Accessibility Compliant** - ARIA labels, keyboard navigation, screen reader support  
-✅ **TypeScript Support** - Full type definitions and IntelliSense  
+✅ **TypeScript Support** - Full type definitions and IntelliSense
 
 ## 🚀 Quick Start
 
 ### Simple Pattern (Recommended)
 
 ```tsx
-import { Ribbon, createSaveAction, createSettingsAction } from "../../components/ItemEditor";
+import {
+  Ribbon,
+  createSaveAction,
+  createSettingsAction,
+} from "../../components/ItemEditor";
 import { ViewContext } from "../../components/ItemEditor";
 
-export function MyItemRibbon({ viewContext, saveItemCallback, openSettingsCallback, isSaveButtonEnabled }) {
+export function MyItemRibbon({
+  viewContext,
+  saveItemCallback,
+  openSettingsCallback,
+  isSaveButtonEnabled,
+}) {
   // Define mandatory Home tab actions
   const homeToolbarActions: RibbonAction[] = [
-    createSaveAction(
-      saveItemCallback,
-      !isSaveButtonEnabled
-    ),
-    createSettingsAction(
-      openSettingsCallback
-    )
+    createSaveAction(saveItemCallback, !isSaveButtonEnabled),
+    createSettingsAction(openSettingsCallback),
   ];
 
   return (
-    <Ribbon 
-      homeToolbarActions={homeToolbarActions}
-      viewContext={viewContext} 
-    />
+    <Ribbon homeToolbarActions={homeToolbarActions} viewContext={viewContext} />
   );
 }
 ```
@@ -48,34 +49,34 @@ export function MyItemRibbon({ viewContext, saveItemCallback, openSettingsCallba
 ```tsx
 export function ComplexItemRibbon({ viewContext, ...callbacks }) {
   const { t } = useTranslation();
-  
+
   // Mandatory Home tab actions
   const homeToolbarActions: RibbonAction[] = [
     createSaveAction(callbacks.save, !props.canSave),
-    createSettingsAction(callbacks.settings)
+    createSettingsAction(callbacks.settings),
   ];
-  
+
   // Optional additional tabs for complex functionality
   const additionalToolbars = [
     {
-      key: 'data',
-      label: t('Data'),
+      key: "data",
+      label: t("Data"),
       actions: [
         {
-          key: 'import',
+          key: "import",
           icon: CloudArrowDown24Regular,
-          label: t('Import'),
-          onClick: callbacks.import
-        }
-      ]
-    }
+          label: t("Import"),
+          onClick: callbacks.import,
+        },
+      ],
+    },
   ];
 
   return (
-    <Ribbon 
+    <Ribbon
       homeToolbarActions={homeToolbarActions}
       additionalToolbars={additionalToolbars}
-      viewContext={viewContext} 
+      viewContext={viewContext}
     />
   );
 }
@@ -85,40 +86,40 @@ export function ComplexItemRibbon({ viewContext, ...callbacks }) {
 
 ### RibbonProps
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `homeToolbarActions` | `RibbonAction[]` | ✅ | Actions for the mandatory Home tab |
-| `additionalToolbars` | `RibbonToolbar[]` | ❌ | Optional additional tabs for complex items |
-| `viewContext` | `ViewContext` | ✅ | ViewContext for navigation and back button |
+| Property             | Type              | Required | Description                                |
+| -------------------- | ----------------- | -------- | ------------------------------------------ |
+| `homeToolbarActions` | `RibbonAction[]`  | ✅       | Actions for the mandatory Home tab         |
+| `additionalToolbars` | `RibbonToolbar[]` | ❌       | Optional additional tabs for complex items |
+| `viewContext`        | `ViewContext`     | ✅       | ViewContext for navigation and back button |
 
 ### RibbonAction Interface
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `key` | `string` | ✅ | Unique identifier for the action |
-| `icon` | `FluentIconComponent` | ✅ | Fluent UI icon component |
-| `label` | `string` | ✅ | Action label and tooltip text |
-| `onClick` | `() => void \| Promise<void>` | ✅ | Click handler |
-| `disabled` | `boolean` | ❌ | Whether action is disabled |
-| `testId` | `string` | ❌ | Test identifier |
+| Property   | Type                          | Required | Description                      |
+| ---------- | ----------------------------- | -------- | -------------------------------- |
+| `key`      | `string`                      | ✅       | Unique identifier for the action |
+| `icon`     | `FluentIconComponent`         | ✅       | Fluent UI icon component         |
+| `label`    | `string`                      | ✅       | Action label and tooltip text    |
+| `onClick`  | `() => void \| Promise<void>` | ✅       | Click handler                    |
+| `disabled` | `boolean`                     | ❌       | Whether action is disabled       |
+| `testId`   | `string`                      | ❌       | Test identifier                  |
 
 ### RibbonToolbar Interface
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `key` | `string` | ✅ | Unique identifier for the tab |
-| `label` | `string` | ✅ | Tab display label |
-| `actions` | `RibbonAction[]` | ✅ | Actions for this tab |
+| Property  | Type             | Required | Description                   |
+| --------- | ---------------- | -------- | ----------------------------- |
+| `key`     | `string`         | ✅       | Unique identifier for the tab |
+| `label`   | `string`         | ✅       | Tab display label             |
+| `actions` | `RibbonAction[]` | ✅       | Actions for this tab          |
 
 ### ViewContext Interface
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `currentView` | `string` | Name of currently active view |
-| `setCurrentView` | `(view: string) => void` | Navigate to different view |
-| `isDetailView` | `boolean` | True if current view is a detail view |
-| `goBack` | `() => void` | Navigate to previous view |
-| `viewHistory` | `string[]` | Stack of previous views |
+| Property         | Type                     | Description                           |
+| ---------------- | ------------------------ | ------------------------------------- |
+| `currentView`    | `string`                 | Name of currently active view         |
+| `setCurrentView` | `(view: string) => void` | Navigate to different view            |
+| `isDetailView`   | `boolean`                | True if current view is a detail view |
+| `goBack`         | `() => void`             | Navigate to previous view             |
+| `viewHistory`    | `string[]`               | Stack of previous views               |
 
 ## 🎯 Key Features
 
@@ -150,15 +151,11 @@ Perfect integration with the ItemEditor view registration system:
   views={views}
   defaultView="main"
   ribbon={(viewContext) => <MyItemRibbon viewContext={viewContext} />}
-/>
+/>;
 
 // Your ribbon component
 export function MyItemRibbon({ viewContext }) {
-  return (
-    <Ribbon viewContext={viewContext}>
-      {/* Ribbon content */}
-    </Ribbon>
-  );
+  return <Ribbon viewContext={viewContext}>{/* Ribbon content */}</Ribbon>;
 }
 ```
 
@@ -197,22 +194,24 @@ Ribbon
 Most items only need the Home tab with Save and Settings actions:
 
 ```tsx
-export function SimpleRibbon({ viewContext, saveCallback, settingsCallback, canSave }) {
+export function SimpleRibbon({
+  viewContext,
+  saveCallback,
+  settingsCallback,
+  canSave,
+}) {
   const { t } = useTranslation();
-  
+
   // Create a translation helper function
   const translate = (key: string, fallback?: string) => t(key, fallback);
-  
+
   const homeToolbarActions = [
     createSaveAction(saveCallback, !canSave, translate),
-    createSettingsAction(settingsCallback, translate)
+    createSettingsAction(settingsCallback, translate),
   ];
 
   return (
-    <Ribbon 
-      homeToolbarActions={homeToolbarActions}
-      viewContext={viewContext} 
-    />
+    <Ribbon homeToolbarActions={homeToolbarActions} viewContext={viewContext} />
   );
 }
 ```
@@ -224,53 +223,53 @@ For items with complex functionality that need multiple tabs:
 ```tsx
 export function ComplexRibbon({ viewContext, ...callbacks }) {
   const { t } = useTranslation();
-  
+
   // Create a translation helper function
   const translate = (key: string, fallback?: string) => t(key, fallback);
-  
+
   const homeToolbarActions = [
     createSaveAction(callbacks.save, !callbacks.canSave, translate),
-    createSettingsAction(callbacks.settings, translate)
+    createSettingsAction(callbacks.settings, translate),
   ];
-  
+
   const additionalToolbars = [
     {
-      key: 'data',
-      label: t('Data'),
+      key: "data",
+      label: t("Data"),
       actions: [
         {
-          key: 'import',
+          key: "import",
           icon: CloudArrowDown24Regular,
-          label: t('Import Data'),
-          onClick: callbacks.import
+          label: t("Import Data"),
+          onClick: callbacks.import,
         },
         {
-          key: 'export',
+          key: "export",
           icon: Share24Regular,
-          label: t('Export Data'),
-          onClick: callbacks.export
-        }
-      ]
+          label: t("Export Data"),
+          onClick: callbacks.export,
+        },
+      ],
     },
     {
-      key: 'view',
-      label: t('View'),
+      key: "view",
+      label: t("View"),
       actions: [
         {
-          key: 'grid',
+          key: "grid",
           icon: Grid24Regular,
-          label: t('Grid View'),
-          onClick: callbacks.toggleGrid
-        }
-      ]
-    }
+          label: t("Grid View"),
+          onClick: callbacks.toggleGrid,
+        },
+      ],
+    },
   ];
 
   return (
-    <Ribbon 
+    <Ribbon
       homeToolbarActions={homeToolbarActions}
       additionalToolbars={additionalToolbars}
-      viewContext={viewContext} 
+      viewContext={viewContext}
     />
   );
 }
@@ -283,35 +282,32 @@ Adding custom actions to the Home tab alongside standard ones:
 ```tsx
 export function CustomActionsRibbon({ viewContext, ...callbacks }) {
   const { t } = useTranslation();
-  
+
   // Create a translation helper function
   const translate = (key: string, fallback?: string) => t(key, fallback);
-  
+
   const homeToolbarActions = [
     // Standard actions first
     createSaveAction(callbacks.save, !callbacks.canSave, translate),
     createSettingsAction(callbacks.settings, translate),
-    
+
     // Custom actions
     {
-      key: 'refresh',
+      key: "refresh",
       icon: ArrowClockwise24Regular,
-      label: t('Refresh'),
-      onClick: callbacks.refresh
+      label: t("Refresh"),
+      onClick: callbacks.refresh,
     },
     {
-      key: 'help',
+      key: "help",
       icon: QuestionCircle24Regular,
-      label: t('Help'),
-      onClick: callbacks.showHelp
-    }
+      label: t("Help"),
+      onClick: callbacks.showHelp,
+    },
   ];
 
   return (
-    <Ribbon 
-      homeToolbarActions={homeToolbarActions}
-      viewContext={viewContext} 
-    />
+    <Ribbon homeToolbarActions={homeToolbarActions} viewContext={viewContext} />
   );
 }
 ```
@@ -343,10 +339,7 @@ padding: var(--spacingHorizontalM) var(--spacingHorizontalL);
 ### Custom Styling
 
 ```tsx
-<Ribbon 
-  viewContext={viewContext}
-  className="my-custom-ribbon"
->
+<Ribbon viewContext={viewContext} className="my-custom-ribbon">
   <MyContent />
 </Ribbon>
 ```
@@ -360,7 +353,7 @@ padding: var(--spacingHorizontalM) var(--spacingHorizontalL);
 ✅ **Start with simple pattern** - Only add `additionalToolbars` when truly needed  
 ✅ **Import proper Fluent icons** - Use `import { Icon24Regular } from '@fluentui/react-icons'`  
 ✅ **Test keyboard navigation** for all interactive elements  
-✅ **Use descriptive action keys** - Unique identifiers help with testing and debugging  
+✅ **Use descriptive action keys** - Unique identifiers help with testing and debugging
 
 ### ❌ Don'ts
 
@@ -368,11 +361,12 @@ padding: var(--spacingHorizontalM) var(--spacingHorizontalL);
 ❌ **Don't create unnecessary tabs** - Keep ribbons simple unless complexity is justified  
 ❌ **Don't manage back button manually** - ViewContext handles it automatically  
 ❌ **Don't use old RibbonToolbar** - The new API eliminates the need for child components  
-❌ **Don't ignore accessibility** - Always include proper labels and test with screen readers  
+❌ **Don't ignore accessibility** - Always include proper labels and test with screen readers
 
 ## 🔀 Migration from Old API
 
 ### Before (Complex)
+
 ```tsx
 // Old complex pattern - DON'T USE
 const tabs = createRibbonTabs(/* complex config */);
@@ -384,6 +378,7 @@ return (
 ```
 
 ### After (Clean)
+
 ```tsx
 // New clean pattern - RECOMMENDED
 const { t } = useTranslation();
@@ -391,16 +386,13 @@ const translate = (key: string, fallback?: string) => t(key, fallback);
 
 const homeToolbarActions = [
   createSaveAction(save, !canSave, translate),
-  createSettingsAction(settings, translate)
+  createSettingsAction(settings, translate),
 ];
 
 return (
-  <Ribbon 
-    homeToolbarActions={homeToolbarActions}
-    viewContext={viewContext} 
-  />
+  <Ribbon homeToolbarActions={homeToolbarActions} viewContext={viewContext} />
 );
-```  
+```
 
 ## 🔗 Related Components
 
@@ -412,6 +404,6 @@ return (
 ## 📝 Examples
 
 For complete examples, see:
+
 - [Sample Ribbon Implementation](../../Workload/app/items/HelloWorldItem/HelloWorldItemRibbon.tsx) - HelloWorld reference
 - [ItemEditor README](./README.md) - Integration patterns
-

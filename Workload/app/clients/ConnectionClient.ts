@@ -1,21 +1,21 @@
 import { WorkloadClientAPI } from "@ms-fabric/workload-client";
 import { FabricPlatformClient } from "./FabricPlatformClient";
 import { SCOPE_PAIRS } from "./FabricPlatformScopes";
-import { 
-  Connection, 
-  CreateConnectionRequest, 
-  UpdateConnectionRequest, 
+import {
+  Connection,
+  CreateConnectionRequest,
+  UpdateConnectionRequest,
   ListConnectionsResponse,
-  AuthenticationConfig
+  AuthenticationConfig,
 } from "./FabricPlatformTypes";
 
 /**
  * Fabric Connections API Client
  * Provides methods to interact with Fabric connections
- * 
+ *
  * Based on the official Fabric REST API:
  * https://learn.microsoft.com/en-us/rest/api/fabric/core/connections
- * 
+ *
  * Uses method-based scope selection:
  * - GET operations use read-only scopes
  * - POST/PUT/PATCH/DELETE operations use read-write scopes
@@ -41,13 +41,15 @@ export class ConnectionClient extends FabricPlatformClient {
    * @param continuationToken Optional continuation token for pagination
    * @returns Promise resolving to the list of connections
    */
-  async listConnections(continuationToken?: string): Promise<ListConnectionsResponse> {
-    let endpoint = '/connections';
-    
+  async listConnections(
+    continuationToken?: string,
+  ): Promise<ListConnectionsResponse> {
+    let endpoint = "/connections";
+
     if (continuationToken) {
       endpoint += `?continuationToken=${encodeURIComponent(continuationToken)}`;
     }
-    
+
     return this.get<ListConnectionsResponse>(endpoint);
   }
 
@@ -56,7 +58,7 @@ export class ConnectionClient extends FabricPlatformClient {
    * @returns Promise resolving to all connections
    */
   async getAllConnections(): Promise<Connection[]> {
-    return this.getAllPages<Connection>('/connections');
+    return this.getAllPages<Connection>("/connections");
   }
 
   /**
@@ -64,8 +66,10 @@ export class ConnectionClient extends FabricPlatformClient {
    * @param connectionRequest The connection creation request
    * @returns Promise resolving to the created connection
    */
-  async createConnection(connectionRequest: CreateConnectionRequest): Promise<Connection> {
-    return this.post<Connection>('/connections', connectionRequest);
+  async createConnection(
+    connectionRequest: CreateConnectionRequest,
+  ): Promise<Connection> {
+    return this.post<Connection>("/connections", connectionRequest);
   }
 
   /**
@@ -74,8 +78,14 @@ export class ConnectionClient extends FabricPlatformClient {
    * @param updateRequest The update request payload
    * @returns Promise resolving to the updated connection
    */
-  async updateConnection(connectionId: string, updateRequest: UpdateConnectionRequest): Promise<Connection> {
-    return this.patch<Connection>(`/connections/${connectionId}`, updateRequest);
+  async updateConnection(
+    connectionId: string,
+    updateRequest: UpdateConnectionRequest,
+  ): Promise<Connection> {
+    return this.patch<Connection>(
+      `/connections/${connectionId}`,
+      updateRequest,
+    );
   }
 
   /**
@@ -94,7 +104,9 @@ export class ConnectionClient extends FabricPlatformClient {
    */
   async getConnectionsByType(connectionType: string): Promise<Connection[]> {
     const allConnections = await this.getAllConnections();
-    return allConnections.filter(conn => conn.connectionDetails.type === connectionType);
+    return allConnections.filter(
+      (conn) => conn.connectionDetails.type === connectionType,
+    );
   }
 
   /**
@@ -104,8 +116,8 @@ export class ConnectionClient extends FabricPlatformClient {
    */
   async searchConnectionsByName(searchTerm: string): Promise<Connection[]> {
     const allConnections = await this.getAllConnections();
-    return allConnections.filter(conn => 
-      conn.displayName.toLowerCase().includes(searchTerm.toLowerCase())
+    return allConnections.filter((conn) =>
+      conn.displayName.toLowerCase().includes(searchTerm.toLowerCase()),
     );
   }
 }

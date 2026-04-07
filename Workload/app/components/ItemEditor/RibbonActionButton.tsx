@@ -1,7 +1,15 @@
 import React from "react";
-import { Button, Tooltip, Menu, MenuTrigger, MenuPopover, MenuList, MenuItem } from '@fluentui/react-components';
-import { ChevronDown24Regular } from '@fluentui/react-icons';
-import { FluentIconComponent } from './RibbonToolbarAction';
+import {
+  Button,
+  Tooltip,
+  Menu,
+  MenuTrigger,
+  MenuPopover,
+  MenuList,
+  MenuItem,
+} from "@fluentui/react-components";
+import { ChevronDown24Regular } from "@fluentui/react-icons";
+import { FluentIconComponent } from "./RibbonToolbarAction";
 
 /**
  * Configuration for a dropdown menu item
@@ -11,27 +19,27 @@ export interface DropdownMenuItem {
    * Unique identifier for the menu item
    */
   key: string;
-  
+
   /**
    * The label text for the menu item
    */
   label: string;
-  
+
   /**
    * Optional icon for the menu item
    */
   icon?: FluentIconComponent;
-  
+
   /**
    * Click handler for the menu item
    */
   onClick: () => void | Promise<void>;
-  
+
   /**
    * Whether the menu item is disabled
    */
   disabled?: boolean;
-  
+
   /**
    * Whether this menu item should be hidden
    */
@@ -46,52 +54,52 @@ export interface RibbonActionButton {
    * Unique identifier for the action
    */
   key: string;
-  
+
   /**
    * The icon to display in the button
    */
   icon: FluentIconComponent;
-  
+
   /**
    * The label/text to display in the button
    */
   label: string;
-  
+
   /**
    * Click handler for the action (only for regular buttons)
    */
   onClick?: () => void | Promise<void>;
-  
+
   /**
    * Whether the button is disabled
    */
   disabled?: boolean;
-  
+
   /**
    * Optional test ID for the button
    */
   testId?: string;
-  
+
   /**
    * Optional tooltip text for the button (defaults to label)
    */
   tooltip?: string;
-  
+
   /**
    * Optional appearance variant
    */
-  appearance?: 'primary' | 'secondary' | 'subtle' | 'transparent';
-  
+  appearance?: "primary" | "secondary" | "subtle" | "transparent";
+
   /**
    * Optional custom aria-label (defaults to label)
    */
   ariaLabel?: string;
-  
+
   /**
    * Whether this action should be hidden
    */
   hidden?: boolean;
-  
+
   /**
    * Dropdown menu items (if this is a dropdown button)
    */
@@ -106,7 +114,7 @@ export interface RibbonActionButtonImplProps {
    * Action configuration
    */
   action: RibbonActionButton;
-  
+
   /**
    * Additional CSS class name
    */
@@ -115,20 +123,20 @@ export interface RibbonActionButtonImplProps {
 
 /**
  * RibbonActionButtonImpl - Real button component for ribbon action buttons
- * 
+ *
  * This component provides:
  * - Real button appearance with icon and text
  * - Support for dropdown menus
  * - Proper tooltips and accessibility
  * - Primary/secondary styling variants
- * 
+ *
  * ## Features
- * 
+ *
  * - **Regular Button**: Shows icon + text, handles onClick
  * - **Dropdown Button**: Shows icon + text + chevron, opens menu
  * - **Tooltip Support**: Hover tooltips for additional context
  * - **Accessibility**: Proper ARIA labels and keyboard support
- * 
+ *
  * @example
  * ```tsx
  * // Regular button
@@ -139,7 +147,7 @@ export interface RibbonActionButtonImplProps {
  *   onClick: handleShare,
  *   tooltip: 'Share this item'
  * };
- * 
+ *
  * // Dropdown button
  * const dropdownAction: RibbonActionButton = {
  *   key: 'trial',
@@ -150,18 +158,18 @@ export interface RibbonActionButtonImplProps {
  *     { key: 'upgrade', label: 'Upgrade', onClick: upgrade }
  *   ]
  * };
- * 
+ *
  * <RibbonActionButtonImpl action={action} />
  * <RibbonActionButtonImpl action={dropdownAction} />
  * ```
- * 
+ *
  * @see {@link ../../../docs/components/ItemEditor/RibbonToolbar.md} - RibbonToolbar integration documentation
  * @see {@link ../../../docs/components/ItemEditor.md} - ItemEditor overview and patterns
  * @see {@link https://react.fluentui.dev/} - Fluent UI v9 Documentation
  */
 export const RibbonActionButtonImpl: React.FC<RibbonActionButtonImplProps> = ({
   action,
-  className = ''
+  className = "",
 }) => {
   const {
     icon: Icon,
@@ -170,37 +178,42 @@ export const RibbonActionButtonImpl: React.FC<RibbonActionButtonImplProps> = ({
     disabled = false,
     testId,
     tooltip,
-    appearance = 'secondary',
+    appearance = "secondary",
     ariaLabel,
-    dropdownItems = []
+    dropdownItems = [],
   } = action;
-  
+
   // Filter visible dropdown items
-  const visibleDropdownItems = dropdownItems.filter((item: DropdownMenuItem) => !item.hidden);
+  const visibleDropdownItems = dropdownItems.filter(
+    (item: DropdownMenuItem) => !item.hidden,
+  );
   const isDropdown = visibleDropdownItems.length > 0;
-  
+
   // Determine tooltip text
   const tooltipText = tooltip || label;
-  
+
   // Determine aria-label
   const buttonAriaLabel = ariaLabel || label;
-  
+
   // Handle regular button click
   const handleClick = React.useCallback(() => {
     if (!disabled && onClick) {
       onClick();
     }
   }, [disabled, onClick]);
-  
+
   // Handle menu item click
-  const handleMenuItemClick = React.useCallback((itemOnClick: () => void | Promise<void>) => {
-    return () => {
-      if (!disabled) {
-        itemOnClick();
-      }
-    };
-  }, [disabled]);
-  
+  const handleMenuItemClick = React.useCallback(
+    (itemOnClick: () => void | Promise<void>) => {
+      return () => {
+        if (!disabled) {
+          itemOnClick();
+        }
+      };
+    },
+    [disabled],
+  );
+
   // Render regular button
   if (!isDropdown) {
     return (
@@ -220,7 +233,7 @@ export const RibbonActionButtonImpl: React.FC<RibbonActionButtonImplProps> = ({
       </Tooltip>
     );
   }
-  
+
   // Render dropdown button
   return (
     <Menu>
@@ -241,7 +254,7 @@ export const RibbonActionButtonImpl: React.FC<RibbonActionButtonImplProps> = ({
           </Button>
         </Tooltip>
       </MenuTrigger>
-      
+
       <MenuPopover>
         <MenuList>
           {visibleDropdownItems.map((item: DropdownMenuItem) => (

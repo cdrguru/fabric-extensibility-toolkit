@@ -5,6 +5,7 @@ This document describes how to set up and use the Fabric UX System MCP (Model Co
 ## What is the Fabric UX System MCP Server?
 
 The [mcp-fabric-ux-system](https://github.com/Falkicon/mcp-fabric-ux-system) is an MCP server that provides GitHub Copilot with access to comprehensive Fabric UX documentation, including:
+
 - Component documentation and best practices
 - Design patterns and guidelines
 - Implementation examples
@@ -88,6 +89,7 @@ npm run index-docs
 ```
 
 This will:
+
 - Download the embedding model (first time only)
 - Process all documentation files
 - Generate embeddings
@@ -247,7 +249,7 @@ Using this MCP server enhances your Fabric Extensibility Toolkit development:
 ✅ **Consistent component usage** across your workload  
 ✅ **Faster development** with context-aware suggestions  
 ✅ **Accessibility compliance** guidance (WCAG 2.1 AA)  
-✅ **Design system alignment** with official Fabric UX patterns  
+✅ **Design system alignment** with official Fabric UX patterns
 
 ## Development Workflow with MCP Server
 
@@ -259,6 +261,7 @@ When developing UI components or styling:
 4. **Testing:** Ensure accessibility compliance using MCP-provided standards
 
 **Example Workflow:**
+
 ```
 Developer: "What design tokens should I use for padding in a card component?"
 MCP Response: [Provides var(--spacingVerticalM), var(--spacingHorizontalL), etc.]
@@ -269,4 +272,4 @@ Developer: "How do I make this component accessible?"
 MCP Response: [Provides ARIA attributes, keyboard navigation, focus management]
 ```
 
-This ensures every UI element in the Fabric Extensibility Toolkit is aligned with the official Fabric UX System styleguide.  
+This ensures every UI element in the Fabric Extensibility Toolkit is aligned with the official Fabric UX System styleguide.

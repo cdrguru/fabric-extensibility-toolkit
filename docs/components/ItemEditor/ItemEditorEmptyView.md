@@ -12,24 +12,27 @@ The `ItemEditorEmptyView` component provides a standardized empty state experien
 ✅ **Flexible Content** - Custom content or task-based onboarding  
 ✅ **Responsive Design** - Works across different screen sizes  
 ✅ **Accessibility Compliant** - ARIA labels, keyboard navigation, semantic HTML  
-✅ **TypeScript Support** - Full type definitions and IntelliSense  
+✅ **TypeScript Support** - Full type definitions and IntelliSense
 
 ## 🚀 Quick Start
 
 ### Basic Usage
 
 ```tsx
-import { ItemEditorEmptyView, EmptyStateTask } from "../../components/ItemEditor";
+import {
+  ItemEditorEmptyView,
+  EmptyStateTask,
+} from "../../components/ItemEditor";
 
 export function MyItemEmptyView() {
   const tasks: EmptyStateTask[] = [
     {
-      id: 'start',
-      label: 'Get Started',
-      description: 'Learn the basics and create your first item',
+      id: "start",
+      label: "Get Started",
+      description: "Learn the basics and create your first item",
       onClick: () => setCurrentView(EDITOR_VIEW_TYPES.DEFAULT),
-      appearance: 'primary'
-    }
+      appearance: "primary",
+    },
   ];
 
   return (
@@ -47,33 +50,37 @@ export function MyItemEmptyView() {
 ### Multiple Tasks
 
 ```tsx
-import { DocumentRegular, BookRegular, VideoRegular } from "@fluentui/react-icons";
+import {
+  DocumentRegular,
+  BookRegular,
+  VideoRegular,
+} from "@fluentui/react-icons";
 
 export function MyItemEmptyView() {
   const tasks: EmptyStateTask[] = [
     {
-      id: 'quickstart',
-      label: 'Quick Start Guide',
-      description: 'Learn the basics in 5 minutes',
+      id: "quickstart",
+      label: "Quick Start Guide",
+      description: "Learn the basics in 5 minutes",
       icon: BookRegular,
       onClick: () => openGuide(),
-      appearance: 'primary'
+      appearance: "primary",
     },
     {
-      id: 'template',
-      label: 'Use Template',
-      description: 'Start with a pre-built template',
+      id: "template",
+      label: "Use Template",
+      description: "Start with a pre-built template",
       icon: DocumentRegular,
-      onClick: () => useTemplate()
+      onClick: () => useTemplate(),
     },
     {
-      id: 'tutorial',
-      label: 'Watch Tutorial',
-      description: 'Video walkthrough of key features',
+      id: "tutorial",
+      label: "Watch Tutorial",
+      description: "Video walkthrough of key features",
       icon: VideoRegular,
       onClick: () => openTutorial(),
-      appearance: 'subtle'
-    }
+      appearance: "subtle",
+    },
   ];
 
   return (
@@ -99,8 +106,8 @@ const views: RegisteredView[] = [
         description="Get started with your new item"
         tasks={onboardingTasks}
       />
-    )
-  }
+    ),
+  },
 ];
 ```
 
@@ -108,27 +115,27 @@ const views: RegisteredView[] = [
 
 ### ItemEditorEmptyViewProps
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `title` | `string` | ✅ | Main heading text |
-| `description` | `string` | ❌ | Subtitle/description text |
-| `imageSrc` | `string` | ❌ | URL to illustration image |
-| `imageAlt` | `string` | ❌ | Alt text for image (required if imageSrc provided) |
-| `tasks` | `EmptyStateTask[]` | ❌ | Array of onboarding tasks |
-| `children` | `ReactNode` | ❌ | Custom content instead of tasks |
-| `className` | `string` | ❌ | Additional CSS classes |
+| Property      | Type               | Required | Description                                        |
+| ------------- | ------------------ | -------- | -------------------------------------------------- |
+| `title`       | `string`           | ✅       | Main heading text                                  |
+| `description` | `string`           | ❌       | Subtitle/description text                          |
+| `imageSrc`    | `string`           | ❌       | URL to illustration image                          |
+| `imageAlt`    | `string`           | ❌       | Alt text for image (required if imageSrc provided) |
+| `tasks`       | `EmptyStateTask[]` | ❌       | Array of onboarding tasks                          |
+| `children`    | `ReactNode`        | ❌       | Custom content instead of tasks                    |
+| `className`   | `string`           | ❌       | Additional CSS classes                             |
 
 ### EmptyStateTask Interface
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `id` | `string` | ✅ | Unique identifier for the task |
-| `label` | `string` | ✅ | Button text |
-| `description` | `string` | ❌ | Task description |
-| `icon` | `FluentIcon` | ❌ | Fluent UI icon component |
-| `onClick` | `() => void` | ✅ | Click handler function |
-| `appearance` | `'primary' \| 'secondary' \| 'subtle'` | ❌ | Button appearance |
-| `disabled` | `boolean` | ❌ | Whether the task is disabled |
+| Property      | Type                                   | Required | Description                    |
+| ------------- | -------------------------------------- | -------- | ------------------------------ |
+| `id`          | `string`                               | ✅       | Unique identifier for the task |
+| `label`       | `string`                               | ✅       | Button text                    |
+| `description` | `string`                               | ❌       | Task description               |
+| `icon`        | `FluentIcon`                           | ❌       | Fluent UI icon component       |
+| `onClick`     | `() => void`                           | ✅       | Click handler function         |
+| `appearance`  | `'primary' \| 'secondary' \| 'subtle'` | ❌       | Button appearance              |
+| `disabled`    | `boolean`                              | ❌       | Whether the task is disabled   |
 
 ## 🎯 Key Features
 
@@ -142,7 +149,7 @@ Automatically centers content with proper minimum height:
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 500px;  // Ensures proper centering
+  min-height: 500px; // Ensures proper centering
   padding: var(--spacingVerticalXXL);
 }
 ```
@@ -159,7 +166,7 @@ Adapts to different screen sizes:
   .empty-view-image {
     max-width: 200px;
   }
-  
+
   .empty-view-content {
     padding: var(--spacingVerticalL);
   }
@@ -174,7 +181,7 @@ Tasks are rendered as accessible buttons with proper spacing:
 // Each task becomes:
 <Tooltip content={task.description} relationship="label">
   <Button
-    appearance={task.appearance || 'secondary'}
+    appearance={task.appearance || "secondary"}
     icon={task.icon && <task.icon />}
     onClick={task.onClick}
     disabled={task.disabled}
@@ -205,23 +212,23 @@ ItemEditorEmptyView
 ```scss
 .base-item-editor-empty-view {
   // Main container
-  
+
   &__image {
     // Illustration styling
   }
-  
+
   &__content {
     // Text content area
   }
-  
+
   &__title {
     // Main heading
   }
-  
+
   &__description {
     // Subtitle text
   }
-  
+
   &__tasks {
     // Task button container
   }
@@ -240,11 +247,11 @@ export function SimpleEmptyView() {
       description="Click below to create your first item"
       tasks={[
         {
-          id: 'start',
-          label: 'Get Started',
-          onClick: () => setCurrentView('default'),
-          appearance: 'primary'
-        }
+          id: "start",
+          label: "Get Started",
+          onClick: () => setCurrentView("default"),
+          appearance: "primary",
+        },
       ]}
     />
   );
@@ -257,27 +264,27 @@ export function SimpleEmptyView() {
 export function OnboardingEmptyView() {
   const tasks: EmptyStateTask[] = [
     {
-      id: 'scratch',
-      label: 'Start from Scratch',
-      description: 'Create a completely new item',
+      id: "scratch",
+      label: "Start from Scratch",
+      description: "Create a completely new item",
       icon: AddRegular,
       onClick: () => createNew(),
-      appearance: 'primary'
+      appearance: "primary",
     },
     {
-      id: 'import',
-      label: 'Import Existing',
-      description: 'Upload and import an existing item',
+      id: "import",
+      label: "Import Existing",
+      description: "Upload and import an existing item",
       icon: DocumentArrowUpRegular,
-      onClick: () => showImport()
+      onClick: () => showImport(),
     },
     {
-      id: 'template',
-      label: 'Use Template',
-      description: 'Start with a pre-built template',
+      id: "template",
+      label: "Use Template",
+      description: "Start with a pre-built template",
       icon: DocumentTemplateRegular,
-      onClick: () => showTemplates()
-    }
+      onClick: () => showTemplates(),
+    },
   ];
 
   return (
@@ -301,7 +308,7 @@ export function CustomEmptyView() {
       title="No Data Available"
       description="Connect your data source to get started"
     >
-      <div style={{ marginTop: '24px' }}>
+      <div style={{ marginTop: "24px" }}>
         <Text variant="body1">Available data sources:</Text>
         <ul>
           <li>SQL Database</li>
@@ -325,24 +332,19 @@ export function LoadingEmptyView() {
 
   const tasks: EmptyStateTask[] = [
     {
-      id: 'start',
-      label: isLoading ? 'Creating...' : 'Create Item',
+      id: "start",
+      label: isLoading ? "Creating..." : "Create Item",
       onClick: async () => {
         setIsLoading(true);
         await createItem();
         setIsLoading(false);
       },
       disabled: isLoading,
-      appearance: 'primary'
-    }
+      appearance: "primary",
+    },
   ];
 
-  return (
-    <ItemEditorEmptyView
-      title="Ready to Create"
-      tasks={tasks}
-    />
-  );
+  return <ItemEditorEmptyView title="Ready to Create" tasks={tasks} />;
 }
 ```
 
@@ -369,12 +371,12 @@ export function LoadingEmptyView() {
   description="Choose a starting point for your new dashboard"
   tasks={[
     {
-      id: 'blank',
-      label: 'Blank Dashboard',
-      description: 'Start with an empty canvas. Best for custom layouts.',
+      id: "blank",
+      label: "Blank Dashboard",
+      description: "Start with an empty canvas. Best for custom layouts.",
       onClick: createBlank,
-      appearance: 'primary'
-    }
+      appearance: "primary",
+    },
   ]}
 />
 ```
@@ -422,7 +424,7 @@ export function LoadingEmptyView() {
 ```scss
 .my-custom-empty {
   background: var(--colorNeutralBackground2);
-  
+
   .empty-view-title {
     color: var(--colorBrandForeground1);
   }
@@ -438,7 +440,7 @@ export function LoadingEmptyView() {
 ✅ **Limit tasks to 3-5 options** - Avoid overwhelming users  
 ✅ **Use primary appearance** for the main action  
 ✅ **Include illustrations** when they add value  
-✅ **Test responsive behavior** on different screen sizes  
+✅ **Test responsive behavior** on different screen sizes
 
 ### ❌ Don'ts
 
@@ -446,7 +448,7 @@ export function LoadingEmptyView() {
 ❌ **Don't overcrowd with tasks** - Too many options reduce clarity  
 ❌ **Don't forget alt text** for images  
 ❌ **Don't use complex layouts** - Keep it simple and focused  
-❌ **Don't make it skippable** - Provide clear path forward  
+❌ **Don't make it skippable** - Provide clear path forward
 
 ## 🔗 Related Components
 
@@ -458,6 +460,6 @@ export function LoadingEmptyView() {
 ## 📝 Examples
 
 For complete examples, see:
+
 - [Sample Implementation](../../Workload/app/items/HelloWorldItem/HelloWorldItemEmptyView.tsx) - HelloWorld reference implementation
 - [ItemEditor README](./README.md) - Integration patterns
-

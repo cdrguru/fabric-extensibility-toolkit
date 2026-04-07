@@ -38,30 +38,30 @@ export function getConfiguredWorkloadItems(): WorkloadItem[] {
   const itemNames = process.env.ITEM_NAMES;
 
   if (!workloadName) {
-    console.warn('WORKLOAD_NAME is not defined in environment variables');
+    console.warn("WORKLOAD_NAME is not defined in environment variables");
     return [];
   }
 
   if (!itemNames) {
-    console.warn('ITEM_NAMES is not defined in environment variables');
+    console.warn("ITEM_NAMES is not defined in environment variables");
     return [];
   }
 
   try {
     // Parse comma-separated item names
     const items: WorkloadItem[] = itemNames
-      .split(',')
-      .map(name => name.trim())
-      .filter(name => name.length > 0)
-      .map(name => ({
+      .split(",")
+      .map((name) => name.trim())
+      .filter((name) => name.length > 0)
+      .map((name) => ({
         name,
         fullType: `${workloadName}.${name}`,
-        editorRoute: `/${name}Item-editor`
+        editorRoute: `/${name}Item-editor`,
       }));
 
     return items;
   } catch (error) {
-    console.error('Error parsing configured items:', error);
+    console.error("Error parsing configured items:", error);
     return [];
   }
 }
@@ -71,9 +71,11 @@ export function getConfiguredWorkloadItems(): WorkloadItem[] {
  * @param itemName The name of the item to retrieve (e.g., "OneLakeExplorer")
  * @returns WorkloadItem if found, undefined otherwise
  */
-export function getConfiguredWorkloadItem(itemName: string): WorkloadItem | undefined {
+export function getConfiguredWorkloadItem(
+  itemName: string,
+): WorkloadItem | undefined {
   const items = getConfiguredWorkloadItems();
-  return items.find(item => item.name === itemName);
+  return items.find((item) => item.name === itemName);
 }
 
 /**
@@ -81,9 +83,9 @@ export function getConfiguredWorkloadItem(itemName: string): WorkloadItem | unde
  * @returns Complete WorkloadConfiguration object
  */
 export function getWorkloadConfiguration(): WorkloadConfiguration {
-  const workloadName = process.env.WORKLOAD_NAME || '';
-  const version = process.env.WORKLOAD_VERSION || '';
-  const logLevel = process.env.LOG_LEVEL || '';
+  const workloadName = process.env.WORKLOAD_NAME || "";
+  const version = process.env.WORKLOAD_VERSION || "";
+  const logLevel = process.env.LOG_LEVEL || "";
 
   const items = getConfiguredWorkloadItems();
 
@@ -91,7 +93,7 @@ export function getWorkloadConfiguration(): WorkloadConfiguration {
     workloadName,
     version,
     logLevel,
-    items
+    items,
   };
 }
 
@@ -100,7 +102,7 @@ export function getWorkloadConfiguration(): WorkloadConfiguration {
  * @returns Array of strings like ["Org.FabricTools.OneLakeExplorer", "Org.FabricTools.PackageInstaller"]
  */
 export function getConfiguredWorkloadItemTypes(): string[] {
-  return getConfiguredWorkloadItems().map(item => item.fullType);
+  return getConfiguredWorkloadItems().map((item) => item.fullType);
 }
 
 /**
@@ -108,7 +110,7 @@ export function getConfiguredWorkloadItemTypes(): string[] {
  * @returns Array of strings like ["OneLakeExplorer", "PackageInstaller"]
  */
 export function getConfiguredWorkloadItemNames(): string[] {
-  return getConfiguredWorkloadItems().map(item => item.name);
+  return getConfiguredWorkloadItems().map((item) => item.name);
 }
 
 /**
@@ -117,7 +119,7 @@ export function getConfiguredWorkloadItemNames(): string[] {
  * @returns True if the item is configured, false otherwise
  */
 export function isWorkloadItemConfigured(itemName: string): boolean {
-  return getConfiguredWorkloadItems().some(item => item.name === itemName);
+  return getConfiguredWorkloadItems().some((item) => item.name === itemName);
 }
 
 /**
@@ -125,5 +127,5 @@ export function isWorkloadItemConfigured(itemName: string): boolean {
  * @returns The workload name (e.g., "Org.FabricTools")
  */
 export function getWorkloadName(): string {
-  return process.env.WORKLOAD_NAME || '';
+  return process.env.WORKLOAD_NAME || "";
 }

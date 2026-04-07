@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   TabList,
@@ -6,31 +6,33 @@ import {
   SelectTabData,
   TabValue,
   Button,
-} from '@fluentui/react-components';
-import { Stack } from '@fluentui/react';
-import { RootState } from "../ClientSDKPlayground/Store/Store"
+} from "@fluentui/react-components";
+import { Stack } from "@fluentui/react";
+import { RootState } from "../ClientSDKPlayground/Store/Store";
 import { setSelectedTab } from "../ClientSDKPlayground/Store/tabsSlice";
-import { ApiNotification } from './ApiNotification';
-import { ApiActionDialog } from './ActionDialog/ApiActionDialog';
-import { ApiPanelSettings } from './ApiPanelSettings';
-import { ApiNavigation } from './ApiNavigation';
-import { ApiData } from './ApiData';
-import { UIComponentsExample } from './UIComponents';
-import { ApiAuthenticationFrontend } from './ApiAuthenticationFrontend';
-import { ApiAuthentication } from './ApiAuthentication';
-import { PageProps } from '../../App';
-import { callNavigationBeforeNavigateAway, callNavigationNavigate } from "../../controller/NavigationController";
+import { ApiNotification } from "./ApiNotification";
+import { ApiActionDialog } from "./ActionDialog/ApiActionDialog";
+import { ApiPanelSettings } from "./ApiPanelSettings";
+import { ApiNavigation } from "./ApiNavigation";
+import { ApiData } from "./ApiData";
+import { UIComponentsExample } from "./UIComponents";
+import { ApiAuthenticationFrontend } from "./ApiAuthenticationFrontend";
+import { ApiAuthentication } from "./ApiAuthentication";
+import { PageProps } from "../../App";
+import {
+  callNavigationBeforeNavigateAway,
+  callNavigationNavigate,
+} from "../../controller/NavigationController";
 import "../Playground.scss";
-import SampleSparkTerminal from '../../samples/views/SampleSparkTerminal/SampleSparkTerminal';
-import { TabContentProps } from './ClientSDKPlaygroundModel';
-
+import SampleSparkTerminal from "../../samples/views/SampleSparkTerminal/SampleSparkTerminal";
+import { TabContentProps } from "./ClientSDKPlaygroundModel";
 
 export function ClientSDKPlayground(props: TabContentProps) {
   const { workloadClient } = props;
   const sampleWorkloadName = process.env.WORKLOAD_NAME;
   const dispatch = useDispatch();
   const selectedApiTab = useSelector(
-    (state: RootState) => state.tabs.selectedTab
+    (state: RootState) => state.tabs.selectedTab,
   ) as TabValue;
 
   useEffect(() => {
@@ -39,15 +41,15 @@ export function ClientSDKPlayground(props: TabContentProps) {
     callNavigationBeforeNavigateAway(workloadClient);
   }, [workloadClient]);
 
-
   return (
-    <Stack className="playground-container" >
+    <Stack className="playground-container">
       <TabList
         className="tabListContainer"
         selectedValue={selectedApiTab}
         data-testid="item-editor-selected-tab-btn"
         onTabSelect={(_, data: SelectTabData) =>
-          dispatch(setSelectedTab(data.value as string))}
+          dispatch(setSelectedTab(data.value as string))
+        }
       >
         <Tab value="apiNotification">Notification</Tab>
         <Tab value="apiActionDialog">Action & Dialog</Tab>
@@ -60,46 +62,49 @@ export function ClientSDKPlayground(props: TabContentProps) {
       </TabList>
 
       <Stack className="main">
-        {selectedApiTab === 'apiNotification' && (
+        {selectedApiTab === "apiNotification" && (
           <ApiNotification workloadClient={workloadClient} />
         )}
-        {selectedApiTab === 'apiActionDialog' && (
+        {selectedApiTab === "apiActionDialog" && (
           <ApiActionDialog
             workloadClient={workloadClient}
             sampleWorkloadName={sampleWorkloadName}
           />
         )}
-        {selectedApiTab === 'apiPanelSettings' && (
+        {selectedApiTab === "apiPanelSettings" && (
           <ApiPanelSettings
             workloadClient={workloadClient}
             sampleWorkloadName={sampleWorkloadName}
           />
         )}
-        {selectedApiTab === 'apiNavigation' && (
+        {selectedApiTab === "apiNavigation" && (
           <ApiNavigation
             workloadClient={workloadClient}
             sampleWorkloadName={sampleWorkloadName}
           />
         )}
-        {selectedApiTab === 'dataHub' && (
-          <ApiData workloadClient={workloadClient} sampleWorkloadName={sampleWorkloadName} />
+        {selectedApiTab === "dataHub" && (
+          <ApiData
+            workloadClient={workloadClient}
+            sampleWorkloadName={sampleWorkloadName}
+          />
         )}
-        {selectedApiTab === 'uiComponents' && (
+        {selectedApiTab === "uiComponents" && (
           <UIComponentsExample workloadClient={workloadClient} />
         )}
-        {selectedApiTab === 'authentication' && (
+        {selectedApiTab === "authentication" && (
           <ApiAuthentication workloadClient={workloadClient} />
         )}
-        {selectedApiTab === 'authenticationFrontend' && (
+        {selectedApiTab === "authenticationFrontend" && (
           <ApiAuthenticationFrontend workloadClient={workloadClient} />
         )}
-        {selectedApiTab === 'sparkTerminal' && (
+        {selectedApiTab === "sparkTerminal" && (
           <SampleSparkTerminal workloadClient={workloadClient} />
         )}
       </Stack>
     </Stack>
   );
-};
+}
 
 export function SamplePage({ workloadClient, history }: PageProps) {
   return (
@@ -107,7 +112,11 @@ export function SamplePage({ workloadClient, history }: PageProps) {
       <Stack className="main">
         <Button
           onClick={() => {
-            callNavigationNavigate(workloadClient, "workload", "/playground-client-sdk/");
+            callNavigationNavigate(
+              workloadClient,
+              "workload",
+              "/playground-client-sdk/",
+            );
           }}
         >
           Navigate Back

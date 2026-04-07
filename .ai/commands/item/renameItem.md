@@ -15,11 +15,12 @@ This guide provides step-by-step instructions for AI tools to safely rename an i
 Before starting, define your rename parameters:
 
 1. **Current Item Name**: The existing item name (e.g., "OldItem")
-2. **New Item Name**: The desired new name (e.g., "NewItem")  
+2. **New Item Name**: The desired new name (e.g., "NewItem")
 3. **Impact Assessment**: Identify all files and references that need updating
 4. **Backup Strategy**: Ensure you can rollback if needed
 
 **Naming Conventions**:
+
 - Use PascalCase for ItemName (e.g., `MyCustomItem`)
 - Ensure the new name follows Fabric workload naming standards
 - Avoid conflicts with existing item names
@@ -33,7 +34,7 @@ Rename all files in the item directory from `[OldItemName]` to `[NewItemName]`:
 ```
 Workload/app/items/[OldItemName]Item/ → Workload/app/items/[NewItemName]Item/
 ├── [OldItemName]ItemModel.ts → [NewItemName]ItemModel.ts
-├── [OldItemName]ItemEditor.tsx → [NewItemName]ItemEditor.tsx  
+├── [OldItemName]ItemEditor.tsx → [NewItemName]ItemEditor.tsx
 ├── [OldItemName]ItemEditorEmpty.tsx → [NewItemName]ItemEditorEmpty.tsx
 └── [OldItemName]ItemEditorRibbon.tsx → [NewItemName]ItemEditorRibbon.tsx
 ```
@@ -43,6 +44,7 @@ Workload/app/items/[OldItemName]Item/ → Workload/app/items/[NewItemName]Item/
 Update all references within the implementation files:
 
 **In `[NewItemName]ItemModel.ts`**:
+
 ```typescript
 // Update interface name
 export interface [NewItemName]ItemDefinition {
@@ -51,6 +53,7 @@ export interface [NewItemName]ItemDefinition {
 ```
 
 **In `[NewItemName]ItemEditor.tsx`**:
+
 ```typescript
 // Update imports
 import { [NewItemName]ItemEditorRibbon } from "./[NewItemName]ItemEditorRibbon";
@@ -64,6 +67,7 @@ export function [NewItemName]ItemEditor(props: PageProps) {
 ```
 
 **In `[NewItemName]ItemEditorEmpty.tsx`**:
+
 ```typescript
 // Update imports and interface names
 import { [NewItemName]ItemDefinition } from "./[NewItemName]ItemModel";
@@ -78,6 +82,7 @@ export const [NewItemName]ItemEmpty: React.FC<[NewItemName]ItemEmptyStateProps> 
 ```
 
 **In `[NewItemName]ItemEditorRibbon.tsx`**:
+
 ```typescript
 // Update interface and function names
 export interface [NewItemName]ItemEditorRibbonProps extends PageProps {
@@ -94,6 +99,7 @@ export function [NewItemName]ItemEditorRibbon(props: [NewItemName]ItemEditorRibb
 #### 3.1: Rename Manifest Directory
 
 Rename the manifest directory:
+
 ```
 Workload/Manifest/items/[OldItemName]Item/ → Workload/Manifest/items/[NewItemName]Item/
 ```
@@ -101,11 +107,13 @@ Workload/Manifest/items/[OldItemName]Item/ → Workload/Manifest/items/[NewItemN
 #### 3.2: Rename and Update Manifest Files
 
 **Rename XML Manifest**:
+
 ```
 [OldItemName]Item.xml → [NewItemName]Item.xml
 ```
 
 Update content to use new item name:
+
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
 <ItemManifestConfiguration SchemaVersion="2.0.0">
@@ -116,17 +124,19 @@ Update content to use new item name:
 ```
 
 **Rename JSON Manifest**:
+
 ```
 [OldItemName]Item.json → [NewItemName]Item.json
 ```
 
 Update content with new names and paths:
+
 ```json
 {
   "name": "[NewItemName]",
   "version": "1.100",
   "displayName": "[NewItemName]Item_DisplayName",
-  "displayNamePlural": "[NewItemName]Item_DisplayName_Plural", 
+  "displayNamePlural": "[NewItemName]Item_DisplayName_Plural",
   "editor": {
     "path": "/[NewItemName]Item-editor"
   },
@@ -140,7 +150,7 @@ Update content with new names and paths:
   "supportedInDatahubL1": true,
   "editorTab": {
     "onDeactivate": "item.tab.onDeactivate",
-    "canDeactivate": "item.tab.canDeactivate", 
+    "canDeactivate": "item.tab.canDeactivate",
     "canDestroy": "item.tab.canDestroy",
     "onDestroy": "item.tab.onDestroy",
     "onDelete": "item.tab.onDelete"
@@ -157,6 +167,7 @@ Update content with new names and paths:
 #### 4.1: Rename Item Icon
 
 Rename the icon file:
+
 ```
 Workload/Manifest/assets/images/[OldItemName]Item-icon.png →
 Workload/Manifest/assets/images/[NewItemName]Item-icon.png
@@ -172,15 +183,16 @@ Update `Workload/Manifest/assets/locales/*/translations.json` files:
   // "[OldItemName]Item_DisplayName": "...",
   // "[OldItemName]Item_DisplayName_Plural": "...",
   // "[OldItemName]Item_Description": "...",
-  
+
   // Add new entries
   "[NewItemName]Item_DisplayName": "Your New Item Display Name",
-  "[NewItemName]Item_DisplayName_Plural": "Your New Item Display Names", 
+  "[NewItemName]Item_DisplayName_Plural": "Your New Item Display Names",
   "[NewItemName]Item_Description": "Description of what this item does"
 }
 ```
 
 **For All Locales**:
+
 - Update entries in all locale files (en-US, es, etc.)
 - Maintain consistent translations across all supported languages
 - Remove old localization keys to avoid confusion
@@ -208,6 +220,7 @@ import { [NewItemName]ItemEditor } from "./items/[NewItemName]Item/[NewItemName]
 ```
 
 **Key Changes**:
+
 1. Update the import path to the new directory and component name
 2. Update the route path to match the new editor path in the JSON manifest
 3. Update the component reference in the route definition
@@ -224,6 +237,7 @@ Workload/app/assets/items/[OldItemName]/ → Workload/app/assets/items/[NewItemN
 ```
 
 Rename any item-specific assets:
+
 - EditorEmpty.jpg or other images
 - Configuration files
 - Custom stylesheets or resources
@@ -231,6 +245,7 @@ Rename any item-specific assets:
 #### 6.2: Update Asset References
 
 Check for any hardcoded references to the old item name in:
+
 - CSS files with item-specific styles
 - Configuration files
 - Documentation or help files
@@ -241,15 +256,17 @@ Check for any hardcoded references to the old item name in:
 **IMPORTANT**: Update the `ITEM_NAMES` variable in ALL environment files to use the new item name:
 
 1. **Update Workload/.env.dev**:
+
    ```bash
    # Before
    ITEM_NAMES=HelloWorld,[OldItemName],CustomItem
-   
+
    # After - replace with new item name
    ITEM_NAMES=HelloWorld,[NewItemName],CustomItem
    ```
 
 2. **Update Workload/.env.test**:
+
    ```bash
    ITEM_NAMES=HelloWorld,[NewItemName],CustomItem
    ```
@@ -260,6 +277,7 @@ Check for any hardcoded references to the old item name in:
    ```
 
 **Why This Matters**:
+
 - The ITEM_NAMES variable controls which items are included when building the manifest package
 - The old item name will cause build failures since the files no longer exist
 - The new item name must be included for the renamed item to appear in the workload
@@ -270,6 +288,7 @@ Check for any hardcoded references to the old item name in:
 #### 8.1: Build Validation
 
 1. **Build the project**:
+
    ```powershell
    cd Workload
    npm run build:test
@@ -283,6 +302,7 @@ Check for any hardcoded references to the old item name in:
 #### 8.2: Runtime Validation
 
 1. **Start development server**:
+
    ```powershell
    npm run start
    ```
@@ -297,6 +317,7 @@ Check for any hardcoded references to the old item name in:
 #### 8.3: Manifest Generation Test
 
 1. **Test manifest generation**:
+
    ```powershell
    .\scripts\Build\BuildManifestPackage.ps1 -Environment dev
    ```
@@ -320,6 +341,7 @@ findstr /s /i "[OldItemName]" *.ts *.tsx *.json *.xml *.md
 #### 9.2: Update Documentation
 
 Update any documentation that references the old item name:
+
 - README files
 - API documentation
 - Code comments
@@ -359,33 +381,39 @@ npm run start
 After renaming, verify all these components have been updated:
 
 **Implementation Files**:
+
 - [ ] Directory renamed: `Workload/app/items/[NewItemName]Item/`
 - [ ] All four TypeScript files renamed with new item name
 - [ ] All internal references updated (interfaces, functions, imports)
 - [ ] No TypeScript errors about missing modules
 
 **Manifest Files**:
+
 - [ ] Directory renamed: `Workload/Manifest/items/[NewItemName]Item/`
 - [ ] XML manifest file renamed and content updated
 - [ ] JSON manifest file renamed with correct paths and names
 - [ ] Product.json updated if referenced
 
 **Asset Files**:
+
 - [ ] Icon renamed: `Workload/Manifest/assets/images/[NewItemName]Item-icon.png`
 - [ ] Localization entries updated in all locale files
 - [ ] Additional assets renamed if they exist
 
 **Code Integration**:
+
 - [ ] Route updated in `Workload/app/App.tsx`
 - [ ] Import statement updated with new path and component name
 - [ ] Route path matches new manifest `editor.path`
 
 **Environment Variables**:
+
 - [ ] Old item name removed from `ITEM_NAMES` in `Workload/.env.dev`
 - [ ] New item name added to `ITEM_NAMES` in `Workload/.env.dev`
 - [ ] Same updates applied to `Workload/.env.test` and `Workload/.env.prod`
 
 **Build Validation**:
+
 - [ ] `npm run build:test` completes without errors
 - [ ] `npm run start` works correctly
 - [ ] `BuildManifestPackage.ps1` runs without errors

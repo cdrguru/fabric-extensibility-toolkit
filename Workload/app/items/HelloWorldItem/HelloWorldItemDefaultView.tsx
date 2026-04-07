@@ -30,7 +30,10 @@ export function HelloWorldItemDefaultView({
       await callNavigationOpenInNewBrowserTab(workloadClient, url);
     } catch (error) {
       // Log the error
-      console.error('Failed to open resource via Fabric navigation API:', error);
+      console.error(
+        "Failed to open resource via Fabric navigation API:",
+        error,
+      );
     }
   };
 
@@ -41,19 +44,19 @@ export function HelloWorldItemDefaultView({
         content: <GettingStartedSection onOpenResource={handleOpenResource} />,
         width: 400,
         minWidth: 350,
-        title: t('Item_GettingStarted_Label', 'Next Steps'),
+        title: t("Item_GettingStarted_Label", "Next Steps"),
         enableUserResize: true,
-        collapsible: true
+        collapsible: true,
       }}
       center={{
-         content: (
+        content: (
           <ItemDetailsSection
             item={item}
             messageValue={messageValue}
             onMessageChange={onMessageChange}
             onOpenResource={handleOpenResource}
           />
-        )
+        ),
       }}
     />
   );

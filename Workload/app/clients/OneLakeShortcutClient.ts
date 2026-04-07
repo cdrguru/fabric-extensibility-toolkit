@@ -5,22 +5,21 @@ import {
   Shortcut,
   CreateShortcutRequest,
   PaginatedResponse,
-  ShortcutConflictPolicy
+  ShortcutConflictPolicy,
 } from "./FabricPlatformTypes";
 
 /**
  * API wrapper for OneLake Shortcuts operations
  * Provides methods for managing shortcuts to external data sources
- * 
+ *
  * Based on the official Fabric REST API:
  * https://learn.microsoft.com/en-us/rest/api/fabric/core/onelake-shortcuts
- * 
+ *
  * Uses method-based scope selection:
  * - GET operations use read-only scopes
  * - POST/PUT/PATCH/DELETE operations use read-write scopes
  */
 export class OneLakeShortcutClient extends FabricPlatformClient {
-  
   constructor(workloadClient: WorkloadClientAPI) {
     // Use scope pairs for method-based scope selection
     super(workloadClient, SCOPE_PAIRS.ONELAKE);
@@ -42,7 +41,7 @@ export class OneLakeShortcutClient extends FabricPlatformClient {
     workspaceId: string,
     itemId: string,
     folderPath: string,
-    continuationToken?: string
+    continuationToken?: string,
   ): Promise<PaginatedResponse<Shortcut>> {
     const encodedPath = encodeURIComponent(folderPath);
     let endpoint = `/workspaces/${workspaceId}/items/${itemId}/shortcuts?path=${encodedPath}`;
@@ -62,11 +61,11 @@ export class OneLakeShortcutClient extends FabricPlatformClient {
   async getAllShortcuts(
     workspaceId: string,
     itemId: string,
-    folderPath: string
+    folderPath: string,
   ): Promise<Shortcut[]> {
     const encodedPath = encodeURIComponent(folderPath);
     return this.getAllPages<Shortcut>(
-      `/workspaces/${workspaceId}/items/${itemId}/shortcuts?path=${encodedPath}`
+      `/workspaces/${workspaceId}/items/${itemId}/shortcuts?path=${encodedPath}`,
     );
   }
 
@@ -81,17 +80,14 @@ export class OneLakeShortcutClient extends FabricPlatformClient {
     workspaceId: string,
     itemId: string,
     request: CreateShortcutRequest,
-    conflictPolicy?: ShortcutConflictPolicy
+    conflictPolicy?: ShortcutConflictPolicy,
   ): Promise<Shortcut> {
     let url = `/workspaces/${workspaceId}/items/${itemId}/shortcuts`;
     if (conflictPolicy) {
       const params = new URLSearchParams({ conflictPolicy });
       url += `?${params.toString()}`;
     }
-    return this.post<Shortcut>(
-      url,
-      { ...request }
-    );
+    return this.post<Shortcut>(url, { ...request });
   }
 
   /**
@@ -104,11 +100,11 @@ export class OneLakeShortcutClient extends FabricPlatformClient {
   async getShortcut(
     workspaceId: string,
     itemId: string,
-    shortcutPath: string
+    shortcutPath: string,
   ): Promise<Shortcut> {
     const encodedPath = encodeURIComponent(shortcutPath);
     return this.get<Shortcut>(
-      `/workspaces/${workspaceId}/items/${itemId}/shortcuts/${encodedPath}`
+      `/workspaces/${workspaceId}/items/${itemId}/shortcuts/${encodedPath}`,
     );
   }
 
@@ -122,11 +118,11 @@ export class OneLakeShortcutClient extends FabricPlatformClient {
   async deleteShortcut(
     workspaceId: string,
     itemId: string,
-    shortcutPath: string
+    shortcutPath: string,
   ): Promise<void> {
     const encodedPath = encodeURIComponent(shortcutPath);
     await this.delete<void>(
-      `/workspaces/${workspaceId}/items/${itemId}/shortcuts/${encodedPath}`
+      `/workspaces/${workspaceId}/items/${itemId}/shortcuts/${encodedPath}`,
     );
   }
 
@@ -152,7 +148,7 @@ export class OneLakeShortcutClient extends FabricPlatformClient {
     targetPath: string,
     connectionId: string,
     location: string,
-    subpath: string = ''
+    subpath: string = "",
   ): Promise<Shortcut> {
     const request: CreateShortcutRequest = {
       path: targetPath,
@@ -161,9 +157,9 @@ export class OneLakeShortcutClient extends FabricPlatformClient {
         adlsGen2: {
           connectionId,
           location,
-          subpath
-        }
-      }
+          subpath,
+        },
+      },
     };
 
     return this.createShortcut(workspaceId, itemId, request);
@@ -187,7 +183,7 @@ export class OneLakeShortcutClient extends FabricPlatformClient {
     targetPath: string,
     connectionId: string,
     location: string,
-    subpath: string = ''
+    subpath: string = "",
   ): Promise<Shortcut> {
     const request: CreateShortcutRequest = {
       path: targetPath,
@@ -196,9 +192,9 @@ export class OneLakeShortcutClient extends FabricPlatformClient {
         amazonS3: {
           connectionId,
           location,
-          subpath
-        }
-      }
+          subpath,
+        },
+      },
     };
 
     return this.createShortcut(workspaceId, itemId, request);
@@ -222,7 +218,7 @@ export class OneLakeShortcutClient extends FabricPlatformClient {
     targetPath: string,
     targetWorkspaceId: string,
     targetItemId: string,
-    targetSubPath?: string
+    targetSubPath?: string,
   ): Promise<Shortcut> {
     const request: CreateShortcutRequest = {
       path: targetPath,
@@ -231,9 +227,9 @@ export class OneLakeShortcutClient extends FabricPlatformClient {
         oneLake: {
           workspaceId: targetWorkspaceId,
           itemId: targetItemId,
-          path: targetSubPath || ''
-        }
-      }
+          path: targetSubPath || "",
+        },
+      },
     };
 
     return this.createShortcut(workspaceId, itemId, request);
@@ -251,14 +247,18 @@ export class OneLakeShortcutClient extends FabricPlatformClient {
     workspaceId: string,
     itemId: string,
     folderPath: string,
-    type: 'OneLake' | 'AdlsGen2' | 'S3'
+    type: "OneLake" | "AdlsGen2" | "S3",
   ): Promise<Shortcut[]> {
-    const allShortcuts = await this.getAllShortcuts(workspaceId, itemId, folderPath);
-    
-    return allShortcuts.filter(shortcut => {
-      if (type === 'OneLake' && shortcut.target.oneLake) return true;
-      if (type === 'AdlsGen2' && shortcut.target.adlsGen2) return true;
-      if (type === 'S3' && shortcut.target.amazonS3) return true;
+    const allShortcuts = await this.getAllShortcuts(
+      workspaceId,
+      itemId,
+      folderPath,
+    );
+
+    return allShortcuts.filter((shortcut) => {
+      if (type === "OneLake" && shortcut.target.oneLake) return true;
+      if (type === "AdlsGen2" && shortcut.target.adlsGen2) return true;
+      if (type === "S3" && shortcut.target.amazonS3) return true;
       return false;
     });
   }
@@ -273,9 +273,9 @@ export class OneLakeShortcutClient extends FabricPlatformClient {
   async getOneLakeShortcuts(
     workspaceId: string,
     itemId: string,
-    folderPath: string
+    folderPath: string,
   ): Promise<Shortcut[]> {
-    return this.getShortcutsByType(workspaceId, itemId, folderPath, 'OneLake');
+    return this.getShortcutsByType(workspaceId, itemId, folderPath, "OneLake");
   }
 
   /**
@@ -288,9 +288,9 @@ export class OneLakeShortcutClient extends FabricPlatformClient {
   async getAdlsGen2Shortcuts(
     workspaceId: string,
     itemId: string,
-    folderPath: string
+    folderPath: string,
   ): Promise<Shortcut[]> {
-    return this.getShortcutsByType(workspaceId, itemId, folderPath, 'AdlsGen2');
+    return this.getShortcutsByType(workspaceId, itemId, folderPath, "AdlsGen2");
   }
 
   /**
@@ -303,9 +303,9 @@ export class OneLakeShortcutClient extends FabricPlatformClient {
   async getS3Shortcuts(
     workspaceId: string,
     itemId: string,
-    folderPath: string
+    folderPath: string,
   ): Promise<Shortcut[]> {
-    return this.getShortcutsByType(workspaceId, itemId, folderPath, 'S3');
+    return this.getShortcutsByType(workspaceId, itemId, folderPath, "S3");
   }
 
   /**
@@ -320,13 +320,17 @@ export class OneLakeShortcutClient extends FabricPlatformClient {
     workspaceId: string,
     itemId: string,
     folderPath: string,
-    namePattern: string
+    namePattern: string,
   ): Promise<Shortcut[]> {
-    const allShortcuts = await this.getAllShortcuts(workspaceId, itemId, folderPath);
+    const allShortcuts = await this.getAllShortcuts(
+      workspaceId,
+      itemId,
+      folderPath,
+    );
     const lowerPattern = namePattern.toLowerCase();
-    
-    return allShortcuts.filter(shortcut => 
-      shortcut.name.toLowerCase().includes(lowerPattern)
+
+    return allShortcuts.filter((shortcut) =>
+      shortcut.name.toLowerCase().includes(lowerPattern),
     );
   }
 
@@ -342,12 +346,16 @@ export class OneLakeShortcutClient extends FabricPlatformClient {
     workspaceId: string,
     itemId: string,
     folderPath: string,
-    targetWorkspaceId: string
+    targetWorkspaceId: string,
   ): Promise<Shortcut[]> {
-    const oneLakeShortcuts = await this.getOneLakeShortcuts(workspaceId, itemId, folderPath);
-    
-    return oneLakeShortcuts.filter(shortcut => 
-      shortcut.target.oneLake?.workspaceId === targetWorkspaceId
+    const oneLakeShortcuts = await this.getOneLakeShortcuts(
+      workspaceId,
+      itemId,
+      folderPath,
+    );
+
+    return oneLakeShortcuts.filter(
+      (shortcut) => shortcut.target.oneLake?.workspaceId === targetWorkspaceId,
     );
   }
 
@@ -363,12 +371,21 @@ export class OneLakeShortcutClient extends FabricPlatformClient {
     workspaceId: string,
     itemId: string,
     folderPath: string,
-    namePattern: string
+    namePattern: string,
   ): Promise<void> {
-    const shortcuts = await this.searchShortcutsByName(workspaceId, itemId, folderPath, namePattern);
-    
-    const deletionPromises = shortcuts.map(shortcut => 
-      this.deleteShortcut(workspaceId, itemId, `${folderPath}/${shortcut.name}`)
+    const shortcuts = await this.searchShortcutsByName(
+      workspaceId,
+      itemId,
+      folderPath,
+      namePattern,
+    );
+
+    const deletionPromises = shortcuts.map((shortcut) =>
+      this.deleteShortcut(
+        workspaceId,
+        itemId,
+        `${folderPath}/${shortcut.name}`,
+      ),
     );
 
     await Promise.allSettled(deletionPromises);

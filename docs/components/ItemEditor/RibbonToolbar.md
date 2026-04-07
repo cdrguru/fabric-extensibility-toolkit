@@ -12,7 +12,7 @@ The `RibbonToolbar` component provides a standardized toolbar interface for ribb
 ✅ **Flexible Actions** - Supports primary, secondary, and grouped actions  
 ✅ **Icon Integration** - Fluent UI icon support with tooltips  
 ✅ **Responsive Design** - Adapts to different screen sizes  
-✅ **TypeScript Support** - Full type definitions and IntelliSense  
+✅ **TypeScript Support** - Full type definitions and IntelliSense
 
 ## 🚀 Quick Start
 
@@ -24,18 +24,18 @@ import { RibbonToolbar, RibbonAction } from "../../components/ItemEditor";
 export function MyToolbar() {
   const actions: RibbonAction[] = [
     {
-      key: 'save',
-      label: 'Save',
-      iconName: 'Save',
+      key: "save",
+      label: "Save",
+      iconName: "Save",
       onClick: handleSave,
-      appearance: 'primary'
+      appearance: "primary",
     },
     {
-      key: 'refresh',
-      label: 'Refresh',
-      iconName: 'Refresh',
-      onClick: handleRefresh
-    }
+      key: "refresh",
+      label: "Refresh",
+      iconName: "Refresh",
+      onClick: handleRefresh,
+    },
   ];
 
   return <RibbonToolbar actions={actions} />;
@@ -50,13 +50,13 @@ import { Ribbon, RibbonToolbar } from "../../components/ItemEditor";
 export function MyItemRibbon({ viewContext }) {
   const actions: RibbonAction[] = [
     {
-      key: 'save',
-      label: 'Save Item',
-      iconName: 'Save',
+      key: "save",
+      label: "Save Item",
+      iconName: "Save",
       onClick: handleSave,
-      appearance: 'primary',
-      disabled: !isDirty
-    }
+      appearance: "primary",
+      disabled: !isDirty,
+    },
   ];
 
   return (
@@ -71,23 +71,23 @@ export function MyItemRibbon({ viewContext }) {
 
 ### RibbonToolbarProps
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `actions` | `RibbonAction[]` | ✅ | Array of toolbar actions |
-| `className` | `string` | ❌ | Additional CSS classes |
+| Property    | Type             | Required | Description              |
+| ----------- | ---------------- | -------- | ------------------------ |
+| `actions`   | `RibbonAction[]` | ✅       | Array of toolbar actions |
+| `className` | `string`         | ❌       | Additional CSS classes   |
 
 ### RibbonAction Interface
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `key` | `string` | ✅ | Unique identifier for the action |
-| `label` | `string` | ✅ | Button text and tooltip |
-| `iconName` | `string` | ❌ | Fluent UI icon name |
-| `onClick` | `() => void` | ✅ | Click handler function |
-| `appearance` | `'primary' \| 'secondary' \| 'subtle'` | ❌ | Button appearance (default: 'secondary') |
-| `disabled` | `boolean` | ❌ | Whether the action is disabled |
-| `hidden` | `boolean` | ❌ | Whether to hide the action |
-| `ariaLabel` | `string` | ❌ | Custom aria-label (defaults to label) |
+| Property     | Type                                   | Required | Description                              |
+| ------------ | -------------------------------------- | -------- | ---------------------------------------- |
+| `key`        | `string`                               | ✅       | Unique identifier for the action         |
+| `label`      | `string`                               | ✅       | Button text and tooltip                  |
+| `iconName`   | `string`                               | ❌       | Fluent UI icon name                      |
+| `onClick`    | `() => void`                           | ✅       | Click handler function                   |
+| `appearance` | `'primary' \| 'secondary' \| 'subtle'` | ❌       | Button appearance (default: 'secondary') |
+| `disabled`   | `boolean`                              | ❌       | Whether the action is disabled           |
+| `hidden`     | `boolean`                              | ❌       | Whether to hide the action               |
+| `ariaLabel`  | `string`                               | ❌       | Custom aria-label (defaults to label)    |
 
 ## 🎯 Action Types
 
@@ -150,11 +150,11 @@ RibbonToolbar
 ```scss
 .base-ribbon-toolbar {
   // Main toolbar container
-  
+
   .fui-Toolbar {
     // Fluent UI toolbar styling
   }
-  
+
   .fui-ToolbarButton {
     // Individual button styling
   }
@@ -168,20 +168,20 @@ RibbonToolbar
 ```tsx
 const actions: RibbonAction[] = [
   {
-    key: 'save',
-    label: 'Save',
-    iconName: 'Save',
+    key: "save",
+    label: "Save",
+    iconName: "Save",
     onClick: handleSave,
-    appearance: 'primary',
-    disabled: !isDirty
+    appearance: "primary",
+    disabled: !isDirty,
   },
   {
-    key: 'cancel',
-    label: 'Cancel',
-    iconName: 'Cancel',
+    key: "cancel",
+    label: "Cancel",
+    iconName: "Cancel",
     onClick: handleCancel,
-    appearance: 'subtle'
-  }
+    appearance: "subtle",
+  },
 ];
 ```
 
@@ -190,19 +190,19 @@ const actions: RibbonAction[] = [
 ```tsx
 const actions: RibbonAction[] = [
   {
-    key: 'save',
-    label: 'Save',
-    iconName: 'Save',
+    key: "save",
+    label: "Save",
+    iconName: "Save",
     onClick: handleSave,
-    appearance: 'primary'
+    appearance: "primary",
   },
   {
-    key: 'publish',
-    label: 'Publish',
-    iconName: 'Share',
+    key: "publish",
+    label: "Publish",
+    iconName: "Share",
     onClick: handlePublish,
-    hidden: !canPublish  // Hide when not available
-  }
+    hidden: !canPublish, // Hide when not available
+  },
 ];
 ```
 
@@ -211,12 +211,12 @@ const actions: RibbonAction[] = [
 ```tsx
 const actions: RibbonAction[] = [
   {
-    key: 'save',
-    label: isLoading ? 'Saving...' : 'Save',
-    iconName: 'Save',
+    key: "save",
+    label: isLoading ? "Saving..." : "Save",
+    iconName: "Save",
     onClick: handleSave,
-    disabled: isLoading
-  }
+    disabled: isLoading,
+  },
 ];
 ```
 
@@ -226,13 +226,13 @@ const actions: RibbonAction[] = [
 export function MyItemRibbon({ viewContext }) {
   const getActions = (): RibbonAction[] => {
     const baseActions = [
-      { key: 'save', label: 'Save', iconName: 'Save', onClick: handleSave }
+      { key: "save", label: "Save", iconName: "Save", onClick: handleSave },
     ];
 
-    if (viewContext.currentView === 'details') {
+    if (viewContext.currentView === "details") {
       return [
         ...baseActions,
-        { key: 'edit', label: 'Edit', iconName: 'Edit', onClick: handleEdit }
+        { key: "edit", label: "Edit", iconName: "Edit", onClick: handleEdit },
       ];
     }
 
@@ -253,26 +253,26 @@ export function MyItemRibbon({ viewContext }) {
 
 ```tsx
 // Standard actions
-'Save'          // Save action
-'Refresh'       // Refresh/reload
-'Settings'      // Settings/preferences
-'Add'           // Create new
-'Delete'        // Delete/remove
-'Edit'          // Edit mode
-'Share'         // Publish/share
-'Download'      // Export/download
-'Upload'        // Import/upload
-'Search'        // Search/filter
+"Save"; // Save action
+"Refresh"; // Refresh/reload
+"Settings"; // Settings/preferences
+"Add"; // Create new
+"Delete"; // Delete/remove
+"Edit"; // Edit mode
+"Share"; // Publish/share
+"Download"; // Export/download
+"Upload"; // Import/upload
+"Search"; // Search/filter
 
 // Navigation
-'ChevronLeft'   // Back navigation
-'ChevronRight'  // Forward navigation
-'Home'          // Home/dashboard
+"ChevronLeft"; // Back navigation
+"ChevronRight"; // Forward navigation
+"Home"; // Home/dashboard
 
 // Status
-'CheckMark'     // Success/complete
-'ErrorBadge'    // Error/warning
-'Info'          // Information
+"CheckMark"; // Success/complete
+"ErrorBadge"; // Error/warning
+"Info"; // Information
 ```
 
 ### Custom Icons
@@ -283,10 +283,10 @@ import { bundleIcon, Filled, Regular } from "@fluentui/react-icons";
 const MyCustomIcon = bundleIcon(MyIconFilled, MyIconRegular);
 
 const action: RibbonAction = {
-  key: 'custom',
-  label: 'Custom Action',
-  iconName: 'MyCustomIcon',  // Use your bundled icon
-  onClick: handleCustom
+  key: "custom",
+  label: "Custom Action",
+  iconName: "MyCustomIcon", // Use your bundled icon
+  onClick: handleCustom,
 };
 ```
 
@@ -326,7 +326,7 @@ const action: RibbonAction = {
 ✅ **Use standard icons** - Leverage Fluent UI icon library  
 ✅ **Handle disabled states** - Show when actions aren't available  
 ✅ **Keep actions minimal** - 3-5 primary actions maximum  
-✅ **Test keyboard navigation** - Ensure full accessibility  
+✅ **Test keyboard navigation** - Ensure full accessibility
 
 ### ❌ Don'ts
 
@@ -334,7 +334,7 @@ const action: RibbonAction = {
 ❌ **Don't overcrowd toolbar** - Too many actions reduce usability  
 ❌ **Don't forget loading states** - Show feedback during operations  
 ❌ **Don't ignore accessibility** - Always test with screen readers  
-❌ **Don't use custom styling** - Stick to appearance props  
+❌ **Don't use custom styling** - Stick to appearance props
 
 ## 🎯 Integration Examples
 
@@ -345,9 +345,9 @@ const action: RibbonAction = {
 export function MyItemEditor(props: PageProps) {
   const views: RegisteredView[] = [
     {
-      name: 'main',
-      component: <MyMainView />
-    }
+      name: "main",
+      component: <MyMainView />,
+    },
   ];
 
   return (
@@ -362,12 +362,12 @@ export function MyItemEditor(props: PageProps) {
 export function MyItemRibbon({ viewContext }) {
   const actions: RibbonAction[] = [
     {
-      key: 'save',
-      label: 'Save Item',
-      iconName: 'Save',
+      key: "save",
+      label: "Save Item",
+      iconName: "Save",
       onClick: () => saveItem(),
-      appearance: 'primary'
-    }
+      appearance: "primary",
+    },
   ];
 
   return (
@@ -388,6 +388,6 @@ export function MyItemRibbon({ viewContext }) {
 ## 📝 Examples
 
 For complete examples, see:
+
 - [HelloWorldItemRibbon.tsx](../../Workload/app/items/HelloWorldItem/HelloWorldItemRibbon.tsx) - Reference implementation
 - [StandardRibbonActions.ts](../../Workload/app/components/ItemEditor/StandardRibbonActions.ts) - Standard action patterns
-

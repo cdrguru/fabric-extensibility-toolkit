@@ -1,24 +1,17 @@
-import React, { useState } from 'react';
-import { Stack } from '@fluentui/react';
-import {
-  Button,
-  Field,
-  Input
-} from "@fluentui/react-components";
-import {
-  Save24Regular,
-  Dismiss24Regular
-} from "@fluentui/react-icons";
-import { PageProps, SharedState } from '../../App';
-import { callDialogClose } from '../../controller/DialogController';
-import '../Playground.scss';
+import React, { useState } from "react";
+import { Stack } from "@fluentui/react";
+import { Button, Field, Input } from "@fluentui/react-components";
+import { Save24Regular, Dismiss24Regular } from "@fluentui/react-icons";
+import { PageProps, SharedState } from "../../App";
+import { callDialogClose } from "../../controller/DialogController";
+import "../Playground.scss";
 
 /**
  * SharedStatePage - Dialog component for shared state management
- * 
+ *
  * Demonstrates the shared state pattern across different dialog instances.
  * This component is opened from the ActionDialog example in ClientSDKPlayground.
- * 
+ *
  * Key Features:
  * - Reads and modifies workload shared state
  * - Dialog-based interface with save/cancel actions
@@ -33,7 +26,7 @@ export function PlaygroundSharedStatePage(props: PageProps) {
 
   // Local state for editing
   const [localMessage, setLocalMessage] = useState<string>(
-    sharedState.message || ''
+    sharedState.message || "",
   );
 
   async function handleSave() {
@@ -42,7 +35,7 @@ export function PlaygroundSharedStatePage(props: PageProps) {
       sharedState.message = localMessage;
       await callDialogClose(workloadClient);
     } catch (error) {
-      console.error('Failed to save shared state:', error);
+      console.error("Failed to save shared state:", error);
     }
   }
 
@@ -50,15 +43,14 @@ export function PlaygroundSharedStatePage(props: PageProps) {
     try {
       await callDialogClose(workloadClient);
     } catch (error) {
-      console.error('Failed to close dialog:', error);
+      console.error("Failed to close dialog:", error);
     }
   }
 
   return (
     <Stack className="shared-state-dialog">
-      
-      <Stack  className="section">
-        <Field 
+      <Stack className="section">
+        <Field
           label="New Shared State Message:"
           orientation="vertical"
           className="field"
@@ -72,12 +64,12 @@ export function PlaygroundSharedStatePage(props: PageProps) {
           />
         </Field>
 
-        <Stack 
-          horizontal 
+        <Stack
+          horizontal
           tokens={{ childrenGap: 10 }}
           className="shared-state-buttons"
         >
-          <Button 
+          <Button
             appearance="primary"
             icon={<Save24Regular />}
             onClick={handleSave}
@@ -85,7 +77,7 @@ export function PlaygroundSharedStatePage(props: PageProps) {
           >
             Save
           </Button>
-          <Button 
+          <Button
             appearance="outline"
             icon={<Dismiss24Regular />}
             onClick={handleCancel}
@@ -93,7 +85,7 @@ export function PlaygroundSharedStatePage(props: PageProps) {
             Cancel
           </Button>
         </Stack>
-      </Stack >
+      </Stack>
     </Stack>
   );
 }

@@ -12,7 +12,7 @@ The `ItemEditorDefaultView` component provides a flexible, two-panel layout syst
 ✅ **Responsive Design** - Adapts to different screen sizes with mobile optimization  
 ✅ **Fabric Design System** - Uses official design tokens and spacing  
 ✅ **Accessibility Compliant** - Semantic HTML, ARIA regions, keyboard support  
-✅ **TypeScript Support** - Full type definitions and IntelliSense  
+✅ **TypeScript Support** - Full type definitions and IntelliSense
 
 ## 🏗️ Architecture
 
@@ -41,7 +41,7 @@ The `ItemEditorDefaultView` component provides a flexible, two-panel layout syst
 ### Panel Configuration
 
 - **Left Panel (Optional)**: Navigation trees, file explorers, property panels with collapsible header
-- **Center Panel (Required)**: Main editing content, forms, canvases, detail views  
+- **Center Panel (Required)**: Main editing content, forms, canvases, detail views
 - **Resize Handles**: Drag to adjust panel widths with min/max constraints
 
 ## 🚀 Quick Start
@@ -55,7 +55,7 @@ export function MyItemEditor() {
   return (
     <ItemEditorDefaultView
       center={{
-        content: <MyMainContent />
+        content: <MyMainContent />,
       }}
     />
   );
@@ -72,10 +72,10 @@ export function MyItemEditor() {
     <ItemEditorDefaultView
       left={{
         content: <NavigationTree items={navItems} />,
-        title: "Navigation"
+        title: "Navigation",
       }}
       center={{
-        content: <DetailView selectedItem={selectedItem} />
+        content: <DetailView selectedItem={selectedItem} />,
       }}
     />
   );
@@ -98,11 +98,12 @@ export function MyItemEditor() {
         collapsible: true,
         collapsed: false,
         enableUserResize: true,
-        onCollapseChange: (collapsed) => console.log('Panel collapsed:', collapsed)
+        onCollapseChange: (collapsed) =>
+          console.log("Panel collapsed:", collapsed),
       }}
       center={{
         content: <CodeEditor file={currentFile} />,
-        ariaLabel: "Code editor workspace"
+        ariaLabel: "Code editor workspace",
       }}
     />
   );
@@ -113,34 +114,34 @@ export function MyItemEditor() {
 
 ### ItemEditorDefaultViewProps
 
-| Property | Type | Required | Default | Description |
-|----------|------|----------|---------|-------------|
-| `left` | `LeftPanelConfig` | ❌ | - | Optional left panel configuration |
-| `center` | `CentralPanelConfig` | ✅ | - | Required center content area configuration |
-| `className` | `string` | ❌ | `""` | Additional CSS classes |
+| Property    | Type                 | Required | Default | Description                                |
+| ----------- | -------------------- | -------- | ------- | ------------------------------------------ |
+| `left`      | `LeftPanelConfig`    | ❌       | -       | Optional left panel configuration          |
+| `center`    | `CentralPanelConfig` | ✅       | -       | Required center content area configuration |
+| `className` | `string`             | ❌       | `""`    | Additional CSS classes                     |
 
 ### LeftPanelConfig
 
-| Property | Type | Required | Default | Description |
-|----------|------|----------|---------|-------------|
-| `content` | `ReactNode` | ✅ | - | Left panel content (navigation, tree view, file explorer) |
-| `title` | `string` | ❌ | `"Panel"` | Optional title for the left panel header |
-| `width` | `number` | ❌ | `280` | Width of the left panel in pixels |
-| `minWidth` | `number` | ❌ | `200` | Minimum width for resizing |
-| `maxWidth` | `number` | ❌ | `600` | Maximum width for resizing |
-| `collapsible` | `boolean` | ❌ | `false` | Whether the left panel is collapsible |
-| `collapsed` | `boolean` | ❌ | `false` | Initial collapsed state (managed internally after init) |
-| `enableUserResize` | `boolean` | ❌ | `true` | Whether to enable user resizing via drag handle |
-| `onCollapseChange` | `(isCollapsed: boolean) => void` | ❌ | - | Callback when collapse state changes (notification only) |
-| `onWidthChange` | `(newWidth: number) => void` | ❌ | - | Callback when panel width changes (resizable only) |
+| Property           | Type                             | Required | Default   | Description                                               |
+| ------------------ | -------------------------------- | -------- | --------- | --------------------------------------------------------- |
+| `content`          | `ReactNode`                      | ✅       | -         | Left panel content (navigation, tree view, file explorer) |
+| `title`            | `string`                         | ❌       | `"Panel"` | Optional title for the left panel header                  |
+| `width`            | `number`                         | ❌       | `280`     | Width of the left panel in pixels                         |
+| `minWidth`         | `number`                         | ❌       | `200`     | Minimum width for resizing                                |
+| `maxWidth`         | `number`                         | ❌       | `600`     | Maximum width for resizing                                |
+| `collapsible`      | `boolean`                        | ❌       | `false`   | Whether the left panel is collapsible                     |
+| `collapsed`        | `boolean`                        | ❌       | `false`   | Initial collapsed state (managed internally after init)   |
+| `enableUserResize` | `boolean`                        | ❌       | `true`    | Whether to enable user resizing via drag handle           |
+| `onCollapseChange` | `(isCollapsed: boolean) => void` | ❌       | -         | Callback when collapse state changes (notification only)  |
+| `onWidthChange`    | `(newWidth: number) => void`     | ❌       | -         | Callback when panel width changes (resizable only)        |
 
 ### CentralPanelConfig
 
-| Property | Type | Required | Default | Description |
-|----------|------|----------|---------|-------------|
-| `content` | `ReactNode` | ✅ | - | Main content area (editor, form, canvas, workspace) |
-| `className` | `string` | ❌ | `""` | Optional className for custom styling |
-| `ariaLabel` | `string` | ❌ | `"Main content"` | Optional ARIA label for accessibility |
+| Property    | Type        | Required | Default          | Description                                         |
+| ----------- | ----------- | -------- | ---------------- | --------------------------------------------------- |
+| `content`   | `ReactNode` | ✅       | -                | Main content area (editor, form, canvas, workspace) |
+| `className` | `string`    | ❌       | `""`             | Optional className for custom styling               |
+| `ariaLabel` | `string`    | ❌       | `"Main content"` | Optional ARIA label for accessibility               |
 
 ## 🎯 Key Features
 
@@ -163,7 +164,8 @@ const leftConfig: LeftPanelConfig = {
 ```
 
 **Collapse States:**
-- **Expanded**: Shows title on left, collapse button (⏷) on right  
+
+- **Expanded**: Shows title on left, collapse button (⏷) on right
 - **Collapsed**: Shows only expand button (⏵) in vertical strip
 - **Pattern**: Follows OneLakeView design for consistency
 
@@ -187,8 +189,9 @@ Enable draggable resize handles between panels:
 ```
 
 **Resize Features:**
+
 - **Drag Handle**: Visual resize handle between left and center panels
-- **Constraints**: Respects minWidth/maxWidth settings  
+- **Constraints**: Respects minWidth/maxWidth settings
 - **Live Preview**: Immediate feedback during resize
 - **Callbacks**: onWidthChange notifications for persistence
 
@@ -198,17 +201,26 @@ Automatically adapts to different screen sizes:
 
 ```scss
 // Desktop (default)
-.item-editor-view__left { width: 280px; }
+.item-editor-view__left {
+  width: 280px;
+}
 
 // Tablet
 @media (max-width: 1024px) {
-  .item-editor-view__left { width: 240px; }
+  .item-editor-view__left {
+    width: 240px;
+  }
 }
 
-// Mobile  
+// Mobile
 @media (max-width: 768px) {
-  .item-editor-view { flex-direction: column; }
-  .item-editor-view__left { width: 100%; height: auto; }
+  .item-editor-view {
+    flex-direction: column;
+  }
+  .item-editor-view__left {
+    width: 100%;
+    height: auto;
+  }
 }
 ```
 
@@ -224,17 +236,17 @@ export function NavigationBasedEditor() {
     <ItemEditorDefaultView
       left={{
         content: (
-          <NavigationTree 
+          <NavigationTree
             items={navItems}
             selectedItem={selectedItem}
             onSelect={setSelectedItem}
           />
         ),
         title: "Navigation",
-        collapsible: true
+        collapsible: true,
       }}
       center={{
-        content: <ItemDetails item={selectedItem} />
+        content: <ItemDetails item={selectedItem} />,
       }}
     />
   );
@@ -251,7 +263,7 @@ export function CodeEditorLayout() {
     <ItemEditorDefaultView
       left={{
         content: (
-          <FileExplorer 
+          <FileExplorer
             files={files}
             selectedFile={currentFile}
             onSelect={setCurrentFile}
@@ -262,15 +274,11 @@ export function CodeEditorLayout() {
         minWidth: 240,
         maxWidth: 480,
         collapsible: true,
-        enableUserResize: true
+        enableUserResize: true,
       }}
       center={{
-        content: (
-          <CodeEditor 
-            file={currentFile}
-          />
-        ),
-        ariaLabel: "Code editor"
+        content: <CodeEditor file={currentFile} />,
+        ariaLabel: "Code editor",
       }}
     />
   );
@@ -287,7 +295,7 @@ export function DesignToolLayout() {
     <ItemEditorDefaultView
       left={{
         content: (
-          <PropertiesPanel 
+          <PropertiesPanel
             element={selectedElement}
             onUpdate={handlePropertyUpdate}
           />
@@ -298,18 +306,18 @@ export function DesignToolLayout() {
         enableUserResize: true,
         onCollapseChange: (collapsed) => {
           // Save panel state preference
-          localStorage.setItem('propertiesPanelCollapsed', String(collapsed));
-        }
+          localStorage.setItem("propertiesPanelCollapsed", String(collapsed));
+        },
       }}
       center={{
         content: (
-          <DesignCanvas 
+          <DesignCanvas
             elements={elements}
             selectedElement={selectedElement}
             onSelect={setSelectedElement}
           />
         ),
-        className: "design-workspace"
+        className: "design-workspace",
       }}
     />
   );
@@ -334,10 +342,10 @@ export function IDELayout() {
         minWidth: 250,
         maxWidth: 500,
         collapsible: true,
-        enableUserResize: true
+        enableUserResize: true,
       }}
       center={{
-        content: <CodeEditor />
+        content: <CodeEditor />,
       }}
     />
   );
@@ -356,7 +364,7 @@ The component uses BEM (Block Element Modifier) naming:
   .item-editor-view__left            // Element
     .item-editor-view__left-header   // Element
     .item-editor-view__left-content  // Element
-  .item-editor-view__center          // Element  
+  .item-editor-view__center          // Element
   .item-editor-view__resize-handle   // Element
 ```
 
@@ -369,7 +377,7 @@ Uses Fabric design tokens for consistency:
 var(--spacingVerticalM)      // 12px vertical spacing
 var(--spacingHorizontalL)    // 16px horizontal spacing
 
-// Panel backgrounds  
+// Panel backgrounds
 var(--colorNeutralBackground1)  // White panels
 var(--colorNeutralBackground2)  // Light gray container
 
@@ -423,16 +431,10 @@ var(--fontSizeBase400)          // Panel titles
 ```tsx
 <div className="item-editor-view">
   <div className="item-editor-view__top-section">
-    <aside 
-      role="complementary"
-      aria-label="Navigation panel"
-    >
+    <aside role="complementary" aria-label="Navigation panel">
       {leftContent}
     </aside>
-    <main 
-      role="main"
-      aria-label="Main content"
-    >
+    <main role="main" aria-label="Main content">
       {centerContent}
     </main>
   </div>
@@ -443,22 +445,22 @@ var(--fontSizeBase400)          // Panel titles
 
 - **Tab**: Navigate through panel controls
 - **Enter/Space**: Toggle panel collapse
-- **Arrow Keys**: Navigate within panels  
+- **Arrow Keys**: Navigate within panels
 - **Escape**: Close dialogs or panels
 
 ### Screen Reader Support
 
 ```tsx
 // Collapse button accessibility
-<Button 
+<Button
   aria-label="Collapse panel"
   title="Collapse panel"
   icon={<ChevronDoubleLeft20Regular />}
   onClick={handleToggleCollapse}
 />
 
-// Resize handle accessibility  
-<div 
+// Resize handle accessibility
+<div
   className="resize-handle"
   title="Drag to resize panel"
   role="separator"
@@ -473,7 +475,10 @@ Proper focus handling during panel state changes:
 ```tsx
 // Focus management on collapse
 useEffect(() => {
-  if (isLeftPanelCollapsed && document.activeElement?.closest('.item-editor-view__left-content')) {
+  if (
+    isLeftPanelCollapsed &&
+    document.activeElement?.closest(".item-editor-view__left-content")
+  ) {
     // Move focus to expand button when panel collapses
     expandButtonRef.current?.focus();
   }
@@ -516,12 +521,14 @@ The `ItemEditorDefaultView` panels have **zero internal padding** to give maximu
 ```
 
 **Recommended Approach:**
+
 - Add padding to your root content component class
 - Use Fabric design tokens: `var(--spacingVerticalM, 12px)` for consistency
 - Apply the same padding to all panels (left, center, bottom) for visual alignment
 - Test your layout with different content types and lengths
 
 **Example CSS Class:**
+
 ```scss
 .my-item-view {
   padding: var(--spacingVerticalM, 12px);
@@ -543,7 +550,7 @@ The `ItemEditorDefaultView` panels have **zero internal padding** to give maximu
 ✅ **Use proper ARIA labels** for accessibility  
 ✅ **Test keyboard navigation** through all panels  
 ✅ **Consider content overflow** in all panels  
-✅ **Save panel preferences** (width, collapse state) when appropriate  
+✅ **Save panel preferences** (width, collapse state) when appropriate
 
 ### ❌ Don'ts
 
@@ -553,12 +560,12 @@ The `ItemEditorDefaultView` panels have **zero internal padding** to give maximu
 ❌ **Don't override resize constraints** without good reason  
 ❌ **Don't put essential actions** in collapsible panels  
 ❌ **Don't ignore mobile responsiveness** - test on small screens  
-❌ **Don't create overly complex layouts** - keep it simple and functional  
+❌ **Don't create overly complex layouts** - keep it simple and functional
 
 ## 🔗 Related Components
 
 - **[ItemEditor](./README.md)** - Main container with view registration system
-- **[ItemEditorView](./ItemEditorView.md)** - Simple single-panel layout  
+- **[ItemEditorView](./ItemEditorView.md)** - Simple single-panel layout
 - **[ItemEditorEmptyView](./ItemEditorEmptyView.md)** - Empty state layout
 - **[Ribbon](./Ribbon.md)** - Ribbon container component
 - **[OneLakeView](../OneLakeView.md)** - Example left panel content
@@ -566,6 +573,7 @@ The `ItemEditorDefaultView` panels have **zero internal padding** to give maximu
 ## 📝 Examples
 
 For complete examples, see:
+
 - [HelloWorld Implementation](../../Workload/app/items/HelloWorldItem/HelloWorldItemDefaultView.tsx) - Updated reference implementation
 - [ItemEditor README](./README.md) - Integration patterns with view registration
 

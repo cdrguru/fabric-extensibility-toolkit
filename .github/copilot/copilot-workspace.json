@@ -11,7 +11,7 @@
       ],
       "capabilities": [
         "code_generation",
-        "architecture_guidance", 
+        "architecture_guidance",
         "security_implementation",
         "api_integration",
         "testing_strategies",
@@ -59,11 +59,6 @@
       ".ai/context/**",
       ".ai/agents/fabric/**"
     ],
-    "exclude": [
-      "node_modules/**",
-      "release/**",
-      "tools/**",
-      "*.log"
-    ]
+    "exclude": ["node_modules/**", "release/**", "tools/**", "*.log"]
   }
 }

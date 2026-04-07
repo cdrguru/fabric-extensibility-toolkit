@@ -29,7 +29,7 @@ config/
 
 build/                        # All build resources generated on-demand (NOT COMMITTED)
 ├── Frontend/                 # Built frontend code ready for deployment
-├── DevGateway/              # Generated DevGateway configuration and files  
+├── DevGateway/              # Generated DevGateway configuration and files
 │   ├── workload-dev-mode.json  # Generated DevGateway config
 │   └── [other DevGateway files]
 └── Manifest/                # Built manifest files and packages
@@ -67,7 +67,7 @@ Every project normally only needs to be set up once at the beginning. All necess
 
 ```powershell
 # Start development
-.\scripts\Run\StartDevServer.ps1     # Uses .env.dev 
+.\scripts\Run\StartDevServer.ps1     # Uses .env.dev
 .\scripts\Run\StartDevGateway.ps1    # Uses generated DevGateway config
 ```
 
@@ -102,7 +102,7 @@ All build artifacts are generated on-demand from source templates and configurat
 Each build target uses the appropriate `.env.*` file:
 
 - **Development**: Uses `.env.dev` → `build/` outputs for local testing
-- **Test/Staging**: Uses `.env.test` → `build/` outputs for staging deployment  
+- **Test/Staging**: Uses `.env.test` → `build/` outputs for staging deployment
 - **Production**: Uses `.env.prod` → `build/` outputs for production deployment
 
 ### Build Dependencies
@@ -153,7 +153,7 @@ The workload has general configuration files:
 
 - **Product.json**: Workload metadata, display names, descriptions, and general settings
 - **WorkloadManifest.xml**: Main workload manifest with authentication and service configuration (also uses placeholders)
-- ***.xsd**: Schema definition files for validation
+- **\*.xsd**: Schema definition files for validation
 
 ### Schema and Structure Management
 
@@ -184,24 +184,28 @@ All files in the `build/` directory are generated on-demand from templates and s
 The toolkit follows a layered architecture in `Workload/app/` with clear separation of concerns:
 
 ### clients/
+
 - **Purpose**: API wrappers for Microsoft Fabric APIs
 - **Location**: `Workload/app/clients/`
 - **Usage**: Direct API integration with authentication and error handling
 
 ### controller/
+
 - **Purpose**: Client controller SDK abstractions for easier development
-- **Location**: `Workload/app/controller/` 
+- **Location**: `Workload/app/controller/`
 - **Usage**: Higher-level abstractions over client APIs for common patterns
 
 ### components/
+
 - **Purpose**: UX-compliant reusable components following Fabric design guidelines
 - **Location**: `Workload/app/components/`
 - **Documentation**: [Available Components](./components/README.md)
-- **Requirements**: 
+- **Requirements**:
   - **ItemEditor**: MANDATORY for all item editors - provides view registration, ribbon integration, and consistent layouts
   - **Other components**: Optional based on use case (OneLakeView, Wizard, etc.)
 
 ### items/
+
 - **Purpose**: Individual item implementations using the above layers
 - **Location**: `Workload/app/items/[ItemName]/`
 - **Pattern**: Each item uses ItemEditor component + other components as needed

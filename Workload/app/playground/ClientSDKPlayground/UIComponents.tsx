@@ -20,21 +20,25 @@ import { useTranslation } from "react-i18next";
 import "../Playground.scss";
 import { TabContentProps } from "./ClientSDKPlaygroundModel";
 import { RootState } from "./Store/Store";
-import { callLanguageGet, callSettingsOnChange } from "../../controller/SettingsController";
-import { setCheckboxChecked, setSampleInput, setSelectedRadio, setSwitchChecked } from "./Store/uiComponentsSlice";
+import {
+  callLanguageGet,
+  callSettingsOnChange,
+} from "../../controller/SettingsController";
+import {
+  setCheckboxChecked,
+  setSampleInput,
+  setSelectedRadio,
+  setSwitchChecked,
+} from "./Store/uiComponentsSlice";
 
 export function UIComponentsExample(props: TabContentProps) {
   const { workloadClient } = props;
   const { t, i18n } = useTranslation();
-  const [lang, setLang] = useState<string>('en-US');
+  const [lang, setLang] = useState<string>("en-US");
   const dispatch = useDispatch();
 
-  const {
-    sampleInput,
-    checkboxChecked,
-    selectedRadio,
-    switchChecked,
-  } = useSelector((state: RootState) => state.uiComponents);
+  const { sampleInput, checkboxChecked, selectedRadio, switchChecked } =
+    useSelector((state: RootState) => state.uiComponents);
 
   const radioName = useId("radio");
   const labelId = useId("label");
@@ -55,7 +59,9 @@ export function UIComponentsExample(props: TabContentProps) {
         <MessageBar>
           <MessageBarBody>
             <MessageBarTitle>
-              {lang !== "en-US" ? t("Language_Changed_Title") : t("Default_Language_Title")}
+              {lang !== "en-US"
+                ? t("Language_Changed_Title")
+                : t("Default_Language_Title")}
             </MessageBarTitle>
             {t("Language_Changed_Message")} {lang}
           </MessageBarBody>
@@ -106,9 +112,17 @@ export function UIComponentsExample(props: TabContentProps) {
           checked={checkboxChecked}
           onChange={(e) => dispatch(setCheckboxChecked(e.target.checked))}
         />
-        <Switch label="Switch sample" checked={switchChecked} onChange={(e) => dispatch(setSwitchChecked(e.target.checked))} />
+        <Switch
+          label="Switch sample"
+          checked={switchChecked}
+          onChange={(e) => dispatch(setSwitchChecked(e.target.checked))}
+        />
         <Label id={labelId}>Radio group</Label>
-        <RadioGroup aria-labelledby={labelId} value={selectedRadio} onChange={(e, data) => dispatch(setSelectedRadio(data.value))}>
+        <RadioGroup
+          aria-labelledby={labelId}
+          value={selectedRadio}
+          onChange={(e, data) => dispatch(setSelectedRadio(data.value))}
+        >
           <Radio name={radioName} value="option1" label="Option 1" />
           <Radio name={radioName} value="option2" label="Option 2" />
           <Radio name={radioName} value="option3" label="Option 3" />
@@ -116,4 +130,4 @@ export function UIComponentsExample(props: TabContentProps) {
       </div>
     </span>
   );
-};
+}

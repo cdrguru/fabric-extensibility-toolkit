@@ -2,7 +2,6 @@
 
 import { OpenMode, WorkloadClientAPI } from "@ms-fabric/workload-client";
 
-
 /**
  * Calls the 'page.open' function from the WorkloadClientAPI to open a new page.
  *
@@ -11,9 +10,13 @@ import { OpenMode, WorkloadClientAPI } from "@ms-fabric/workload-client";
  * @param {WorkloadClientAPI} workloadClient - An instance of the WorkloadClientAPI.
  */
 export async function callPageOpen(
-    workloadClient: WorkloadClientAPI,
-    workloadName: string,
-    path: string) {
-
-    await workloadClient.page.open({ workloadName, route: { path }, mode: OpenMode.ReplaceAll });
+  workloadClient: WorkloadClientAPI,
+  workloadName: string,
+  path: string,
+) {
+  await workloadClient.page.open({
+    workloadName,
+    route: { path },
+    mode: OpenMode.ReplaceAll,
+  });
 }

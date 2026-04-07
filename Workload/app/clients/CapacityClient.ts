@@ -6,22 +6,21 @@ import {
   CapacityWorkload,
   AssignWorkspaceToCapacityRequest,
   UnassignWorkspaceFromCapacityRequest,
-  PaginatedResponse
+  PaginatedResponse,
 } from "./FabricPlatformTypes";
 
 /**
  * API wrapper for Fabric Platform Capacity operations
  * Provides methods for managing capacities and workspace assignments
- * 
+ *
  * Based on the official Fabric REST API:
  * https://learn.microsoft.com/en-us/rest/api/fabric/core/capacities
- * 
+ *
  * Uses method-based scope selection:
  * - GET operations use read-only scopes
  * - POST/PUT/PATCH/DELETE operations use read-write scopes
  */
 export class CapacityClient extends FabricPlatformClient {
-  
   constructor(workloadClient: WorkloadClientAPI) {
     // Use scope pairs for method-based scope selection
     super(workloadClient, SCOPE_PAIRS.CAPACITY);
@@ -36,8 +35,10 @@ export class CapacityClient extends FabricPlatformClient {
    * @param continuationToken Token for pagination
    * @returns Promise<PaginatedResponse<Capacity>>
    */
-  async listCapacities(continuationToken?: string): Promise<PaginatedResponse<Capacity>> {
-    let endpoint = '/capacities';
+  async listCapacities(
+    continuationToken?: string,
+  ): Promise<PaginatedResponse<Capacity>> {
+    let endpoint = "/capacities";
     if (continuationToken) {
       endpoint += `?continuationToken=${encodeURIComponent(continuationToken)}`;
     }
@@ -49,7 +50,7 @@ export class CapacityClient extends FabricPlatformClient {
    * @returns Promise<Capacity[]>
    */
   async getAllCapacities(): Promise<Capacity[]> {
-    return this.getAllPages<Capacity>('/capacities');
+    return this.getAllPages<Capacity>("/capacities");
   }
 
   /**
@@ -80,8 +81,13 @@ export class CapacityClient extends FabricPlatformClient {
    * @param workloadName The workload name
    * @returns Promise<CapacityWorkload>
    */
-  async getCapacityWorkload(capacityId: string, workloadName: string): Promise<CapacityWorkload> {
-    return this.get<CapacityWorkload>(`/capacities/${capacityId}/workloads/${workloadName}`);
+  async getCapacityWorkload(
+    capacityId: string,
+    workloadName: string,
+  ): Promise<CapacityWorkload> {
+    return this.get<CapacityWorkload>(
+      `/capacities/${capacityId}/workloads/${workloadName}`,
+    );
   }
 
   /**
@@ -90,8 +96,13 @@ export class CapacityClient extends FabricPlatformClient {
    * @param workloadName The workload name
    * @returns Promise<void>
    */
-  async enableCapacityWorkload(capacityId: string, workloadName: string): Promise<void> {
-    await this.post<void>(`/capacities/${capacityId}/workloads/${workloadName}/enable`);
+  async enableCapacityWorkload(
+    capacityId: string,
+    workloadName: string,
+  ): Promise<void> {
+    await this.post<void>(
+      `/capacities/${capacityId}/workloads/${workloadName}/enable`,
+    );
   }
 
   /**
@@ -100,8 +111,13 @@ export class CapacityClient extends FabricPlatformClient {
    * @param workloadName The workload name
    * @returns Promise<void>
    */
-  async disableCapacityWorkload(capacityId: string, workloadName: string): Promise<void> {
-    await this.post<void>(`/capacities/${capacityId}/workloads/${workloadName}/disable`);
+  async disableCapacityWorkload(
+    capacityId: string,
+    workloadName: string,
+  ): Promise<void> {
+    await this.post<void>(
+      `/capacities/${capacityId}/workloads/${workloadName}/disable`,
+    );
   }
 
   // ============================
@@ -116,10 +132,10 @@ export class CapacityClient extends FabricPlatformClient {
    */
   async assignWorkspaceToCapacity(
     capacityId: string,
-    workspaceId: string
+    workspaceId: string,
   ): Promise<void> {
     const request: AssignWorkspaceToCapacityRequest = {
-      workspaceId
+      workspaceId,
     };
     await this.post<void>(`/capacities/${capacityId}/assignWorkspace`, request);
   }
@@ -131,9 +147,9 @@ export class CapacityClient extends FabricPlatformClient {
    */
   async unassignWorkspaceFromCapacity(workspaceId: string): Promise<void> {
     const request: UnassignWorkspaceFromCapacityRequest = {
-      workspaceId
+      workspaceId,
     };
-    await this.post<void>('/capacities/unassignWorkspace', request);
+    await this.post<void>("/capacities/unassignWorkspace", request);
   }
 
   // ============================
@@ -147,7 +163,9 @@ export class CapacityClient extends FabricPlatformClient {
    */
   async getCapacitiesByRegion(region: string): Promise<Capacity[]> {
     const allCapacities = await this.getAllCapacities();
-    return allCapacities.filter(capacity => capacity.region?.toLowerCase() === region.toLowerCase());
+    return allCapacities.filter(
+      (capacity) => capacity.region?.toLowerCase() === region.toLowerCase(),
+    );
   }
 
   /**
@@ -157,7 +175,9 @@ export class CapacityClient extends FabricPlatformClient {
    */
   async getCapacitiesBySku(sku: string): Promise<Capacity[]> {
     const allCapacities = await this.getAllCapacities();
-    return allCapacities.filter(capacity => capacity.sku?.toLowerCase() === sku.toLowerCase());
+    return allCapacities.filter(
+      (capacity) => capacity.sku?.toLowerCase() === sku.toLowerCase(),
+    );
   }
 
   /**
@@ -166,7 +186,7 @@ export class CapacityClient extends FabricPlatformClient {
    */
   async getActiveCapacities(): Promise<Capacity[]> {
     const allCapacities = await this.getAllCapacities();
-    return allCapacities.filter(capacity => capacity.state === 'Active');
+    return allCapacities.filter((capacity) => capacity.state === "Active");
   }
 
   /**
@@ -175,7 +195,7 @@ export class CapacityClient extends FabricPlatformClient {
    */
   async getPausedCapacities(): Promise<Capacity[]> {
     const allCapacities = await this.getAllCapacities();
-    return allCapacities.filter(capacity => capacity.state === 'Paused');
+    return allCapacities.filter((capacity) => capacity.state === "Paused");
   }
 
   /**
@@ -186,9 +206,9 @@ export class CapacityClient extends FabricPlatformClient {
   async searchCapacitiesByName(namePattern: string): Promise<Capacity[]> {
     const allCapacities = await this.getAllCapacities();
     const lowerPattern = namePattern.toLowerCase();
-    
-    return allCapacities.filter(capacity => 
-      capacity.displayName?.toLowerCase().includes(lowerPattern)
+
+    return allCapacities.filter((capacity) =>
+      capacity.displayName?.toLowerCase().includes(lowerPattern),
     );
   }
 
@@ -199,7 +219,7 @@ export class CapacityClient extends FabricPlatformClient {
    */
   async getEnabledWorkloads(capacityId: string): Promise<CapacityWorkload[]> {
     const allWorkloads = await this.listCapacityWorkloads(capacityId);
-    return allWorkloads.filter(workload => workload.state === 'Enabled');
+    return allWorkloads.filter((workload) => workload.state === "Enabled");
   }
 
   /**
@@ -209,7 +229,7 @@ export class CapacityClient extends FabricPlatformClient {
    */
   async getDisabledWorkloads(capacityId: string): Promise<CapacityWorkload[]> {
     const allWorkloads = await this.listCapacityWorkloads(capacityId);
-    return allWorkloads.filter(workload => workload.state === 'Disabled');
+    return allWorkloads.filter((workload) => workload.state === "Disabled");
   }
 
   /**
@@ -218,10 +238,13 @@ export class CapacityClient extends FabricPlatformClient {
    * @param workloadName The workload name
    * @returns Promise<boolean>
    */
-  async isWorkloadEnabled(capacityId: string, workloadName: string): Promise<boolean> {
+  async isWorkloadEnabled(
+    capacityId: string,
+    workloadName: string,
+  ): Promise<boolean> {
     try {
       const workload = await this.getCapacityWorkload(capacityId, workloadName);
-      return workload.state === 'Enabled';
+      return workload.state === "Enabled";
     } catch (error) {
       // If workload doesn't exist or we can't access it, assume disabled
       return false;
@@ -234,10 +257,16 @@ export class CapacityClient extends FabricPlatformClient {
    * @param workloadName The workload name
    * @returns Promise<CapacityWorkload>
    */
-  async toggleWorkload(capacityId: string, workloadName: string): Promise<CapacityWorkload> {
-    const currentWorkload = await this.getCapacityWorkload(capacityId, workloadName);
-    
-    if (currentWorkload.state === 'Enabled') {
+  async toggleWorkload(
+    capacityId: string,
+    workloadName: string,
+  ): Promise<CapacityWorkload> {
+    const currentWorkload = await this.getCapacityWorkload(
+      capacityId,
+      workloadName,
+    );
+
+    if (currentWorkload.state === "Enabled") {
       await this.disableCapacityWorkload(capacityId, workloadName);
     } else {
       await this.enableCapacityWorkload(capacityId, workloadName);
@@ -253,9 +282,12 @@ export class CapacityClient extends FabricPlatformClient {
    * @param workloadNames Array of workload names to enable
    * @returns Promise<void>
    */
-  async enableMultipleWorkloads(capacityId: string, workloadNames: string[]): Promise<void> {
-    const enablePromises = workloadNames.map(workloadName => 
-      this.enableCapacityWorkload(capacityId, workloadName)
+  async enableMultipleWorkloads(
+    capacityId: string,
+    workloadNames: string[],
+  ): Promise<void> {
+    const enablePromises = workloadNames.map((workloadName) =>
+      this.enableCapacityWorkload(capacityId, workloadName),
     );
 
     await Promise.allSettled(enablePromises);
@@ -267,9 +299,12 @@ export class CapacityClient extends FabricPlatformClient {
    * @param workloadNames Array of workload names to disable
    * @returns Promise<void>
    */
-  async disableMultipleWorkloads(capacityId: string, workloadNames: string[]): Promise<void> {
-    const disablePromises = workloadNames.map(workloadName => 
-      this.disableCapacityWorkload(capacityId, workloadName)
+  async disableMultipleWorkloads(
+    capacityId: string,
+    workloadNames: string[],
+  ): Promise<void> {
+    const disablePromises = workloadNames.map((workloadName) =>
+      this.disableCapacityWorkload(capacityId, workloadName),
     );
 
     await Promise.allSettled(disablePromises);
@@ -298,16 +333,16 @@ export class CapacityClient extends FabricPlatformClient {
    */
   async getCapacityPricingTier(capacityId: string): Promise<string> {
     const capacity = await this.getCapacity(capacityId);
-    
+
     // Infer pricing tier from SKU
-    if (capacity.sku?.startsWith('F')) {
-      return 'Fabric';
-    } else if (capacity.sku?.startsWith('P')) {
-      return 'Premium';
-    } else if (capacity.sku?.startsWith('A')) {
-      return 'Azure';
+    if (capacity.sku?.startsWith("F")) {
+      return "Fabric";
+    } else if (capacity.sku?.startsWith("P")) {
+      return "Premium";
+    } else if (capacity.sku?.startsWith("A")) {
+      return "Azure";
     }
-    
-    return 'Unknown';
+
+    return "Unknown";
   }
 }

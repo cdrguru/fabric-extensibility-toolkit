@@ -1,12 +1,15 @@
 import React from "react";
-import { Tab, TabList } from '@fluentui/react-tabs';
-import { Button, Tooltip } from '@fluentui/react-components';
-import { ArrowLeft24Regular } from '@fluentui/react-icons';
+import { Tab, TabList } from "@fluentui/react-tabs";
+import { Button, Tooltip } from "@fluentui/react-components";
+import { ArrowLeft24Regular } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
-import { ViewContext } from './ItemEditor';
-import { RibbonToolbar, RibbonAction } from './RibbonToolbar';
-import { RibbonActionButtonImpl, RibbonActionButton } from './RibbonActionButton';
-import "./ItemEditor.scss"
+import { ViewContext } from "./ItemEditor";
+import { RibbonToolbar, RibbonAction } from "./RibbonToolbar";
+import {
+  RibbonActionButtonImpl,
+  RibbonActionButton,
+} from "./RibbonActionButton";
+import "./ItemEditor.scss";
 
 /**
  * Definition for additional ribbon tabs beyond Home
@@ -16,22 +19,22 @@ export interface RibbonTab {
    * Unique key for the tab
    */
   key: string;
-  
+
   /**
    * Display label for the tab
    */
   label: string;
-  
+
   /**
    * Actions for this tab
    */
   actions: RibbonAction[];
-  
+
   /**
    * Optional test ID
    */
   testId?: string;
-  
+
   /**
    * Optional disabled state
    */
@@ -40,13 +43,12 @@ export interface RibbonTab {
 
 /**
  * Props for the Ribbon component
- * 
+ *
  * @see {@link ../../../docs/components/ItemEditor/Ribbon.md} - Complete Ribbon documentation
  * @see {@link ../../../docs/components/ItemEditor.md} - ItemEditor overview and integration patterns
  * @see {@link ./RibbonToolbar.tsx} - RibbonToolbar component for action groups
  */
 export interface RibbonProps {
-
   /**
    * Home tab label
    * @default "Home"
@@ -57,23 +59,23 @@ export interface RibbonProps {
    * Actions for the Home tab (always present)
    */
   homeToolbarActions: RibbonAction[];
-  
+
   /**
    * Optional additional tabs with their actions
    */
   additionalToolbars?: RibbonTab[];
-  
+
   /**
    * The default selected tab key
    * @default "home"
    */
   defaultSelectedTab?: string;
-  
+
   /**
    * Additional CSS class name
    */
   className?: string;
-  
+
   /**
    * Optional view context for automatic back button handling
    * When provided and isDetailView is true, shows back button instead of tabs
@@ -85,43 +87,42 @@ export interface RibbonProps {
    * These buttons are always visible at the same height as the tabs
    */
   rightActionButtons?: RibbonActionButton[];
-
 }
 
 /**
  * Ribbon - Clean ribbon with mandatory Home tab and optional additional tabs
- * 
+ *
  * This component provides:
  * - Mandatory Home tab with actions
  * - Optional additional tabs with their own actions
  * - Automatic tab switching and action display
  * - Back button support for detail views
  * - Clean API without complex configuration
- * 
+ *
  * ## Simple Architecture
- * 
+ *
  * ```
  * Ribbon
  * ├── Home Tab (always present) → homeToolbarActions
- * ├── Data Tab (optional) → additionalToolbars[0].actions  
+ * ├── Data Tab (optional) → additionalToolbars[0].actions
  * ├── Format Tab (optional) → additionalToolbars[1].actions
  * └── Back Button (detail view only)
  * ```
- * 
+ *
  * @example
  * ```tsx
  * // Simple: Just Home tab
- * <Ribbon 
+ * <Ribbon
  *   homeToolbarActions={[saveAction, settingsAction]}
  * />
- * 
+ *
  * // With additional tabs
- * <Ribbon 
+ * <Ribbon
  *   homeToolbarActions={[saveAction, settingsAction]}
  *   additionalToolbars={[
  *     {
  *       key: 'data',
- *       label: 'Data', 
+ *       label: 'Data',
  *       actions: [refreshAction, exportAction]
  *     },
  *     {
@@ -136,48 +137,56 @@ export interface RibbonProps {
 export const Ribbon: React.FC<RibbonProps> = ({
   homeToolbarActions,
   additionalToolbars = [],
-  defaultSelectedTab = 'home',
-  className = '',
+  defaultSelectedTab = "home",
+  className = "",
   viewContext,
   homeToolbarLabel,
-  rightActionButtons = []
+  rightActionButtons = [],
 }) => {
   const { t } = useTranslation();
-  const [selectedTab, setSelectedTab] = React.useState<string>(defaultSelectedTab);
-  
+  const [selectedTab, setSelectedTab] =
+    React.useState<string>(defaultSelectedTab);
+
   // Use translation for Home label if no custom label provided
-  const resolvedHomeLabel = homeToolbarLabel || t("ItemEditor_Ribbon_Home_Label", "Home");
-  
+  const resolvedHomeLabel =
+    homeToolbarLabel || t("ItemEditor_Ribbon_Home_Label", "Home");
+
   // Build all available tabs
   const allTabs = React.useMemo(() => {
     const tabs = [
       {
-        key: 'home',
+        key: "home",
         label: resolvedHomeLabel,
-        actions: homeToolbarActions
+        actions: homeToolbarActions,
       },
-      ...additionalToolbars
+      ...additionalToolbars,
     ];
     return tabs;
   }, [resolvedHomeLabel, homeToolbarActions, additionalToolbars]);
-  
+
   // Get actions for currently selected tab (or detail view actions if in detail view)
   const currentActions = React.useMemo(() => {
     const isDetailView = viewContext?.isDetailView || false;
     const detailViewActions = viewContext?.detailViewActions || [];
-    
+
     if (isDetailView && detailViewActions.length > 0) {
       return detailViewActions;
     }
-    
-    const activeTab = allTabs.find(tab => tab.key === selectedTab);
+
+    const activeTab = allTabs.find((tab) => tab.key === selectedTab);
     return activeTab?.actions || homeToolbarActions;
-  }, [selectedTab, allTabs, homeToolbarActions, viewContext?.isDetailView, viewContext?.detailViewActions]);
-  
+  }, [
+    selectedTab,
+    allTabs,
+    homeToolbarActions,
+    viewContext?.isDetailView,
+    viewContext?.detailViewActions,
+  ]);
+
   // Determine if we should show back button
   const isDetailView = viewContext?.isDetailView || false;
   const showTabs = !isDetailView; // Always show tabs unless in detail view
-  
+
   return (
     <div className={`ribbon-container ${className}`.trim()}>
       {/* Header section with tabs/back button and right action buttons */}
@@ -202,9 +211,11 @@ export const Ribbon: React.FC<RibbonProps> = ({
             /* Tab Navigation */
             showTabs && (
               <div className="ribbon-tablist-container" role="none">
-                <TabList 
+                <TabList
                   selectedValue={selectedTab}
-                  onTabSelect={(_, data) => setSelectedTab(data.value as string)}
+                  onTabSelect={(_, data) =>
+                    setSelectedTab(data.value as string)
+                  }
                   className="ribbon-tablist"
                 >
                   {allTabs.map((tab) => (
@@ -212,7 +223,9 @@ export const Ribbon: React.FC<RibbonProps> = ({
                       <div className="ribbon-tab-wrapper" role="none">
                         <Tab
                           value={tab.key}
-                          data-testid={tab.testId || `ribbon-${tab.key}-tab-btn`}
+                          data-testid={
+                            tab.testId || `ribbon-${tab.key}-tab-btn`
+                          }
                           disabled={tab.disabled}
                           className="ribbon-tab-button"
                         >
@@ -235,10 +248,7 @@ export const Ribbon: React.FC<RibbonProps> = ({
         {rightActionButtons.length > 0 && (
           <div className="ribbon-header__right ribbon-header__right-actions">
             {rightActionButtons.map((action) => (
-              <RibbonActionButtonImpl
-                key={action.key}
-                action={action}
-              />
+              <RibbonActionButtonImpl key={action.key} action={action} />
             ))}
           </div>
         )}

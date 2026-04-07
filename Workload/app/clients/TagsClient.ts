@@ -1,25 +1,25 @@
 import { WorkloadClientAPI } from "@ms-fabric/workload-client";
-import { FabricPlatformClient } from './FabricPlatformClient';
-import { SCOPE_PAIRS } from './FabricPlatformScopes';
+import { FabricPlatformClient } from "./FabricPlatformClient";
+import { SCOPE_PAIRS } from "./FabricPlatformScopes";
 import {
   Tag,
   Tags,
   ApplyTagsRequest,
-  UnapplyTagsRequest
-} from './FabricPlatformTypes';
+  UnapplyTagsRequest,
+} from "./FabricPlatformTypes";
 
 /**
  * Client for interacting with Fabric Tags APIs
  * Tags API is in Preview and allows listing tenant tags and applying/unapplying tags to items.
- * 
+ *
  * Based on the official Fabric REST API:
  * https://learn.microsoft.com/en-us/rest/api/fabric/core/tags
- * 
+ *
  * API Features:
  * - List Tags: Get all available tags in the tenant (Tag.Read.All scope)
  * - Apply Tags: Apply tags to workspace items (ItemMetadata.ReadWrite.All scope)
  * - Unapply Tags: Remove tags from workspace items (ItemMetadata.ReadWrite.All scope)
- * 
+ *
  * Rate Limits:
  * - List Tags: 25 requests per minute
  * - Apply/Unapply Tags: 25 requests per hour
@@ -35,7 +35,7 @@ export class TagsClient extends FabricPlatformClient {
    * @returns Promise resolving to tags list
    */
   async listTags(continuationToken?: string): Promise<Tags> {
-    let endpoint = '/tags';
+    let endpoint = "/tags";
     if (continuationToken) {
       endpoint += `?continuationToken=${encodeURIComponent(continuationToken)}`;
     }
@@ -73,12 +73,19 @@ export class TagsClient extends FabricPlatformClient {
    * @param tagIds Array of tag IDs to apply to the item
    * @returns Promise resolving when tags are applied
    */
-  async applyTags(workspaceId: string, itemId: string, tagIds: string[]): Promise<void> {
+  async applyTags(
+    workspaceId: string,
+    itemId: string,
+    tagIds: string[],
+  ): Promise<void> {
     const request: ApplyTagsRequest = {
-      tags: tagIds.map(id => ({ id }))
+      tags: tagIds.map((id) => ({ id })),
     };
 
-    await this.post<void>(`/workspaces/${workspaceId}/items/${itemId}/applyTags`, request);
+    await this.post<void>(
+      `/workspaces/${workspaceId}/items/${itemId}/applyTags`,
+      request,
+    );
   }
 
   /**
@@ -88,12 +95,19 @@ export class TagsClient extends FabricPlatformClient {
    * @param tagIds Array of tag IDs to remove from the item
    * @returns Promise resolving when tags are removed
    */
-  async unapplyTags(workspaceId: string, itemId: string, tagIds: string[]): Promise<void> {
+  async unapplyTags(
+    workspaceId: string,
+    itemId: string,
+    tagIds: string[],
+  ): Promise<void> {
     const request: UnapplyTagsRequest = {
-      tags: tagIds.map(id => ({ id }))
+      tags: tagIds.map((id) => ({ id })),
     };
 
-    await this.post<void>(`/workspaces/${workspaceId}/items/${itemId}/unapplyTags`, request);
+    await this.post<void>(
+      `/workspaces/${workspaceId}/items/${itemId}/unapplyTags`,
+      request,
+    );
   }
 
   /**
@@ -103,7 +117,11 @@ export class TagsClient extends FabricPlatformClient {
    * @param tagId The tag ID to apply to the item
    * @returns Promise resolving when tag is applied
    */
-  async applyTag(workspaceId: string, itemId: string, tagId: string): Promise<void> {
+  async applyTag(
+    workspaceId: string,
+    itemId: string,
+    tagId: string,
+  ): Promise<void> {
     return this.applyTags(workspaceId, itemId, [tagId]);
   }
 
@@ -114,7 +132,11 @@ export class TagsClient extends FabricPlatformClient {
    * @param tagId The tag ID to remove from the item
    * @returns Promise resolving when tag is removed
    */
-  async unapplyTag(workspaceId: string, itemId: string, tagId: string): Promise<void> {
+  async unapplyTag(
+    workspaceId: string,
+    itemId: string,
+    tagId: string,
+  ): Promise<void> {
     return this.unapplyTags(workspaceId, itemId, [tagId]);
   }
 
@@ -124,13 +146,18 @@ export class TagsClient extends FabricPlatformClient {
    * @param exact Whether to match exact name or partial match (default: false)
    * @returns Promise resolving to array of matching tags
    */
-  async findTagsByName(searchName: string, exact: boolean = false): Promise<Tag[]> {
+  async findTagsByName(
+    searchName: string,
+    exact: boolean = false,
+  ): Promise<Tag[]> {
     const allTags = await this.getAllTags();
     const searchLower = searchName.toLowerCase();
 
-    return allTags.filter(tag => {
+    return allTags.filter((tag) => {
       const tagNameLower = tag.name.toLowerCase();
-      return exact ? tagNameLower === searchLower : tagNameLower.includes(searchLower);
+      return exact
+        ? tagNameLower === searchLower
+        : tagNameLower.includes(searchLower);
     });
   }
 
@@ -152,12 +179,16 @@ export class TagsClient extends FabricPlatformClient {
    * @param tagNames Array of tag names to apply to the item
    * @returns Promise resolving to applied tag information
    */
-  async applyTagsByName(workspaceId: string, itemId: string, tagNames: string[]): Promise<{
+  async applyTagsByName(
+    workspaceId: string,
+    itemId: string,
+    tagNames: string[],
+  ): Promise<{
     applied: Tag[];
     notFound: string[];
   }> {
     const allTags = await this.getAllTags();
-    const tagMap = new Map(allTags.map(tag => [tag.name.toLowerCase(), tag]));
+    const tagMap = new Map(allTags.map((tag) => [tag.name.toLowerCase(), tag]));
 
     const applied: Tag[] = [];
     const notFound: string[] = [];
@@ -172,7 +203,11 @@ export class TagsClient extends FabricPlatformClient {
     }
 
     if (applied.length > 0) {
-      await this.applyTags(workspaceId, itemId, applied.map(t => t.id));
+      await this.applyTags(
+        workspaceId,
+        itemId,
+        applied.map((t) => t.id),
+      );
     }
 
     return { applied, notFound };
@@ -186,12 +221,16 @@ export class TagsClient extends FabricPlatformClient {
    * @param tagNames Array of tag names to remove from the item
    * @returns Promise resolving to removed tag information
    */
-  async unapplyTagsByName(workspaceId: string, itemId: string, tagNames: string[]): Promise<{
+  async unapplyTagsByName(
+    workspaceId: string,
+    itemId: string,
+    tagNames: string[],
+  ): Promise<{
     removed: Tag[];
     notFound: string[];
   }> {
     const allTags = await this.getAllTags();
-    const tagMap = new Map(allTags.map(tag => [tag.name.toLowerCase(), tag]));
+    const tagMap = new Map(allTags.map((tag) => [tag.name.toLowerCase(), tag]));
 
     const removed: Tag[] = [];
     const notFound: string[] = [];
@@ -206,7 +245,11 @@ export class TagsClient extends FabricPlatformClient {
     }
 
     if (removed.length > 0) {
-      await this.unapplyTags(workspaceId, itemId, removed.map(t => t.id));
+      await this.unapplyTags(
+        workspaceId,
+        itemId,
+        removed.map((t) => t.id),
+      );
     }
 
     return { removed, notFound };
@@ -219,6 +262,8 @@ export class TagsClient extends FabricPlatformClient {
    */
   async getTagsByColor(color: string): Promise<Tag[]> {
     const allTags = await this.getAllTags();
-    return allTags.filter(tag => tag.color.toLowerCase() === color.toLowerCase());
+    return allTags.filter(
+      (tag) => tag.color.toLowerCase() === color.toLowerCase(),
+    );
   }
 }
